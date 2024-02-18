@@ -1,0 +1,15 @@
+exportPattern("^[[:alpha:]]+")
+importFrom("graphics", "axis", "curve", "lines", "points", "polygon",
+               "rect", "text")
+importFrom("stats", "approxfun", "dbinom", "dchisq", "dnorm", "dpois",
+               "dt", "lsfit", "pchisq", "pnorm", "pt", "qchisq", "qnorm",
+               "qt", "runif", "sd")
+import(knitr,
+    kableExtra,
+    pBrackets,
+    bookdown,
+    bookdownplus,
+    plotrix,
+    colorspace,
+    haven,
+    png)
