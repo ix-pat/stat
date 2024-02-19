@@ -62,6 +62,7 @@ genera_dati <- function(brk,hhh=NULL,n,nnn=NULL,rand = T){       # genera i dati
     samp <- rep((br1+br2)/2,times = nnn)
   }
 #  names(samp) <- nomex
+  if (length(samp)!=n) samp <- c(samp,rev(samp))[1:n]
   return(samp)
 }
 
