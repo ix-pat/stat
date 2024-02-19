@@ -1,2 +1,1 @@
-bla
-bla bla
+Automatizza i procedimenti di scrittura per realizzare il libro e i compiti
