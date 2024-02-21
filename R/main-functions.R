@@ -276,16 +276,12 @@ stat_base <- function(samp,brk){
      datp <- round(dat2,4)
      axis(1,brk)
      axis(2,c(0,dat2$hj),c(0,round(dat2$hj,2)),las=2)}
-   segments(br1[1]-1,datp$hj,br1,datp$hj,lty=2,col="grey40")
+   segments(br1[1]-1,datp$hj,br1,datp$hj,lty=2,col="grey40") 
   }
   return(list(dat2=dat2,dat3=dat3,F_print=F_print,F.int=F.int,h.int=h.int,H.int=H.int,histp=histp,Q.int=Q.int,percentile=percentile,k=k))
 }
  
-<<<<<<< HEAD
-## Probabilità #### 
-=======
 ## Probabilità ####
->>>>>>> e3a1d260dfe2ff44f69dc2054f052d2664afc300
 
 two_way <- function(S_1,S_2,num1,num2,op=`+`,EV=T,vnam="X",size="\\normalsize "){
   html <- ifelse(exists("html"),html,T)
