@@ -209,7 +209,7 @@ stat_base <- function(samp,brk){
    hp    <- X$hj[X$Fj>=p][1]
    if (kp == 1) Fp_inf <- 0 else Fp_inf <- X$Fj[kp-1]
    xp_apr <- xp_inf + (p-Fp_inf)/fp*bp
-   
+   datp <- round(dat2,4)
    
    
    cat("\\begin{eqnarray*}
@@ -273,8 +273,10 @@ stat_base <- function(samp,brk){
    plot(range(brk),range(c(0,dat2$hj),na.rm = T),type="n",axes=F,xlab = nomex,ylab = "Denistà percentuale")
    rect(xleft = br1,ybottom = 0,xright = br2,ytop = dat2$hj,...)
    if (axes){
+     datp <- round(dat2,4)
      axis(1,brk)
      axis(2,c(0,dat2$hj),c(0,round(dat2$hj,2)),las=2)}
+   segments(br1[1]-1,datp$hj,br1,datp$hj,lty=2,col="grey40")
   }
   return(list(dat2=dat2,dat3=dat3,F_print=F_print,F.int=F.int,h.int=h.int,H.int=H.int,histp=histp,Q.int=Q.int,percentile=percentile,k=k))
 }
