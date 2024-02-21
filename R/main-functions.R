@@ -275,8 +275,9 @@ stat_base <- function(samp,brk){
    if (axes){
      datp <- round(dat2,4)
      axis(1,brk)
-     axis(2,c(0,dat2$hj),c(0,round(dat2$hj,2)),las=2)}
-   segments(br1[1]-1,datp$hj,br1,datp$hj,lty=2,col="grey40") 
+     axis(2,c(0,dat2$hj),c(0,round(dat2$hj,2)),las=2)
+     segments(br1[1]-1,datp$hj,br1,datp$hj,lty=2,col="grey40") 
+     }
   }
   return(list(dat2=dat2,dat3=dat3,F_print=F_print,F.int=F.int,h.int=h.int,H.int=H.int,histp=histp,Q.int=Q.int,percentile=percentile,k=k))
 }
