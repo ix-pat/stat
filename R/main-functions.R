@@ -262,11 +262,7 @@ stat_base <- function(samp,brk){
                    paste0("\\%(",x,"<X<",x2,") &=&  f_{",j1,"}\\times 100+"),
                    paste0("\\%(",x,"<X<",x2,") &=& (",min(brk[j1+1],x2),"-",x,")\\times h_{",j1,"}+"))
      c10 <- ifelse(x == brk[j1],
-<<<<<<< HEAD
                    paste0("&=&",datp$fj[j1],"\\times 100 +"),
-=======
-                   paste0(datp$fj[j1],"\\times 100 +"),
->>>>>>> 36499b78c0abd9b23f47e10ca7c2f1603564c797
                    paste0("&=& (",min(brk[j1+1],x2)-x,")\\times ",datp$hj[j1],"+"))
      c02 <- ifelse(x2 == brk[j2+1],
                    paste0("f_{",j2,"}\\times 100"),
