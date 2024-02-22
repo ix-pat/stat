@@ -730,7 +730,7 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq", alpha = 0.05){
    }
   }
 
-  cat("**Test Z per una proporzione**\n\n")  
+  cat("**Test $Z$ per una proporzione**\n\n")  
   
   cat("La stima
    $$\\hat\\pi=\\frac {", sn,"} {", n,"}=", ph," $$")
@@ -802,7 +802,7 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq", alpha = 0.05,um="",pvalue=T){
    }
   }
   
-  cat("**Test Z per una media, variazna nota**\n\n")  
+  cat("**Test $Z$ per una media, variazna nota**\n\n")  
   
   cat("\\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI
    $$\\begin{cases}
