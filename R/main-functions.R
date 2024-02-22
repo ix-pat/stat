@@ -258,10 +258,37 @@ stat_base <- function(samp,brk){
    } else  {
      j1 <- max(which(br1 <= x))
      j2 <- min(which(br2 >= x2))
-     cat("\\begin{eqnarray*}
-     \\%(",x,"<X<",x2,") &=& (",brk[j1+1],"-",x,")\\times h_{",j1,"}+",paste("f_{",(j1+1):(j2-1),"}\\times 100",collapse="+"),"+(",x2,"-",brk[j2],")\\times h_{",j2-1,"} \\\\
-              &=& (",brk[j1+1]-x,")\\times ",datp$hj[j1],"+",paste("(",datp$fj[(j1+1):(j2-1)],")\\times 100",collapse="+"),"+(",x2-brk[j2],")\\times ",datp$hj[j2]," \\\\
-              &=& ",F.int(x2)-F.int(x),"\\times(100)\\\\
+     c00 <- ifelse(x == brk[j1],
+                   paste0("\\%(",x,"<X<",x2,") &=&  f_{",j1,"}\\times 100+"),
+                   paste0("\\%(",x,"<X<",x2,") &=& (",min(brk[j1+1],x2),"-",x,")\\times h_{",j1,"}+"))
+     c10 <- ifelse(x == brk[j1],
+                   paste0("&=&",datp$fj[j1],"\\times 100 +"),
+                   paste0("&=& (",min(brk[j1+1],x2)-x,")\\times ",datp$hj[j1],"+"))
+     c02 <- ifelse(x2 == brk[j2+1],
+                   paste0("f_{",j2,"}\\times 100"),
+                   paste0("(",x2,"-",brk[j2],")\\times h_{",j2,"}"))
+     c12 <- ifelse(x2 == brk[j2+1],
+                   paste0(datp$fj[j2],"\\times 100"),
+                   paste0("(",x2-brk[j2],")\\times ",datp$hj[j2])
+     )
+     if (j1==j2) {
+       c00 <- paste0("\\%(",x,"<X<",x2,") &=& (",min(brk[j1+1],x2),"-",x,")\\times h_{",j1,"}")
+       c01  <- ""
+       c02 <- ""
+       c10 <- paste0("&=& (",min(brk[j1+1],x2)-x,")\\times ",datp$hj[j1],"")
+       c11 <- ""
+       c12 <- ""
+     } else if (j1==(j2-1)){
+       c01  <- ""
+       c11 <- ""
+     } else {
+       c01  <- paste(paste("f_{",(j1+1):(j2-1),"}\\times 100",collapse="+"),"+")
+       c11  <- paste(paste("(",datp$fj[(j1+1):(j2-1)],")\\times 100",collapse="+"),"+")
+     }
+     cat("\\begin{eqnarray*}",
+     c00,c01,c02," \\\\ \n",
+     c10,c11,c12," \\\\ \n",
+              "&=& ",F.int(x2)-F.int(x),"\\times(100)\\\\
      \\#(",x,"< X <",x2,") &=&",(F.int(x2)-F.int(x))*n,"
          \\end{eqnarray*}")
    }
@@ -702,7 +729,8 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq", alpha = 0.05){
      assign(nome, round(valore, digits = 4), envir = environment())
    }
   }
-  
+
+  cat("**Test Z per una proporzione**\n\n")  
   
   cat("La stima
    $$\\hat\\pi=\\frac {", sn,"} {", n,"}=", ph," $$")
@@ -750,7 +778,7 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq", alpha = 0.05){
   if (H1 == "<") {pval <- paste("P(Z<z_{\\text{obs}})=P(Z<",round(tobs,2),")=",format(pnorm(tobs),digits=4,scipen=8))}
   if (H1 == "\\neq") {pval <- paste("P(|Z|>|z_{\\text{obs}}|)=2P(Z>|z_{\\text{obs}}|)=2P(Z>|",round(tobs,2),"|)=",format(2*pnorm(-abs(round(tobs,2))),digits=4,scipen=8))}
   
-  cat("Il \\(p_{\\text{value}}\\) è $$", pval,"$$")
+  cat("\n\n Il \\(p_{\\text{value}}\\) è $$", pval,"$$")
   
 }
 
@@ -773,6 +801,8 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq", alpha = 0.05,um="",pvalue=T){
      assign(nome, round(valore, digits = 4), envir = environment())
    }
   }
+  
+  cat("**Test Z per una media, variazna nota**\n\n")  
   
   cat("\\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI
    $$\\begin{cases}
@@ -843,6 +873,8 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq", alpha = 0.05,um=""){
    }
   }
   
+  cat("**Test $t$ per una media, varianza incognita**\n\n")  
+  
   cat("\\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI
    $$\\begin{cases}
    H_0:\\mu=\\mu_0=", mu0,"\\text{", um,"}\\\\
@@ -893,7 +925,7 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq", alpha = 0.05,um=""){
   if (H1 == "<") {pval <- paste("P(T_{n-1}<t_{\\text{obs}})=P(T_{n-1}<",round(tobs,3),")=",format(pt(tobs,n-1),digits = 4, scipen=8))}
   if (H1 == "\\neq") {pval <- paste("P(|T_{n-1}|>|t_{\\text{obs}}|)=2P(T_{n-1}>|t_{\\text{obs}}|)=2P(T_{n-1}>|",round(tobs,4),"|)=",format(2*pt(-abs(tobs),n-1),digits = 4, scipen=8))}
   
-  cat("Il \\(p_{\\text{value}}\\) è
+  cat("\n\n Il \\(p_{\\text{value}}\\) è
    $$", pval,"$$")
   }
 
@@ -928,7 +960,10 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq", alpha = 0.05,et=F,a
       assign(nome, round(valore, digits = 4), envir = environment())
      }
    }
+
+   cat("**Test $Z$ per due proporzioni**\n\n")  
    
+   cat("Test $Z$ su due proporzioni")
    
    cat("\\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI
    $$\\begin{cases}
@@ -1016,6 +1051,9 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq", alpha = 0.05,et=F,a
      }
    }
    
+   cat("**Test $t$ per due medie, (eterogeneità)**\n\n")  
+   
+   
    cat("\\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI
   
   $$\\begin{cases}
@@ -1101,7 +1139,8 @@ $$
       }
      }
      
-     
+     cat("**Test $Z$ per due medie, (omogeneità)**\n\n")
+
      cat("\\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI
   
   $$\\begin{cases}
@@ -1212,7 +1251,7 @@ chi_test <- function(dat,alpha){
   segno <- ifelse(chi_ob>chi_th,">","<")
   decis <- ifelse(chi_ob>chi_th,"rifiuto","non rifiuto")
   
-  
+  cat("**Test $\\chi^2$ per indipendenza**\n\n")  
   cat("$\\fbox{A}$ FORMULAZIONE DELLE IPOTESI
 $$
 \\Big\\{H_0:\\pi_{ij}=\\pi_{i\\bullet}\\pi_{\\bullet j}
@@ -1271,7 +1310,7 @@ allora ",decis," $H_0$ al lds dell'",alpha*100," percento.
   
   
   cat("
-Il $p_{\\text{value}}$ è
+\n\n il $p_{\\text{value}}$ è
 \\[
 P(\\chi^2_{",gdl,"}> \\chi^2_{\\text{obs}})=",format((1-pchisq(chi_ob,gdl)),digits = 4,scientific = 8),"
 \\]
@@ -1297,6 +1336,8 @@ chi_conf <- function(Freq_c,Freq_0,X,Y,alpha=0.05){
   chi_ob <- ch[k+1]
   segno <- ifelse(chi_ob>chi_th,"maggiore","minore")
   decis <- ifelse(chi_ob>chi_th,"rifiuto","non rifiuto")
+  
+  cat("**Test $\\chi^2$ per conformità**\n\n")  
   
   cat("$\\fbox{A}$ Formulazione delle ipotesi
 \\[
@@ -1326,7 +1367,7 @@ Il chi quadro osservato è ",ch[k+1]," è ",segno," di $\\chi^2_{",k-1,";",alpha
   points(chi_ob,0,pch=4,cex=2)
   text(chi_ob,.05,expression(chi[obs]^2))
   axis(1,c(0,chi_th,round(b,0)))
- cat("Il $p_{\\text{value}}$ è
+ cat("\n\n il $p_{\\text{value}}$ è
 \\[
 P(\\chi^2_{",gdl,"}> \\chi^2_{\\text{obs}})=",format((1-pchisq(chi_ob,gdl)),digits = 4,scientific = 8),"
 \\]
@@ -1449,13 +1490,12 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
         )
       } else 
         {
-        cat("
-        \\begin{eqnarray*}
-         \\hat\\beta_1 &=& \\frac{\\text{cov}(X,Y)}{\\hat\\sigma_X^2} \\\\
-                  &=& \\frac{",co,"}{",vx,"}  = ",b1,"\\\\
-         \\hat\\beta_0 &=& \\bar y - \\hat\\beta_1 \\bar x\\\\
-                  &=& ",my,"-",p(b1),"\\times ",p(mx),"=",b0,"
-        \\end{eqnarray*}"
+        cat("\\begin{eqnarray*}
+       \\hat\\beta_1 &=& \\frac{\\text{cov}(X,Y)}{\\hat\\sigma_X^2} \\\\
+            &=& \\frac{",co,"}{",vx,"}  = ",b1,"\\\\
+      \\hat\\beta_0 &=& \\bar y - \\hat\\beta_1 \\bar x\\\\
+          &=& ",my,"-",p(b1),"\\times ",p(mx),"=",b0,"
+      \\end{eqnarray*}"
         )}
      }  else 
      {
@@ -1613,7 +1653,7 @@ Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.
    if (H1 == "<") {pval <- paste("P(T_{n-2}<t_{\\text{obs}})=P(T_{n-2}<",round(tobs,3),")=",format(pt(tobs,n-2),digits = 4, scipen=8))}
    if (H1 == "\\neq") {pval <- paste("P(|T_{n-2}|>|t_{\\text{obs}}|)=2P(T_{n-2}>|t_{\\text{obs}}|)=2P(T_{n-2}>|",round(tobs,4),"|)=",format(2*pt(-abs(tobs),n-2),digits = 4, scipen=8))}
 
-   cat("Il $p_{\\text{value}}$ è
+   cat("\n\n il $p_{\\text{value}}$ è
    $$",pval,"$$\n\n")
   }
   
