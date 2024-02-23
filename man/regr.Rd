@@ -30,8 +30,11 @@ Valore predefinito a 2.}
 Un elenco contenente vari componenti legati alla regressione effettuata,
 inclusi coefficienti, misure di adattamento, e statistiche utili per valutazioni
 successive.
+<<<<<<< HEAD
 
 \code{R2} calcola e commenta R²
+=======
+>>>>>>> 0dee9dad6c09ddd340f4562cac51c02a2dd84b5a
 }
 \description{
 Questa funzione esegue una regressione lineare sui dati forniti, calcolando
@@ -40,12 +43,18 @@ degli argomenti forniti: direttamente su vettori `x` e `y`, o utilizzando statis
 riassuntive.
 }
 \examples{
+<<<<<<< HEAD
 require(kableExtra)
+=======
+>>>>>>> 0dee9dad6c09ddd340f4562cac51c02a2dd84b5a
 x <- 1:10
 y <- 2 + 3 * x + rnorm(10)
 risultato <- regr(x, y)
 print(risultato$mx)
 print(risultato$my)
+<<<<<<< HEAD
 print(risultato$R2())
+=======
+>>>>>>> 0dee9dad6c09ddd340f4562cac51c02a2dd84b5a
 
 }
