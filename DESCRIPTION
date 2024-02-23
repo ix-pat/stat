@@ -18,3 +18,4 @@ Imports:
     colorspace,
     haven,
     png
+RoxygenNote: 7.3.1
