@@ -12,6 +12,16 @@ Imports:
     knitr,
     kableExtra,
     colorspace
+    pBrackets,
+    bookdown,
+    bookdownplus,
+    plotrix,
+    colorspace,
+    haven,
+    png,
+    rgl,
+    mvtnorm
+>>>>>>> 0a04c99fa445c936dda6b4d3c6b0e20d730ecd9d
 Suggests:
     rmarkdown
 VignetteBuilder: knitr, rmarkdown
