@@ -11,11 +11,8 @@ LazyData: true
 Imports:
     knitr,
     kableExtra,
-    pBrackets,
-    bookdown,
-    bookdownplus,
-    plotrix,
-    colorspace,
-    haven,
-    png
+    colorspace
+Suggests:
+    rmarkdown
+VignetteBuilder: knitr, rmarkdown
 RoxygenNote: 7.3.1

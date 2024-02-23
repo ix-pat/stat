@@ -6,10 +6,5 @@ importFrom("stats", "approxfun", "dbinom", "dchisq", "dnorm", "dpois",
                "qt", "runif", "sd")
 import(knitr,
     kableExtra,
-    pBrackets,
-    bookdown,
-    bookdownplus,
-    plotrix,
-    colorspace,
-    haven,
-    png)
+    colorspace
+)

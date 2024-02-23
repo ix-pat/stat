@@ -691,7 +691,7 @@ idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss=NULL){
 #' @param sn Numero di successi o media campionaria.
 #' @param n Dimensione del campione.
 #' @param p0 Proporzione attesa nella popolazione per `ztest_pi`.
-#' @param h1 Ipotesi alternativa: può essere "\neq", ">", "<".
+#' @param h1 Ipotesi alternativa: può essere "\\neq", ">", "<".
 #' @param alpha Livello di significatività.
 #' @param muh Media campionaria per `ztest_mu` e `ttest_mu`.
 #' @param s Deviazione standard della popolazione per `ztest_mu`, o deviazione standard campionaria per `ttest_mu`.

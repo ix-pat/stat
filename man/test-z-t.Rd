@@ -19,7 +19,7 @@ ttest_mu(muh, sh, n, mu0, h1 = "\\\\neq", alpha = 0.05, um = "")
 
 \item{p0}{Proporzione attesa nella popolazione per `ztest_pi`.}
 
-\item{h1}{Ipotesi alternativa: può essere "\neq", ">", "<".}
+\item{h1}{Ipotesi alternativa: può essere "\\neq", ">", "<".}
 
 \item{alpha}{Livello di significatività.}
 
