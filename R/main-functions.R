@@ -8,309 +8,181 @@
 srt <- ""
 src_ <- function(x) {paste(srt,x,sep = "")}
 
-ls2e <- function(x) invisible(list2env(x,envir = globalenv()))
+#' Converte una Lista in un Ambiente e Assegna gli Elementi alla Global Environment
+#'
+#' Questa funzione prende una lista di oggetti e li assegna alla global environment, 
+#' rendendo ogni elemento della lista direttamente accessibile come un oggetto 
+#' indipendente nell'ambiente globale.
+#'
+#' @param x Lista degli oggetti da convertire e assegnare nell'ambiente globale.
+#' 
+#' @details La funzione utilizza `list2env()` per convertire la lista in un ambiente, 
+#' poi assegna questo ambiente alla global environment. Gli oggetti all'interno della 
+#' lista diventano così direttamente accessibili nell'ambiente globale. La funzione 
+#' opera in modo invisibile, senza produrre output diretti.
+#'
+#' @examples
+#' my_list <- list(a = 1, b = 2, c = 3)
+#' ls2e(my_list)
+#' a # Dovrebbe restituire 1
+#' b # Dovrebbe restituire 2
+#' c # Dovrebbe restituire 3
+#'
+#' @export
+ls2e <- function(x) invisible(list2env(x, envir = globalenv()))
 
-tabl <- function(x,...){
-  kable(x,...,booktabs=T,escape = F,linesep="") %>%
-   kable_styling(full_width = F, latex_options = "HOLD_position")
+
+#' Crea una Tabella Stilizzata con kable e kableExtra
+#'
+#' Questa funzione genera una tabella stilizzata partendo da un data frame o una matrice,
+#' utilizzando `kable` di **knitr** per la creazione della tabella e `kable_styling` di
+#' **kableExtra** per l'applicazione dello stile.
+#'
+#' @param x Un oggetto data frame o matrice da visualizzare come tabella.
+#' @param ... Parametri addizionali passati a `kable`.
+#'
+#' @details La funzione imposta `booktabs = TRUE` per utilizzare la formattazione 
+#' Booktabs, che migliora l'aspetto delle tabelle LaTeX e HTML, e `escape = FALSE` 
+#' per evitare l'escape automatico di caratteri speciali LaTeX. Inoltre, applica
+#' specifiche opzioni di styling attraverso `kable_styling` per controllare l'aspetto
+#' finale della tabella, come `full_width = FALSE` e l'opzione `latex_options` impostata
+#' su "HOLD_position" per gestire la posizione della tabella.
+#'
+#' @return Restituisce un oggetto di tipo tabella stilizzata pronto per essere stampato
+#' o visualizzato.
+#'
+#' @examples
+#' # Assicurati di avere i pacchetti knitr e kableExtra installati e caricati
+#' if (require(knitr) && require(kableExtra)) {
+#'   data(mtcars)
+#'   tabl(mtcars[1:5, 1:5])
+#' }
+#'
+#' @importFrom knitr kable
+#' @importFrom kableExtra kable_styling
+#' @export
+tabl <- function(x, ...) {
+  kable(x, ..., booktabs = TRUE, escape = FALSE, linesep = "") %>%
+    kable_styling(full_width = FALSE, latex_options = "HOLD_position")
 }
 
-### Punto elenco personalizzato numero.lettera 
-
-item <- function(){
-  it <- (paste(i1,".",letters[i2],sep = ""))
-  return(it)}
-
-### Funzione parentesi 
-
-p <- function(x,ax=4){
-  p1 <- ifelse(x < 0,"(","")
-  p2 <- ifelse(x < 0,")","")
-  paste(p1,round(x,ax),p2,sep="")
+#' Genera Punto Elenco Personalizzato
+#'
+#' Questa funzione genera un punto elenco personalizzato nel formato numero.lettera.
+#'
+#' @param i1 Numero intero per il punto elenco.
+#' @param i2 Indice per la lettera nel punto elenco, dove 1 = a, 2 = b, ecc.
+#'
+#' @return Restituisce una stringa che rappresenta il punto elenco personalizzato.
+#'
+#' @examples
+#' item(1, 1) # Restituisce "1.a"
+#' item(2, 3) # Restituisce "2.c"
+#'
+#' @export
+item <- function(i1, i2) {
+  it <- paste(i1, ".", letters[i2], sep = "")
+  return(it)
 }
-  
+
+#' Formatta Numeri con Parentesi per Valori Negativi
+#'
+#' Questa funzione formatta i numeri aggiungendo parentesi intorno ai valori negativi
+#' e arrotonda il numero alla precisione specificata.
+#'
+#' @param x Numero da formattare.
+#' @param ax Numero di cifre decimali a cui arrotondare il valore di `x`. 
+#'           Il valore predefinito è 4.
+#'
+#' @return Restituisce una stringa che rappresenta il numero formattato,
+#'         con parentesi intorno ai valori negativi.
+#'
+#' @examples
+#' p(-3.14159265) # Restituisce "(-3.1416)"
+#' p(3.14159265)  # Restituisce "3.1416"
+#'
+#' @export
+p <- function(x, ax = 4) {
+  p1 <- ifelse(x < 0, "(", "")
+  p2 <- ifelse(x < 0, ")", "")
+  paste(p1, round(x, ax), p2, sep = "")
+}
+
 
 ## Statistica Descrittiva ####
 
-s2c <- function(x) {(mean(x^2)-mean(x)^2)}  # varianza di pop
-sc  <- function(x) {sqrt(s2c(x))}        # sd di pop
+#' Calcoli Statistici: Varianza e Deviazione Standard
+#'
+#' Queste funzioni forniscono il calcolo della varianza e della deviazione standard per una popolazione,
+#' e una funzione aggiuntiva per il calcolo della varianza quando si dispone di una distribuzione di probabilità.
+#'
+#' @details La funzione \code{s2c} calcola la varianza di una popolazione. La funzione \code{sc}
+#' calcola la deviazione standard di una popolazione. La funzione \code{vvv} calcola la varianza
+#' per una distribuzione di probabilità o per dati grezzi se le probabilità non sono fornite.
+#'
+#' @param x Un vettore di valori numerici.
+#' @param p Un vettore opzionale di probabilità associato a \code{x}.
+#'
+#' @return
+#' \code{s2c} e \code{vvv} restituiscono la varianza calcolata.
+#' \code{sc} restituisce la deviazione standard calcolata.
+#'
+#' @examples
+#' x <- c(1, 2, 3, 4, 5)
+#' p <- c(0.1, 0.2, 0.3, 0.2, 0.2)
+#' s2c(x)
+#' sc(x)
+#' vvv(x, p)
+#'
+#' @rdname calcoli-varianza
+s2c <- function(x) {
+  (mean(x^2) - mean(x)^2)  # varianza di popolazione
+}
 
+#' @rdname calcoli-varianza
+sc <- function(x) {
+  sqrt(s2c(x))  # sd di popolazione
+}
 
-vvv <- function(x,p=NULL) {           # varianza per distr tabella e prob
-  if (is.null(p)) v <- mean(x^2)-mean(x)^2
-  else v <- sum(p*x^2)-(sum(p*x))^2
+#' @rdname calcoli-varianza
+vvv <- function(x, p = NULL) {
+  # varianza per distribuzione di probabilità
+  if (is.null(p)) v <- mean(x^2) - mean(x)^2
+  else v <- sum(p*x^2) - (sum(p*x))^2
   return(v)
-}
-
-vunif <- function(nnn, brk){           # genera i dati da una mistura di uniformi
-  k <- length(brk)-1
-  br1  <- brk[-(k+1)]
-  br2  <- brk[-1]
-  xi  <- runif(nnn[1],br1[1],br2[1])
-  for (i in 2:k)
-   xi <- c(xi,runif(nnn[i],br1[i],br2[i]))
-  return(xi)
-}
-
-genera_dati <- function(brk,hhh=NULL,n,nnn=NULL,rand = T){     # genera i dati fornendo brk, hhh, e n
-  if (is.null(nnn))  nnn  <- round((hhh*diff(brk))/sum(hhh*diff(brk))*n) # riporto ad n
-  if (!is.null(nnn)) nnn  <- round(nnn/sum(nnn)*n) # riporto ad n
-  k <- length(brk)-1
-  br1  <- brk[-(k+1)]
-  br2  <- brk[-1]
-  if (rand) {
-   samp <- round(vunif(nnn,brk),2)
-  } else {
-   samp <- rep((br1+br2)/2,times = nnn)
-  }
-#  names(samp) <- nomex
-  if (length(samp)!=n) samp <- c(samp,rev(samp))[1:n]
-  return(samp)
-}
-
-media_ <- function(x,p=NULL,mnam="\\mu",semp = F){
-  n <- length(x)
-  if (!semp){
-  if(is.null(p)){
-   cat("\\[",mnam,"=\\frac 1{",n,"}(",paste(x,collapse = "+"),")=",mean(x),"\\]")
-  }
-  if(!is.null(p)){
-   
-   cat("\\[",mnam,"=",paste(paste(x,p,sep = " \\cdot "),collapse = "+"),"=",sum(x*p),"\\]")
-  }} else {
-   freq <- table(x)
-   xx <- dimnames(freq)$x
-   cat("\\[",mnam,"=\\left(",paste(paste(xx,"\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\right)=",mean(x),"\\]")
-  }
-}
-
-var_ <- function(x,p=NULL,mnam="\\sigma^2",semp=F){
-  n <- length(x)
-  m <- ifelse(test = is.null(p),mean(x),sum(x*p))
-  if (!semp){
-   if(is.null(p)){
-   cat("\\[",mnam,"=\\frac 1{",n,"}(",paste(paste(x,2,sep = "^"),collapse = "+"),")-(",m,")^2=",s2c(x),"\\]")
-  }
-  if(!is.null(p)){
-   p <- sum(p)
-   cat("\\[",mnam,"=(",paste(paste(paste(x,2,sep = "^"),p,sep = " \\cdot "),collapse = "+"),")-(",m,")^2=",vvv(x = x,p = p),"\\]")
-  }} else {
-   freq <- table(x)
-   xx <- dimnames(freq)$x
-   cat("\\[",mnam,"=\\left(",paste(paste(xx,"^2\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\right)-(",m,")^2=",s2c(x),"\\]")
-  }
-}
-
-stat_ <- function(x,p=NULL,mnam="\\mu",vnam="\\sigma^2",semp=F){
-  n <- length(x)
-  m <- ifelse(test = is.null(p),mean(x),sum(x*p))
-  p1 <- character(n)
-  p2 <- character(n)
-  p1[x<0]<-"("
-  p2[x<0]<-")"
-  xp <- paste(p1,x,p2)
-  if (!semp){
-   if(is.null(p)){
-     cat("\\begin{eqnarray*}\n",
-        mnam,"&=& \\frac 1{",n,"}(",paste(xp,collapse = "+"),")=",mean(x),"\\\\ \n",
-        vnam,"&=& \\frac 1{",n,"}(",paste(paste(xp,2,sep = "^"),collapse = "+"),")-(",m,")^2=",s2c(x),
-        "\n\\end{eqnarray*}\n")
-   }
-   if(!is.null(p)){
-     p <- p/sum(p)
-     pp <- round(p,4)
-     cat("\\begin{eqnarray*}\n",
-        mnam,"&=&",paste(paste(xp,pp,sep = " \\cdot "),collapse = "+"),"=",sum(x*p),"\\\\",
-        vnam,"&=&(",paste(paste(paste(xp,2,sep = "^"),pp,sep = " \\cdot "),collapse = "+"),")-(",m,")^2=",vvv(x = x,p = p),
-        "\\end{eqnarray*}")
-   }} else {
-     freq <- table(x)
-     xx <- dimnames(freq)$x
-     p1 <- character(length(xx))
-     p2 <- character(length(xx))
-     p1[xx<0]<-"("
-     p2[xx<0]<-")"
-     xx <- paste(p1,xx,p2)
-     cat("\\begin{eqnarray*}",
-        mnam,"&=& E(X_i) = \\sum_{x\\in S_X}x P(X=x)\\\\ \n",
-           "&=&",paste(paste(xx,"\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\\\ 
-            &=&",mean(x),"\\\\ \n",
-        vnam,"&=& V(X_i) = \\sum_{x\\in S_X}x^2 P(X=x)-\\mu^2\\\\ \n",
-            "&=&\\left(",paste(paste(xx,"^2\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\right)-(",m,")^2\\\\ 
-            &=&",s2c(x),
-        "\n\\end{eqnarray*}\n")
-   }
-  }
-
-stat_base <- function(samp,brk){
-  ####
-  # Crea la Tabella
-  ####
-  
-  k <- length(brk)-1
-  br1  <- brk[-(k+1)]
-  br2  <- brk[-1]
-  n <- length(samp)
-  
-  K <- length(brk)
-  dat2 <- data.frame(
-   xinf = brk[1:(K-1)],
-   xsup = brk[2:(K)],
-   nj  = as.data.frame(table(cut(samp,brk)))$Freq
-  )
-  
-  
-  dat2$fj <- (dat2$nj/sum(dat2$nj))
-  dat2$bj <- (dat2$xsup-dat2$xinf)
-  dat2$hj <- (dat2$fj/dat2$bj*100)
-  dat2$Fj <- cumsum(dat2$fj)
-  dat2$x  <- apply(dat2[,1:2],1,mean)
-  dat2$x2 <- dat2$x^2
-  dat2$xn <- dat2$x *dat2$nj
-  dat2$x2n<- dat2$x2*dat2$nj
-  dat3 <- dat2
-  dat3 <- rbind(dat3,colSums(dat3))
-  dat3[K,c(1:2,6:9)] <- NA
-  
-  names(dat3) <- c("$[\\text{x}_j,$","$\\text{x}_{j+1})$","$n_j$","$f_j$","$b_j$","$h_j$","$F_j$","$\\bar{\\text{x}}_j$","$\\bar{\\text{x}}_j^2$","$\\bar{\\text{x}}_jn_j$","$\\bar{\\text{x}}_j^2 n_j$")
-  dat3$`$f_{j\\%}$` <- dat3$`$f_j$`*100
-  
-  perc <- dat2$xinf[-1]
-  sper <- ""
-  for (i in 1:(K-2)) sper <- c(sper,paste("$x_{",dat2$Fj[i],"}=",perc[i],"$"))
-  # dgl <- sapply(dat2,is.integer)
-  # dg <- numeric(dim(dat2)[2]+1) + 2
-  # dg[3]<- 0
-  
-  Q.int <- approxfun(c(0,dat2$Fj),brk)
-  F.int <- approxfun(c(-1e10,brk,1e10),c(0,0,dat2$Fj,1))
-  H.int <- approxfun(c(min(-100,min(brk)-1),brk,max(100,max(brk)+1)),c(0,dat2$hj,0,0),method = "constant",yleft = 0,yright = 0)
-  h.int <- function(x1,x2,density=20,...){
-   brtemp <- c(x1,brk[brk>x1 & brk<x2],x2)
-   kk <- length(brtemp)
-   brs <- sort(c(min(brtemp),rep(brtemp,each=2),max(brtemp)))
-   
-   hrs <- c(0,0,rep(H.int(brtemp[-(kk)]),each=2),0,0)
-   
-   kk <- length(brs)
-   polygon(brs,hrs,density=density,...)
-   lines(brs,hrs,...)
-  }
-  
-  percentile <- function(p=0.5){
-   X<- dat2
-   K <- nrow(X)+1
-   xp_inf <- X$xinf[X$Fj>=p][1]
-   xp_sup <- X$xsup[X$Fj>=p][2]
-   kp    <- (1:(K-1))[X$Fj>=p][1]
-   Fp_sup <- X$Fj[X$Fj>=p][1]
-   bp    <- X$bj[X$Fj>=p][1]
-   fp    <- X$fj[X$Fj>=p][1]
-   hp    <- X$hj[X$Fj>=p][1]
-   if (kp == 1) Fp_inf <- 0 else Fp_inf <- X$Fj[kp-1]
-   xp_apr <- xp_inf + (p-Fp_inf)/fp*bp
-   datp <- round(dat2,4)
-   
-   
-   cat("\\begin{eqnarray*}
-  p &=& ",p,", \\text{essendo }F_{",kp,"}=",Fp_sup," >",p," \\Rightarrow j_{",p,"}=",kp,"\\\\
-  x_{",p,"} &=& x_{\\text{inf};",kp,"} + \\frac{ {",p,"} - F_{",kp-1,"}} {f_{",kp,"}} \\cdot b_{",kp,"} \\\\
-            &=& ",xp_inf," + \\frac {{",p,"} - ",Fp_inf,"} {",fp,"} \\cdot ",bp," \\\\
-            &=& ",xp_apr,"
-\\end{eqnarray*}
-")}
-  F_print <- function(x,verso="<",x2=0){
-   datp <- round(dat2,4)
-   if (verso == "<"){
-     j <- max(which(brk <= x))
-     if(j==1) {
-      cat("\\begin{eqnarray*}
-     \\%(X<",x,") &=&",x,"\\times h_1 \\\\
-              &=&",x,"\\times ",datp$hj[1],"\\\\
-              &=& ",F.int(x),"\\times(100) \\\\
-     \\#(X<",x,") &=&",F.int(x)*n,"
-         \\end{eqnarray*}")
-     } else {
-      cat("\\begin{eqnarray*}
-     \\%(X<",x,") &=& ",paste("f_{",1:(j-1),"}\\times 100",collapse="+"),"+(",x,"-",brk[j],")\\times h_{",j,"} \\\\
-              &=& ",paste("(",datp$fj[1:(j-1)],")\\times 100",collapse="+"),"+(",x-brk[j],")\\times ",datp$hj[j]," \\\\
-              &=& ",F.int(x),"\\times(100) \\\\
-     \\#(X<",x,") &=&",F.int(x)*n,"
-         \\end{eqnarray*}")
-     }
-   } else if (verso == ">") {
-     j <- min(which(brk >= x))
-     if(j==k+1) {
-      cat("\\begin{eqnarray*}
-     \\%(X>",x,") &=&(",brk[j],"-",x,")\\times h_1 \\\\
-              &=&",brk[j]-x,"\\times ",datp$hj[k],"\\\\
-              &=& ",1-F.int(x),"\\times(100)\\\\
-     \\#(X>",x,") &=&",(1-F.int(x))*n,"
-         \\end{eqnarray*}")
-     } else {
-      cat("\\begin{eqnarray*}
-     \\%(X>",x,") &=& (",brk[j],"-",x,")\\times h_{",j-1,"}+",paste("f_{",(j):(k),"}\\times 100",collapse="+"),"\\\\
-              &=& (",brk[j]-x,")\\times",datp$hj[j-1],"+",paste("(",datp$fj[(j):(k)],")\\times 100",collapse="+"), "\\\\
-              &=& ",1-F.int(x),"\\times(100)\\\\
-     \\#(X>",x,") &=&",(1-F.int(x))*n,"
-         \\end{eqnarray*}")
-     }
-   } else  {
-     j1 <- max(which(br1 <= x))
-     j2 <- min(which(br2 >= x2))
-     c00 <- ifelse(x == brk[j1],
-                   paste0("\\%(",x,"<X<",x2,") &=&  f_{",j1,"}\\times 100+"),
-                   paste0("\\%(",x,"<X<",x2,") &=& (",min(brk[j1+1],x2),"-",x,")\\times h_{",j1,"}+"))
-     c10 <- ifelse(x == brk[j1],
-                   paste0("&=&",datp$fj[j1],"\\times 100 +"),
-                   paste0("&=& (",min(brk[j1+1],x2)-x,")\\times ",datp$hj[j1],"+"))
-     c02 <- ifelse(x2 == brk[j2+1],
-                   paste0("f_{",j2,"}\\times 100"),
-                   paste0("(",x2,"-",brk[j2],")\\times h_{",j2,"}"))
-     c12 <- ifelse(x2 == brk[j2+1],
-                   paste0(datp$fj[j2],"\\times 100"),
-                   paste0("(",x2-brk[j2],")\\times ",datp$hj[j2])
-     )
-     if (j1==j2) {
-       c00 <- paste0("\\%(",x,"<X<",x2,") &=& (",min(brk[j1+1],x2),"-",x,")\\times h_{",j1,"}")
-       c01  <- ""
-       c02 <- ""
-       c10 <- paste0("&=& (",min(brk[j1+1],x2)-x,")\\times ",datp$hj[j1],"")
-       c11 <- ""
-       c12 <- ""
-     } else if (j1==(j2-1)){
-       c01  <- ""
-       c11 <- ""
-     } else {
-       c01  <- paste(paste("f_{",(j1+1):(j2-1),"}\\times 100",collapse="+"),"+")
-       c11  <- paste(paste("(",datp$fj[(j1+1):(j2-1)],")\\times 100",collapse="+"),"+")
-     }
-     cat("\\begin{eqnarray*}",
-     c00,c01,c02," \\\\ \n",
-     c10,c11,c12," \\\\ \n",
-              "&=& ",F.int(x2)-F.int(x),"\\times(100)\\\\
-     \\#(",x,"< X <",x2,") &=&",(F.int(x2)-F.int(x))*n,"
-         \\end{eqnarray*}")
-   }
-  }
-  
-  
-  histp <- function(axes=F,...){ 
-   if (!exists("nomex")) nomex <- ""
-   plot(range(brk),range(c(0,dat2$hj),na.rm = T),type="n",axes=F,xlab = nomex,ylab = "Denistà percentuale")
-   rect(xleft = br1,ybottom = 0,xright = br2,ytop = dat2$hj,...)
-   if (axes){
-     datp <- round(dat2,4)
-     axis(1,brk)
-     axis(2,c(0,dat2$hj),c(0,round(dat2$hj,2)),las=2)
-     segments(br1[1]-1,datp$hj,br1,datp$hj,lty=2,col="grey40") 
-     }
-  }
-  return(list(dat2=dat2,dat3=dat3,F_print=F_print,F.int=F.int,h.int=h.int,H.int=H.int,histp=histp,Q.int=Q.int,percentile=percentile,k=k))
 }
  
 ## Probabilità ####
 
+#' Convolution: Metodi Dettagliati
+#'
+#' Queste funzioni eseguono e stampano i passaggi di una convoluzione finita tra due insiemi di dati.
+#' \code{two_way} utilizza le frequenze senza semplificare, mentre \code{two_way2} utilizza le frequenze calcolate.
+#'
+#' @param S_1 Insieme dei valori per la prima variabile.
+#' @param S_2 Insieme dei valori per la seconda variabile.
+#' @param num1 Frequenze o probabilità per \code{S_1} in \code{two_way}.
+#' @param num2 Frequenze o probabilità per \code{S_2} in \code{two_way}.
+#' @param p1 Probabilità per \code{S_1} in \code{two_way2}.
+#' @param p2 Probabilità per \code{S_2} in \code{two_way2}.
+#' @param op Operatore da utilizzare nella convoluzione (default è \code{`+`}).
+#' @param EV Se \code{TRUE}, calcola valore atteso e varianza.
+#' @param vnam Nome variabile per l'output.
+#' @param size Dimensione del testo per l'output LaTeX.
+#'
+#' @return Entrambe le funzioni stampano i dettagli della convoluzione ma non restituiscono valori.
+#'
+#' @examples
+#' S_1 <- c(1, 2)
+#' S_2 <- c(3, 4)
+#' num1 <- c(1, 1)
+#' num2 <- c(1, 1)
+#' p1 <- c(0.5, 0.5)
+#' p2 <- c(0.5, 0.5)
+#' two_way(S_1, S_2, num1, num2)
+#' two_way2(S_1, S_2, p1, p2)
+#'
+#' @rdname convolution-methods
 two_way <- function(S_1,S_2,num1,num2,op=`+`,EV=T,vnam="X",size="\\normalsize "){
   html <- ifelse(exists("html"),html,T)
   den1 <- rep(sum(num1),times=length(S_1))
@@ -372,6 +244,7 @@ if (EV){
   return(list(S_3=S_3,num3=num3,den3=den3,urn=urn))
 }
 
+#' @rdname convolution-methods
 two_way2 <- function(S_1,S_2,p1,p2,op=`+`,EV=T,vnam="X",size="\\normalsize "){
   html <- ifelse(exists("html"),html,T)
   k1 <- length(S_1)
@@ -420,6 +293,41 @@ two_way2 <- function(S_1,S_2,p1,p2,op=`+`,EV=T,vnam="X",size="\\normalsize "){
   }
 }
 
+#' Distribuzioni di Probabilità: Binomiale, Poisson, Normale
+#'
+#' Queste funzioni calcolano e visualizzano i passaggi per le distribuzioni di probabilità binomiale (`bin_dis`), di Poisson (`pois_dis`), e normale (`norm_int`).
+#' 
+#' @param x1,x2 Valori di interesse per il calcolo della probabilità.
+#' @param n Numero di prove in `bin_dis`.
+#' @param pp Probabilità di successo in `bin_dis`.
+#' @param verso Specifica se calcolare la probabilità cumulativa a sinistra (\eqn{\leq}) o a destra (\eqn{\geq}).
+#' @param comp Se `TRUE`, calcola la probabilità complementare in `bin_dis`.
+#' @param sing Se `TRUE`, calcola la probabilità per un singolo valore.
+#' @param x0 Valore iniziale per il calcolo in `bin_dis`.
+#' @param vnam Nome della variabile casuale.
+#' @param size Dimensione del testo LaTeX.
+#' @param ll Parametro \eqn{\lambda} per la distribuzione di Poisson in `pois_dis`.
+#' @param mm Media della distribuzione in `norm_int`.
+#' @param ss Varianza della distribuzione in `norm_int`.
+#'
+#' @details
+#' \itemize{
+#' \item `bin_dis` visualizza i passaggi per il calcolo della probabilità in una distribuzione binomiale.
+#' \item `pois_dis` mostra i passaggi per una distribuzione di Poisson.
+#' \item `norm_int` calcola e visualizza i passaggi per probabilità in una distribuzione normale.
+#'}
+#' @examples
+#' # Distribuzione binomiale
+#' bin_dis(x1 = 2, n = 5, pp = 0.5)
+#'
+#' # Distribuzione di Poisson
+#' pois_dis(x1 = 3, ll = 2.5)
+#'
+#' # Distribuzione normale
+#' norm_int(x1 = -1.96, x2 = 1.96, mm = 0, ss = 1)
+#'
+#' @rdname distribuzioni-probabilita
+#' 
 bin_dis <- function(x1,n,pp,verso="\\leq",comp=FALSE,sing=FALSE,x0=0,vnam="X",size="\\normalsize"){
   ver_c <- ifelse(verso=="\\leq",">","<")
   pp <- round(pp,4)
@@ -456,6 +364,8 @@ bin_dis <- function(x1,n,pp,verso="\\leq",comp=FALSE,sing=FALSE,x0=0,vnam="X",si
    \\normalsize ")
 }
 
+#' @rdname distribuzioni-probabilita
+#' 
 pois_dis <- function(x1,ll,verso="\\leq",sing=FALSE,vnam="X"){
   ### Calcola la probabilità di una Binomiale P(X<=x) 
   ##  Input
@@ -496,6 +406,8 @@ pois_dis <- function(x1,ll,verso="\\leq",sing=FALSE,vnam="X"){
 ")
 }
 
+#' @rdname distribuzioni-probabilita
+#' 
 norm_int <-  function(x1,x2=NULL,verso="<",mm,ss,vnam="X",mu="\\mu",sigma="\\sigma"){
   if (!is.null(verso)){
    z1 <- round((x1 - mm)/sqrt(ss),2)
@@ -556,6 +468,40 @@ norm_semp <- function(x1,mm,ss){
   z1 <- round((x1-mm)/sqrt(ss),2)
   pnorm(z1)
 }
+
+#' Teorema del Limite Centrale (TLC): Applicazioni
+#'
+#' La funzione `tlc` applica il Teorema del Limite Centrale a diverse situazioni: somma di variabili casuali, calcolo della media, proporzione, e la somma o media di variabili casuali di Poisson.
+#'
+#' @param tipo Specifica il tipo di calcolo: "somma", "media", "prop" (proporzione), "pois_media" (media di Poisson), o "pois_somma" (somma di Poisson).
+#' @param x1,x2 Valori di interesse per il calcolo della probabilità. Se `x2` è fornito, il calcolo viene eseguito su un intervallo.
+#' @param verso Specifica la direzione della probabilità (\eqn{\leq}, \eqn{\geq}).
+#' @param mu Valore atteso \eqn{\mu} delle variabili casuali, o \eqn{\pi} per la proporzione, o \eqn{\lambda} per Poisson.
+#' @param s2 Varianza \eqn{\sigma^2} delle variabili casuali (non necessario per "prop").
+#' @param n Numero di variabili casuali indipendenti e identicamente distribuite (IID).
+#'
+#' @details
+#' La funzione fornisce un'interfaccia unificata per dimostrare come il TLC può essere applicato in diversi contesti statistici, generando l'approssimazione normale di diverse distribuzioni di probabilità basate su condizioni specificate.
+#'
+#' @examples
+#' # Somma di variabili casuali con varianza nota
+#' tlc(tipo = "somma", x1 = 5, verso = "<", mu = 2, s2 = 1, n = 30)
+#'
+#' # Calcolo della media di variabili casuali
+#' tlc(tipo = "media", x1 = 2.5, verso = "<", mu = 2, s2 = 1, n = 50)
+#'
+#' # Proporzione in una distribuzione binomiale approssimata
+#' tlc(tipo = "prop", x1 = 0.6, verso = ">", mu = 0.5, n = 100)
+#'
+#' # Media di variabili casuali di Poisson
+#' tlc(tipo = "pois_media", x1 = 3, verso = "<", mu = 2, n = 50)
+#'
+#' # Somma di variabili casuali di Poisson
+#' tlc(tipo = "pois_somma", x1 = 150, verso = ">", mu = 3, n = 50)
+#'
+#' @rdname tlc-applicazioni
+
+
 tlc <- function(tipo, x1, x2=NULL,verso, mu = F, s2 = NULL, n){
   if (tipo == "somma") {  
    if(!is.null(s2)){
@@ -648,14 +594,43 @@ tlc <- function(tipo, x1, x2=NULL,verso, mu = F, s2 = NULL, n){
 }
   
 
-draw_dist <- function(dist,z1,z2,...){   # aggiunge una distribuzione tratteggiata
+draw_dist <- function(dist,z1,z2,density = 20, border = NA,col=1,...){   # aggiunge una distribuzione tratteggiata
   xx <- c(z1,seq(z1,z2,length=100),z2)
   yy <- c(0 ,dist(seq(z1,z2,length=100)),0)
-  polygon(xx,yy,...,border = NA)
-  curve(dist,z1,z2,add=T)
+  polygon(xx,yy,...,border = border,density = density,col=col)
+  curve(dist,z1,z2,add=T,col=col)
 }
 
 ## Inferenza ####
+
+#' Calcolo dell'Intervallo di Confidenza
+#'
+#' Calcola l'intervallo di confidenza per la media o la proporzione di una popolazione, utilizzando la distribuzione Normale (z) o t di Student.
+#'
+#' @param xm Media campionaria o somma delle successi.
+#' @param sd Deviazione standard della popolazione, se nota.
+#' @param alpha Livello di significatività per l'intervallo di confidenza.
+#' @param n Dimensione del campione.
+#' @param dist_ Tipo di distribuzione ("z" per Normale, "t" per t di Student).
+#' @param mus Media della popolazione, se nota (utilizzato per calcoli specifici).
+#' @param ss Varianza campionaria, se disponibile.
+#'
+#' @details
+#' La funzione `idc` determina l'intervallo di confidenza utilizzando la formula appropriata in base alla distribuzione specificata.
+#' Per le proporzioni, la deviazione standard viene calcolata internamente se non fornita. 
+#' Per la distribuzione t, la deviazione standard campionaria viene corretta per la dimensione del campione.
+#'
+#' @examples
+#' # Intervallo di confidenza per la media con distribuzione Normale
+#' idc(xm = 5, sd = 2, alpha = 0.05, n = 30, dist_ = "z")
+#'
+#' # Intervallo di confidenza per la media con distribuzione t
+#' idc(xm = 5, ss = 4, alpha = 0.05, n = 30, dist_ = "t")
+#'
+#' # Intervallo di confidenza per la proporzione
+#' idc(xm = 120, alpha = 0.05, n = 200, dist_ = "z")
+#'
+#' @rdname intervallo-di-confidenza
 
 idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss=NULL){
   if (!is.null(mus)){
@@ -709,6 +684,38 @@ idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss=NULL){
   \\end{eqnarray*}\n")
 }
 
+#' Test Z e Test T: Proporzione e Media
+#'
+#' Fornisce metodi per eseguire test z su una proporzione (`ztest_pi`), test z su una media con varianza nota (`ztest_mu`), e test t su una media con varianza incognita (`ttest_mu`).
+#'
+#' @param sn Numero di successi o media campionaria.
+#' @param n Dimensione del campione.
+#' @param p0 Proporzione attesa nella popolazione per `ztest_pi`.
+#' @param h1 Ipotesi alternativa: può essere "\neq", ">", "<".
+#' @param alpha Livello di significatività.
+#' @param muh Media campionaria per `ztest_mu` e `ttest_mu`.
+#' @param s Deviazione standard della popolazione per `ztest_mu`, o deviazione standard campionaria per `ttest_mu`.
+#' @param mu0 Media attesa nella popolazione per `ztest_mu` e `ttest_mu`.
+#' @param um Unità di misura (opzionale) per migliorare la leggibilità dell'output.
+#' @param pvalue Se `TRUE`, mostra il p-value del test (solo per `ztest_mu`).
+#'
+#' @details
+#' \itemize{
+#' \item `ztest_pi` utilizza il test z per valutare se la proporzione osservata in un campione differisce significativamente dalla proporzione attesa, sotto l'ipotesi nulla.
+#' \item `ztest_mu` applica il test z per determinare se la media campionaria differisce significativamente dalla media attesa, assumendo che la varianza della popolazione sia nota.
+#' \item `ttest_mu` impiega il test t per testare differenze nella media campionaria rispetto a una media attesa, quando la varianza della popolazione non è nota.
+#'}
+#' @examples
+#' # Test Z per una proporzione
+#' ztest_pi(sn = 55, n = 100, p0 = 0.5, h1 = "\\neq", alpha = 0.05)
+#'
+#' # Test Z per una media con varianza nota
+#' ztest_mu(muh = 5, s = 1.5, n = 30, mu0 = 5, h1 = "\\neq", alpha = 0.05)
+#'
+#' # Test T per una media con varianza incognita
+#' ttest_mu(muh = 5, sh = 1.5, n = 30, mu0 = 5, h1 = "\\neq", alpha = 0.05)
+#'
+#' @rdname test-z-t
 ztest_pi <- function(sn,n,p0,h1 = "\\neq", alpha = 0.05){
   ph <- sn/n
   se <- sqrt(p0*(1-p0)/n)
@@ -781,7 +788,7 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq", alpha = 0.05){
   cat("\n\n Il \\(p_{\\text{value}}\\) è $$", pval,"$$")
   
 }
-
+#' @rdname test-z-t
 ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq", alpha = 0.05,um="",pvalue=T){
   se <- s/sqrt(n)
   tobs <- round((muh-mu0)/se,4)
@@ -851,7 +858,7 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq", alpha = 0.05,um="",pvalue=T){
    cat("\n\n Il \\(p_{\\text{value}}\\) è $$",pval,"$$")}
   
 }
-
+#' @rdname test-z-t
 ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq", alpha = 0.05,um=""){
   s <- sqrt(n/(n-1))*sh
   se <- s/sqrt(n)
@@ -929,6 +936,36 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq", alpha = 0.05,um=""){
    $$", pval,"$$")
   }
 
+#' Test su Due Campioni: Proporzioni e Medie
+#'
+#' Fornisce metodi per eseguire test statistici su due campioni, valutando differenze nelle proporzioni o nelle medie.
+#'
+#' @param mu1, mu2 Medie campionarie o numeri di successi nei campioni per test su proporzioni.
+#' @param s1h, s2h Deviazioni standard campionarie per i due campioni per test su medie.
+#' @param n1, n2 Dimensioni dei campioni.
+#' @param h1 Ipotesi alternativa: può essere "\\neq", ">", "<".
+#' @param alpha Livello di significatività.
+#' @param a, b Etichette per i gruppi, utili per l'output.
+#' @param um Unità di misura (opzionale), utile per migliorare la leggibilità dell'output.
+#' @param et Specifica se il test su medie assume varianze eterogenee (`TRUE`) o omogenee (`FALSE`).
+#'
+#' @details
+#' \itemize{
+#' \item \code{ztest_2c_pi} applica un test z su due proporzioni.
+#' \item \code{ttest_2c_et} e \code{ttest_2c_om} eseguono test t per due medie, rispettivamente con varianze eterogenee e omogenee.
+#' \item \code{test_2c} è una funzione interna utilizzata per implementare la logica comune ai test.
+#'}
+#' @examples
+#' # Test Z per due proporzioni
+#' ztest_2c_pi(s1 = 30, s2 = 45, n1 = 100, n2 = 150, h1 = "\\neq")
+#'
+#' # Test T per due medie con varianze eterogenee
+#' ttest_2c_et(mu1 = 5.1, mu2 = 5.8, s1h = 1.5, s2h = 1.7, n1 = 30, n2 = 30, h1 = "\\neq")
+#'
+#' # Test T per due medie con varianze omogenee
+#' ttest_2c_om(mu1 = 5.1, mu2 = 5.8, s1h = 1.5, s2h = 1.7, n1 = 30, n2 = 30, h1 = "\\neq")
+#'
+#' @rdname test-su-due-campioni
 test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq", alpha = 0.05,et=F,a="1",b="2",um=""){
   #### Test su due proporzioni ----------------
   if (!s1h) # s1h = F, non ci sono le sd, è un test su proporzioni
@@ -1202,180 +1239,57 @@ $$
    }
      }
 }
-
+#' @rdname test-su-due-campioni
 ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq", alpha = 0.05,a="1",b="2",um="",et=T){
   test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=T,a=a,b=b,um=um)
 }
-
+#' @rdname test-su-due-campioni
 ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq", alpha = 0.05,a="1",b="2",um="",et=F){
   test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=F,a=a,b=b,um=um)
 }
-
+#' @rdname test-su-due-campioni
 ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq", alpha = 0.05,a="1",b="2"){
   test_2c(mu1 = s1,mu2 = s2,s1h = F,s2h = F,n1 = n1,n2 = n2,h1 = h1,alpha = alpha,a = a,b = b)
 }
 
-chi_print <- function(dat,nome_x,nome_y,print=T){
-  dat_print <- cbind(dat,rowSums(dat))
-  dat_print <- rbind(dat_print,colSums(dat_print))
-  dimnames(dat)[[1]] <- c(nome_y)
-  dimnames(dat)[[2]] <- c(nome_x)
-  dimnames(dat_print)[[1]] <- c(nome_y,"Tot")
-  dimnames(dat_print)[[2]] <- c(nome_x,"Tot")
-  if (print) {
-   kable(dat,digits = 4,row.names = T) %>%
-     kable_styling(full_width = F) %>%
-     column_spec(column = 1,bold = T)
-   }
-  return(list(dat,dat_print))
-}
-
-chi_print_conf <- function(Freq_c,Freq_0,X,Y){
-  S <- c(paste("$",Freq_c,"$",sep = ""), paste("$",sum(Freq_c),"$",sep = ""))
-  N <- c(paste("$",Freq_0,"\\%$",sep=""),"$100\\%$")
-  D <- data.frame(rbind(S, N), row.names = Y)
-  names(D) <- c(X,"Totale")
-  tabl(D)
-}
-
-chi_test <- function(dat,alpha){
-  
-  n <- dim(dat)[1]
-  m <- dim(dat)[2]
-  gdl <- (n-1)*(m-1)
-  chi_th <- round(qchisq(1-alpha,gdl),4)
-  thr <- t(outer(colSums(dat),rowSums(dat))/sum(dat))
-  # colnames(thr) <- nome_x
-  # row.names(thr) <- nome_y
-  chi_ob <- sum((thr-dat)^2/thr)
-  segno <- ifelse(chi_ob>chi_th,">","<")
-  decis <- ifelse(chi_ob>chi_th,"rifiuto","non rifiuto")
-  
-  cat("**Test $\\chi^2$ per indipendenza**\n\n")  
-  cat("$\\fbox{A}$ FORMULAZIONE DELLE IPOTESI
-$$
-\\Big\\{H_0:\\pi_{ij}=\\pi_{i\\bullet}\\pi_{\\bullet j}
-$$
-$\\fbox{B}$ SCELTA E CALCOLO STATISTICA-TEST, $\\chi^2$\n\n
-Si usa il test $\\chi^2$, si crea la tabella delle frequenze teoriche
-$$
-n_{ij}^*=\\frac{n_{i\\bullet}n_{\\bullet j}}{n}
-$$
-")
-  
-  tabl(thr,digits = 3,row.names = T)  %>%
-   column_spec(column = 1,bold = T)
-  
-  cat("
-La tabella delle distanze
-$$
-\\frac{(n_{ij}-n_{ij}^*)^2}{n_{ij}^*}
-$$"
-  )
-  
-  cat(tabl((thr-dat)^2/thr,digits = 3,row.names = T) %>%
-   column_spec(column = 1,bold = T))
-  
-  
-  cat("$\\fbox{C}$ DECISIONE
-$$
-\\chi^2_{obs}=",chi_ob,"
-$$
-\n
-i $gdl$
-\n
-$$
-(",n,"-1)\\times(",m,"-1)=",gdl,"
-$$
-$\\alpha=",alpha,"$ e quindi $\\chi_{1,",alpha,"}^2=",chi_th,"$
-\n\n
-Essendo 
-$$
-\\chi^2_{obs}=",chi_ob," ",segno,"\\chi_{1,",alpha,"}^2=",chi_th,"
-$$
-\n
-allora ",decis," $H_0$ al lds dell'",alpha*100," percento. 
-\n\n
-**Graficamente**",sep="")
-  
-  
-  R <- c(chi_th,100); A <- c(0,chi_th)
-  b <- qchisq(.9999,gdl)
-  curve(dchisq(x,gdl),0,b,axes=F,xlab="T",ylab="")
-  lines(c(0,chi_th),c(0,0),col=4,lwd=2)
-  lines(c(chi_th,b),c(0,0),col=2,lwd=2)
-  points(chi_ob,0,pch=4,cex=2)
-  text(chi_ob,.05,expression(chi[obs]^2))
-  axis(1,c(0,chi_th,round(b,0)))
-  
-  
-  cat("
-\n\n il $p_{\\text{value}}$ è
-\\[
-P(\\chi^2_{",gdl,"}> \\chi^2_{\\text{obs}})=",format((1-pchisq(chi_ob,gdl)),digits = 4,scientific = 8),"
-\\]
-")
-}
-
-chi_conf <- function(Freq_c,Freq_0,X,Y,alpha=0.05){
-  n <- sum(Freq_c)
-  S <- c(Freq_c,sum(Freq_c))
-  N <- c(Freq_0/100,1)
-  
-  ns <- c(Freq_0/100*n,n)
-  k  <- length(Freq_0)
-  ch <- round((Freq_c-ns[1:k])^2/ns[1:k],4)
-  ch <- c(ch,sum(ch))
-  D1 <- data.frame(rbind(S,N,ns,ch),row.names = c(Y,"$n_j^*$","$\\chi^2$"))
-  names(D1) <- c(X,"Tot")
-  
-  gdl <- (k-1)
-  chi_th <- round(qchisq(1-alpha,gdl),gdl)
-  # colnames(thr) <- nome_x
-  # row.names(thr) <- nome_y
-  chi_ob <- ch[k+1]
-  segno <- ifelse(chi_ob>chi_th,"maggiore","minore")
-  decis <- ifelse(chi_ob>chi_th,"rifiuto","non rifiuto")
-  
-  cat("**Test $\\chi^2$ per conformità**\n\n")  
-  
-  cat("$\\fbox{A}$ Formulazione delle ipotesi
-\\[
-\\{H_0:\\pi_\\text{",Y[1],"}= \\pi_\\text{",Y[2],"},~~\\forall j
-\\]
-$\\fbox{B}$ Scelta e calcolo della statistica test.
-
-Si tratta di un test  chi quadro di conformità.
-\\[
-n^*_j = n\\cdot \\pi^*_{\\text{",Y[2],"},j} 
-\\]")
-  
-  cat(tabl(D1))
-  
-  chi <- qchisq(c(.95,.99),gdl)
-  
-  cat("$\\fbox{C}$ Decisione \n\n
-Il chi quadro osservato è ",ch[k+1]," è ",segno," di $\\chi^2_{",k-1,";",alpha,"}=",chi_th,"$, e quindi **",decis,"** $H_0$, al livello di significatività del ",alpha*100,"$\\%$. 
-\n\n
-**Graficamente**",sep="")
-
-  R <- c(chi_th,100); A <- c(0,chi_th)
-  b <- qchisq(.9999,gdl)
-  curve(dchisq(x,gdl),0,b,axes=F,xlab="T",ylab="")
-  lines(c(0,chi_th),c(0,0),col=4,lwd=2)
-  lines(c(chi_th,b),c(0,0),col=2,lwd=2)
-  points(chi_ob,0,pch=4,cex=2)
-  text(chi_ob,.05,expression(chi[obs]^2))
-  axis(1,c(0,chi_th,round(b,0)))
- cat("\n\n il $p_{\\text{value}}$ è
-\\[
-P(\\chi^2_{",gdl,"}> \\chi^2_{\\text{obs}})=",format((1-pchisq(chi_ob,gdl)),digits = 4,scientific = 8),"
-\\]
-") 
-}
-
 ## Regressione ####
 
+#' Regressione Lineare
+#'
+#' Questa funzione esegue una regressione lineare sui dati forniti, calcolando
+#' varie statistiche e misure di adattamento. Può operare in diversi modi a seconda
+#' degli argomenti forniti: direttamente su vettori `x` e `y`, o utilizzando statistiche
+#' riassuntive.
+#'
+#' @param x Un vettore numerico che rappresenta la variabile indipendente. Non richiesto
+#' se `stat1` o `stat2` sono forniti.
+#' @param y Un vettore numerico che rappresenta la variabile dipendente. Non richiesto
+#' se `stat1` o `stat2` sono forniti.
+#' @param stat1 Un elenco contenente statistiche riassuntive dei dati. Può includere
+#' elementi come `n`, `sumx`, `sumx2`, `sumy`, `sumy2`, e `sumxy`.
+#' @param stat2 Un'altra forma di statistiche riassuntive, simile a `stat1` ma potrebbe
+#' includere medie e varianze direttamente.
+#' @param semp Un booleano che indica se utilizzare una versione semplificata dei calcoli.
+#' Utile per grandi set di dati dove la precisione al di sotto di una certa soglia
+#' decimale non è critica.
+#' @param ax Numero di cifre decimali per l'arrotondamento nei calcoli e nell'output.
+#' Valore predefinito a 2.
+#'
+#' @return Un elenco contenente vari componenti legati alla regressione effettuata,
+#' inclusi coefficienti, misure di adattamento, e statistiche utili per valutazioni
+#' successive.
+#' @return \code{R2} calcola e commenta R²
+#' 
+#' @examples
+#' require(kableExtra)
+#' x <- 1:10
+#' y <- 2 + 3 * x + rnorm(10)
+#' risultato <- regr(x, y)
+#' print(risultato$mx)
+#' print(risultato$my)
+#' print(risultato$R2())
+#' 
+#' @export
 
 regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
 {
