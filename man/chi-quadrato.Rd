@@ -24,7 +24,11 @@ chi_conf(Freq_c, Freq_0, X, Y, alpha = 0.05)
 
 \item{Freq_c, }{Frequenze osservate e attese per `chi_print_conf` e `chi_conf`.}
 
+\item{Freq_0, }{attese}
+
 \item{X, }{Nomi delle variabili o delle categorie per `chi_print_conf` e `chi_conf`.}
+
+\item{Y, }{nomi Y}
 
 \item{alpha}{Livello di significatività per `chi_test` e `chi_conf`.}
 }

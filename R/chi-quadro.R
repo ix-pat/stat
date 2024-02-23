@@ -7,9 +7,9 @@
 #' @param nome_x, nome_y Nomi delle variabili o delle categorie per `chi_print`.
 #' @param print Se `TRUE`, stampa la tabella di contingenza per `chi_print`.
 #' @param Freq_c,  Frequenze osservate e attese per `chi_print_conf` e `chi_conf`.
-#' @param Freq_0
+#' @param Freq_0,  attese
 #' @param X, Nomi delle variabili o delle categorie per `chi_print_conf` e `chi_conf`.
-#' @param Y
+#' @param Y, nomi Y
 #' @param alpha Livello di significatività per `chi_test` e `chi_conf`.
 #'
 #' @details
