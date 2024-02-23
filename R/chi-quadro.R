@@ -9,13 +9,6 @@
 #' @param Freq_c, Freq_0 Frequenze osservate e attese per `chi_print_conf` e `chi_conf`.
 #' @param X, Y Nomi delle variabili o delle categorie per `chi_print_conf` e `chi_conf`.
 #' @param alpha Livello di significatività per `chi_test` e `chi_conf`.
-#' @param mu1, mu2 Medie campionarie per i test su due campioni.
-#' @param s1h, s2h Deviazioni standard campionarie per i test su due campioni.
-#' @param n1, n2 Dimensioni dei campioni per i test su due campioni.
-#' @param h1 Ipotesi alternativa: può essere "\\neq", ">", "<".
-#' @param et Specifica se il test assume varianze eterogenee (`TRUE`) o omogenee (`FALSE`).
-#' @param a, b Etichette per i gruppi, utili per l'output di `test_2c`.
-#' @param um Unità di misura (opzionale), utile per migliorare la leggibilità dell'output di `test_2c`.
 #'
 #' @details
 #' Le funzioni fornite includono:
