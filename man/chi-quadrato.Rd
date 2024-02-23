@@ -22,25 +22,11 @@ chi_conf(Freq_c, Freq_0, X, Y, alpha = 0.05)
 
 \item{print}{Se `TRUE`, stampa la tabella di contingenza per `chi_print`.}
 
-\item{Freq_c, }{Freq_0 Frequenze osservate e attese per `chi_print_conf` e `chi_conf`.}
+\item{Freq_c, }{Frequenze osservate e attese per `chi_print_conf` e `chi_conf`.}
 
-\item{X, }{Y Nomi delle variabili o delle categorie per `chi_print_conf` e `chi_conf`.}
+\item{X, }{Nomi delle variabili o delle categorie per `chi_print_conf` e `chi_conf`.}
 
 \item{alpha}{Livello di significatività per `chi_test` e `chi_conf`.}
-
-\item{mu1, }{mu2 Medie campionarie per i test su due campioni.}
-
-\item{s1h, }{s2h Deviazioni standard campionarie per i test su due campioni.}
-
-\item{n1, }{n2 Dimensioni dei campioni per i test su due campioni.}
-
-\item{h1}{Ipotesi alternativa: può essere "\\neq", ">", "<".}
-
-\item{et}{Specifica se il test assume varianze eterogenee (`TRUE`) o omogenee (`FALSE`).}
-
-\item{a, }{b Etichette per i gruppi, utili per l'output di `test_2c`.}
-
-\item{um}{Unità di misura (opzionale), utile per migliorare la leggibilità dell'output di `test_2c`.}
 }
 \description{
 Fornisce metodi per visualizzare tabelle di contingenza e per eseguire il test del chi quadrato per indipendenza e conformità.
