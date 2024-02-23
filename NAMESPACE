@@ -12,4 +12,4 @@ import(knitr,
     plotrix,
     colorspace,
     haven,
-    png)
+    png,rgl,mvtnorm)

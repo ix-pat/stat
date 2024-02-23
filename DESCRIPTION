@@ -17,5 +17,10 @@ Imports:
     plotrix,
     colorspace,
     haven,
-    png
+    png,
+    rgl,
+    mvtnorm
+Suggests:
+    rmarkdown
+VignetteBuilder: knitr, rmarkdown
 RoxygenNote: 7.3.1
