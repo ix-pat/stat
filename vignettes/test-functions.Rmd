@@ -42,6 +42,19 @@ header-includes:
 - \usepackage{tikz}
 - \definecolor{mygray}{gray}{0.6}
 ---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pat.book)
+```
+
 # Funzioni usate nel libro
 
 Presento le funzioni che sono state create da me per risolvere vari problemi
@@ -93,6 +106,16 @@ par(lwd=.5,col.main=iblue,mfrow=c(1,1),cex=cex)
 
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
 virg <- "`"
+```
+
+
+## Setup
+
+```{r}
+library(knitr)
+library(kableExtra)
+library(colorspace)
+library(pat.book)
 ```
 
 ## Istogramma 
