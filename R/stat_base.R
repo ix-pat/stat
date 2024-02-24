@@ -24,7 +24,7 @@
 #' samp <- genera_dati(brk, hhh=hhh, n=100)
 #' risultati <- stat_base(samp, brk)
 #' risultati$F_print(x=15, verso="<")
-#' risultati$histp(T)
+#' risultati$histp(TRUE)
 #' risultati$h.int(5,27,density=20)
 #' risultati$percentile(.75)
 #' @export

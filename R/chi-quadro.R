@@ -24,7 +24,7 @@
 #' Queste funzioni sono progettate per facilitare l'analisi statistica di dati categorici, permettendo agli utenti di eseguire test di ipotesi e visualizzare i risultati in modo intuitivo.
 #' @examples
 #' 
-#' dat <- matrix(c(15,5,12,10,35,15),2,byrow = T)
+#' dat <- matrix(c(15,5,12,10,35,15),2,byrow = TRUE)
 #' 
 #' nome_x<- c("Rai","Mediaset","La7")
 #' nome_y <- c("Laureato","Non Laureato")
@@ -36,15 +36,14 @@
 #' 
 #' cat(chi_test(dat = dat,alpha = 0.01))
 #' 
-#' fx <- sample
-#' Freqc <- sample(1:25,6,T)
+#' Freqc <- sample(1:25,6,TRUE)
 #' Freq0 <- (numeric(6)+1/6)*100
 #' chi_print_conf(Freqc,Freq0,X = letters[1:6],Y = letters[1:2])
 #' chi_conf(Freqc,Freq0,X = letters[1:6],Y = letters[1:2])
 
 #' @rdname chi-quadrato
 
-chi_print <- function(dat,nome_x,nome_y,print=T){
+chi_print <- function(dat,nome_x,nome_y,print=TRUE){
   dat_print <- cbind(dat,rowSums(dat))
   dat_print <- rbind(dat_print,colSums(dat_print))
   dimnames(dat)[[1]] <- c(nome_y)

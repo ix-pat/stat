@@ -7,7 +7,7 @@
 \alias{chi_conf}
 \title{Test e Visualizzazione del Chi Quadrato}
 \usage{
-chi_print(dat, nome_x, nome_y, print = T)
+chi_print(dat, nome_x, nome_y, print = TRUE)
 
 chi_print_conf(Freq_c, Freq_0, X, Y)
 
@@ -48,7 +48,7 @@ Queste funzioni sono progettate per facilitare l'analisi statistica di dati cate
 }
 \examples{
 
-dat <- matrix(c(15,5,12,10,35,15),2,byrow = T)
+dat <- matrix(c(15,5,12,10,35,15),2,byrow = TRUE)
 
 nome_x<- c("Rai","Mediaset","La7")
 nome_y <- c("Laureato","Non Laureato")
@@ -60,8 +60,7 @@ tabl(dat_print)
 
 cat(chi_test(dat = dat,alpha = 0.01))
 
-fx <- sample
-Freqc <- sample(1:25,6,T)
+Freqc <- sample(1:25,6,TRUE)
 Freq0 <- (numeric(6)+1/6)*100
 chi_print_conf(Freqc,Freq0,X = letters[1:6],Y = letters[1:2])
 chi_conf(Freqc,Freq0,X = letters[1:6],Y = letters[1:2])
