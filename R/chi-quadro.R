@@ -127,7 +127,7 @@ $$
 \n
 allora ",decis," $H_0$ al lds dell'",alpha*100," percento. 
 \n\n
-**Graficamente**",sep="")
+**Graficamente**\n\n",sep="")
   
   
   R <- c(chi_th,100); A <- c(0,chi_th)
@@ -191,7 +191,7 @@ n^*_j = n\\cdot \\pi^*_{\\text{",Y[2],"},j}
   cat("$\\fbox{C}$ Decisione \n\n
 Il chi quadro osservato è ",ch[k+1]," è ",segno," di $\\chi^2_{",k-1,";",alpha,"}=",chi_th,"$, e quindi **",decis,"** $H_0$, al livello di significatività del ",alpha*100,"$\\%$. 
 \n\n
-**Graficamente**",sep="")
+**Graficamente**\n\n",sep="")
   
   R <- c(chi_th,100); A <- c(0,chi_th)
   b <- qchisq(.9999,gdl)
