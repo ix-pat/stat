@@ -1,66 +1,13 @@
----
-title: "Funzioni del libro"
-date: "01/06/2023"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Funzioni del libro}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
-editor_options:
-  chunk_output_type: console
-header-includes: 
-- \usepackage{amsmath}
-- \usepackage{amssymb}
-- \usepackage{xfrac}
-- \usepackage{stackrel}
-- \usepackage{cancel}
-- \usepackage{xcolor}
-- \usepackage{amsmath,amsthm}
-- \usepackage{xfrac}
-- \usepackage{stackrel}
-- \usepackage{cancel}
-- \usepackage{xcolor}
-- \usepackage{longtable}
-- \usepackage{array}
-- \usepackage{multirow}
-- \usepackage{colortbl}
-- \usepackage{tabu}
-- \usepackage{threeparttable}
-- \usepackage{threeparttablex}
-- \usepackage[normalem]{ulem}
-- \usepackage{makecell}
-- \usepackage{xcolor}
-- \usepackage[italian]{babel}
-- \usepackage{mathrsfs}  
-- \usepackage{latexsym}
-- \usepackage{awesomebox}
-- \usepackage{titling}
-- \usepackage{color}
-- \usepackage{framed}
-- \usepackage[skins]{tcolorbox}
-- \usepackage{lmodern}
-- \usepackage{tikz}
-- \definecolor{mygray}{gray}{0.6}
----
-
-
-```{r, include = FALSE}
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
 
-```{r setup}
+## ----setup--------------------------------------------------------------------
 library(pat.book)
-```
 
-# Funzioni usate nel libro
-
-Presento le funzioni che sono state create da me per risolvere vari problemi
-di automazione, dalla creazione dei data set alla soluzione di alcuni problemi.
-
-```{r, include=FALSE}
+## ----include=FALSE------------------------------------------------------------
 library(knitr)
 library(kableExtra)
 library(colorspace)
@@ -82,21 +29,14 @@ ared  <- rgb(0.671,0.161,0.18)
 par(lwd=.5,col.main=iblue,mfrow=c(1,1))
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
 virg <- "`"
-```
 
-
-## Setup
-
-```{r}
+## -----------------------------------------------------------------------------
 library(knitr)
 library(kableExtra)
 library(colorspace)
 library(pat.book)
-```
 
-## Istogramma 
-
-```{r,results='asis'}
+## ----results='asis'-----------------------------------------------------------
 set.seed(2)                      # per ottenere sempre la stessa simulazione
 n <- 60                          # ampiezza campionaria
 
@@ -117,8 +57,8 @@ Q.int((0:4)/4)        # Inverse della Ripartizione
 histp(axes=T)         # Istogramma
 h.int(2,8,col=ared,   # Aree selezionate
       density = 25)   
-```
-```{r,results='asis'}
+
+## ----results='asis'-----------------------------------------------------------
 percentile(p = 0.45)       # Calcolo percentile
 F_print(2,"<")             # calcolo della prop inferiore a 2
 F_print(2,">")             # calcolo della prop superiore a 2
@@ -134,13 +74,8 @@ stat_(1:4)                      # media e varianza insieme (new)
 stat_(1:4,p = c(2,4,5,1))       # vettore dei pesi p
 stat_(rep(1:4,times=c(2,4,5,1)),semp = T) # in frazione
 
-```
 
-
-## Probabilità
-
-### Tavole della somma
-```{r, results='asis'}
+## ----results='asis'-----------------------------------------------------------
 # Somma di due dadi
 c1 <- 6
 c2 <- 6
@@ -157,26 +92,20 @@ names(res)
 two_way2(1:2,1:2,p1 = c(.5,.5),p2 = c(.3,.7))
 
 
-```
 
-### Binomiale
-```{r, results='asis'}
+## ----results='asis'-----------------------------------------------------------
 bin_dis(x1 = 2,n = 5,pp = 0.34)
 bin_dis(x1 = 4,n = 5,pp = 0.34,verso = "\\geq")
 bin_dis(x1 = 2,n = 5,pp = 0.34,comp = T)
 bin_dis(x1 = 2,n = 5,pp = 0.34,sing = T)
-```
 
-### Poisson
-```{r, results='asis'}
+## ----results='asis'-----------------------------------------------------------
 pois_dis(x1 = 2,ll = 1.5)
 pois_dis(x1 = 2,ll = 1.5,verso = "\\geq")
 pois_dis(x1 = 2,ll = 1.5,sing = T)
 
-```
 
-### Normale
-```{r, results='asis'}
+## ----results='asis'-----------------------------------------------------------
 norm_int(x1 = 1,verso = "<",mm = 3,ss = 2.2,vnam = "\\theta",
              mu = "\\mu_\\theta",sigma = "\\sigma_\\theta")
 norm_int(x1 = 4,verso = "<",mm = 3,ss = 2.2,vnam = "X",
@@ -188,31 +117,21 @@ norm_int(x1 = 1,verso = ">",mm = -3,ss = 2.2)
 norm_int(x1 = 1,x2=2,mm = 3,ss = 2.2,verso = NULL)
 norm_int(x1 = 1,x2=2,mm = -3,ss = 2.2,verso = NULL)
 norm_int(x1 = -1,x2=2,mm = -3,ss = 2.2,verso = NULL)
-```
 
-### TLC
-
-```{r,results='asis'}
+## ----results='asis'-----------------------------------------------------------
 tlc(tipo = "somma",x1 = 90,x2 = 110,verso = NULL,mu = 1,s2 = 1,n = 100)
 tlc(tipo = "media",x1 = 9,x2 = 11,verso = NULL,mu = 10,s2 = 1,n = 100)
 tlc(tipo = "prop",x1 = .1,verso = ">",mu = .2,n = 50)
 tlc(tipo = "somma",x1 = 10,verso = ">",mu = .2,n = 50)
-```
 
-## Inferenza
-
-### Intervalli di Confidenza
-```{r, results='asis'}
+## ----results='asis'-----------------------------------------------------------
 idc(xm = 10,sd = 1.1,alpha = .05,n = 15,dist_ = "z")
 idc(xm = 10,sd = 1.1,alpha = .05,n = 15,dist_ = "t")
 idc(xm = 10,alpha = .05,n = 15,dist_ = "z")
 idc(xm = 7.4,sd = sqrt(7.4),alpha = .05,n = 75,dist_ = "z",mus = "\\lambda",
         ss = "\\sqrt\\lambda")
-```
 
-
-### Test
-```{r, results='asis'}
+## ----results='asis'-----------------------------------------------------------
 ztest_mu(muh = 0,s = 1,10,mu0 = .1,h1 = "\\neq",alpha = 0.05)
 ttest_mu(muh = 0,sh = 1,n = 10,mu0 = .1,h1 = "<",alpha = 0.01)
 ztest_pi(sn = 60,n = 100,p0 = .5,h1 = ">",alpha = 0.05)
@@ -246,11 +165,8 @@ frqc <- sample(1:25,6,T)
 frq0 <- rep(1/6*100,6)
 chi_print_conf(frqc,frq0,X = 1:6,Y = c("dado osservato","dado perfetto"))
 chi_conf(frqc,frq0,X = 1:6,Y = c("dado osservato","dado perfetto"))
-```
 
-
-### Regressione
-```{r,results='asis'}
+## ----results='asis'-----------------------------------------------------------
 set.seed(12)                 # ripete le stesse generazioni casuali
 n <- 100                     # fisso n
 x <- rnorm(n,10)             # genero x
@@ -264,5 +180,4 @@ se_beta0()
 se_beta1()
 ttest_beta(cof = 0,bj0 = 0,h1 = "<",alpha = 0.01)
 ttest_beta(cof = 1,bj0 = 0,h1 = "\\neq",alpha = 0.01)
-```
 
