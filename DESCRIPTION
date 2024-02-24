@@ -13,6 +13,6 @@ Imports:
     kableExtra,
     colorspace
 Suggests:
-    knitr, rmarkdown
+    rmarkdown
 VignetteBuilder: knitr, rmarkdown
 RoxygenNote: 7.3.1
