@@ -17,6 +17,7 @@
 #' dati_generati <- genera_dati(brk, hhh, n)
 #' print(dati_generati)
 #' @rdname generatore-dati
+#' 
 genera_dati <- function(brk,hhh=NULL,n,nnn=NULL,rand = T){     # genera i dati fornendo brk, hhh, e n
   if (is.null(nnn))  nnn  <- round((hhh*diff(brk))/sum(hhh*diff(brk))*n) # riporto ad n
   if (!is.null(nnn)) nnn  <- round(nnn/sum(nnn)*n) # riporto ad n
