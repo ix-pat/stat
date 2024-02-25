@@ -1450,7 +1450,7 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
    cat("r&=&\\frac{\\text{cov}(X,Y)}{\\sigma_X\\sigma_Y}=\\frac{",co,"}{",sx,"\\times",sy,"}=",r,"\\\\")
    cat("r^2&=&",r^2,sgn,"0.75\n")
    cat("\\end{eqnarray*}\n")  
-   ifelse(r^2>.75,"Il modello si adatta bene ai dati.","Il modello **non** si adatta bene ai dati.")
+   cat(ifelse(r^2>.75,"Il modello si adatta bene ai dati.","Il modello **non** si adatta bene ai dati."))
   }
   
   TSS <- function(){
@@ -1470,8 +1470,8 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
   }
   
   
-  se_beta1 <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL){
-   cat(
+  se_beta1 <- function(sig_eps = TRUE){
+   if (sig_eps){cat(
      "\\begin{eqnarray*}
 \\hat{\\sigma_\\varepsilon}^2&=&(1-r^2)\\hat\\sigma_Y^2\\\\
 &=& (1-",r^2,")\\times",vy,"\\\\
@@ -1481,9 +1481,9 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
  &=&  \\frac{",n,"} {",n,"-2} \\times ",sh2," = ",se2," 
 \\end{eqnarray*}
 
-E quindi
+E quindi")}
 
-\\begin{eqnarray*}
+cat("\\begin{eqnarray*}
 V(\\hat\\beta_{1}) &=& \\frac{\\sigma_{\\varepsilon}^{2}} {n \\hat{\\sigma}^{2}_{X}} \\\\
 \\widehat{V(\\hat\\beta_{1})} &=& \\frac{S_{\\varepsilon}^{2}} {n \\hat{\\sigma}^{2}_{X}} \\\\
  &=& \\frac{",se2,"} {",n,"\\times ",vx,"} = ",vb1,"\\\\
@@ -1493,9 +1493,9 @@ V(\\hat\\beta_{1}) &=& \\frac{\\sigma_{\\varepsilon}^{2}} {n \\hat{\\sigma}^{2}_
 ")
   }
   
-  se_beta0 <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL)  {
-   cat("
-\\begin{eqnarray*}
+  se_beta0 <- function(sig_eps = TRUE)  {
+    if (sig_eps){cat(
+      "\\begin{eqnarray*}
 \\hat{\\sigma_\\varepsilon}^2&=&(1-r^2)\\hat\\sigma_Y^2\\\\
 &=& (1-",r^2,")\\times",vy,"\\\\
    &=& ",sh2,"\\\\
@@ -1504,9 +1504,9 @@ V(\\hat\\beta_{1}) &=& \\frac{\\sigma_{\\varepsilon}^{2}} {n \\hat{\\sigma}^{2}_
  &=&  \\frac{",n,"} {",n,"-2} \\times ",sh2," = ",se2," 
 \\end{eqnarray*}
 
-E quindi
-
-\\begin{eqnarray*}
+E quindi")}
+    
+cat("\\begin{eqnarray*}
 V(\\hat\\beta_{0}) &=& \\sigma_{\\varepsilon}^{2} \\left( \\frac{1} {n}  +  \\frac{\\bar{x}^{2}} {n \\hat{\\sigma}^{2}_{X}} \\right)\\\\
 \\widehat{V(\\hat\\beta_{0})} &=& S_{\\varepsilon}^{2}\\left( \\frac{1} {n}  +  \\frac{\\bar{x}^{2}} {n \\hat{\\sigma}^{2}_{X}} \\right)\\ \\\\
  &=& ",se2,"\\times\\left( \\frac{1} {",n,"}  +  \\frac{",mx,"^{2}} {",n,"\\times ",vx,"} \\right)\\\\
