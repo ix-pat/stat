@@ -632,7 +632,7 @@ draw_dist <- function(dist,z1,z2,density = 20, border = NA,col=1,...){   # aggiu
 #'
 #' @rdname intervallo-di-confidenza
 
-idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss=NULL){
+idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss="S"){
   if (!is.null(mus)){
    sd <- ifelse(dist_=="t",sd*sqrt(n/(n-1)),sd)
    SEs <- paste("\\frac{",ss,"}{\\sqrt{n}}")
@@ -669,7 +669,7 @@ idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss=NULL){
    sc <- sqrt(n/(n-1))*sd
    cat(
      "\\[
-     S =\\sqrt{\\frac {n}{n-1}}\\cdot\\hat\\sigma =
+     ",ss," =\\sqrt{\\frac {n}{n-1}}\\cdot\\hat\\sigma =
      \\sqrt{\\frac {",n,"}{",n-1,"}}\\cdot", sd,"=",p(sc),
       "\\]\n")
      idcn <- xm+c(-1,1)*tstat*sc/sqrt(n)
