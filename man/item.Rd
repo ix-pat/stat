@@ -4,7 +4,7 @@
 \alias{item}
 \title{Genera Punto Elenco Personalizzato}
 \usage{
-item(i1, i2)
+item(new = FALSE)
 }
 \arguments{
 \item{i1}{Numero intero per il punto elenco.}

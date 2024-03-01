@@ -80,10 +80,24 @@ tabl <- function(x, ...) {
 #' item(2, 3) # Restituisce "2.c"
 #'
 #' @export
-item <- function(i1, i2) {
-  it <- paste(i1, ".", letters[i2], sep = "")
-  return(it)
-}
+
+item <- function(new=FALSE){
+  sp <- "."
+  sp2 <- ""
+  if (!exists("i1"))  {i1 <- NULL;sp <- "";sp2 <- "."}
+  if (!exists("i2"))  {i2 <- 0} 
+  if (new) assign("i2",1, envir = .GlobalEnv) else assign("i2",i2 + 1, envir = .GlobalEnv)
+  it <- (paste(i1,sp,letters[i2],sp2,sep = ""))
+  return(it)}
+
+
+item2 <- function(new=FALSE,start=FALSE){
+  if (start) assign("i1",0, envir = .GlobalEnv)
+  if (new)   assign("i1",i1 + 1, envir = .GlobalEnv)
+  if (new)   assign("i2",1, envir = .GlobalEnv) else assign("i2",i2 + 1, envir = .GlobalEnv)
+  it <- (paste(i1,".",letters[i2],sep = ""))
+  return(it)}
+
 
 #' Formatta Numeri con Parentesi per Valori Negativi
 #'
