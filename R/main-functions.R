@@ -363,10 +363,23 @@ bin_dis <- function(x1,n,pp,verso="\\leq",comp=FALSE,sing=FALSE,x0=0,vnam="X",si
    if (comp) {
      if (verso == "\\leq")  xx <- (x1+1):n else xx <- 0:(x1-1)
      c00<- paste("P(",vnam,verso,x1,") &=&","1-P(",vnam,ver_c,x1,")","\\\\")
+     if (max(xx)>n){
+       c0 <- " &=& 1-0\\\\"
+       c1 <- " &=& 1"
+       c2 <- c3 <- ""
+     } else
+     if (min(xx)<0){
+       c0 <- " &=& 1-1\\\\"
+       c1 <- " &=& 0"
+       c2 <- c3 <- ""
+     } else {
+       
      c0 <- paste("                &=& 1-\\left(",paste("\\binom{",n,"}{",xx,"}",pp,"^{",xx,"}(1-",pp,")^{",n,"-",xx,"}",collapse = "+"),"\\right)\\\\")
      c1 <- paste("                &=& 1-(",paste(round(dbinom(xx,n,pp),4),collapse = "+"),")\\\\")
      c2 <- paste("                &=& 1-",sum(round(dbinom(xx,n,pp),4)),"\\\\")
      c3 <- paste("                &=&  ",1-sum(round(dbinom(xx,n,pp),4)))
+     
+     }
      res <- paste(c00,c0,c1,c2,c3)  
    } 
   }
