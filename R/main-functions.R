@@ -479,8 +479,8 @@ norm_int <-  function(x1,x2=NULL,verso="<",mm,ss,vnam="X",mu="\\mu",sigma="\\sig
    }
    
    mm <- ifelse(mm>=0,mm,paste("(",mm,")"))
-   x2 <- ifelse(x2<Inf,x2,"$+\\infty$")
-   z2 <- ifelse(z2<Inf,z2,"$+\\infty$")
+   x2 <- ifelse(x2<Inf,x2,"+\\infty")
+   z2 <- ifelse(z2<Inf,z2,"+\\infty")
    cat("\\begin{eqnarray*}
    P(",x1,"<",vnam,"\\leq ",x2,") &=& P\\left( \\frac {",x1," - ",mm,"}{\\sqrt{",ss,"}} < \\frac {",vnam," - ",mu,"}{",sigma,"} \\leq \\frac {",x2," - ",mm,"}{\\sqrt{",ss,"}}\\right)  \\\\
               &=& P\\left( ",z1," < Z \\leq ",z2,"\\right) \\\\
