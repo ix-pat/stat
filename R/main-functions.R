@@ -468,23 +468,23 @@ norm_int <-  function(x1,x2=NULL,verso="<",mm,ss,vnam="X",mu="\\mu",sigma="\\sig
    f1 <- round(pnorm(abs(z1)),4)
    f2 <- round(pnorm(abs(z2)),4)
    res <- round(pnorm(z2),4)-round(pnorm(z1),4)
+   x_2 <- ifelse(x2<Inf,x2,"+\\infty")
+   z_2 <- ifelse(z2<Inf,z2,"+\\infty")
    
    if (x1<=mm & x2>=mm) {
-     p1 <- paste("\\Phi(", z2,")-(1-\\Phi(",-z1,")) \\\\", "&=& ",f2,"-(1-",f1,") \\\\")}
+     p1 <- paste("\\Phi(", z_2,")-(1-\\Phi(",-z1,")) \\\\", "&=& ",f2,"-(1-",f1,") \\\\")}
    if (x1>=mm & x2>=mm) {
      p1 <- paste(f2,"-",f1,"\\\\")
    }
    if (x1<=mm & x2<mm) {
-     p1 <- paste("(1-\\Phi(", -z2,"))-(1-\\Phi(",-z1,")) \\\\","&=& (1-",f2,")-(1-",f1,") \\\\")
+     p1 <- paste("(1-\\Phi(", -z_2,"))-(1-\\Phi(",-z1,")) \\\\","&=& (1-",f2,")-(1-",f1,") \\\\")
    }
    
    mm <- ifelse(mm>=0,mm,paste("(",mm,")"))
-   x2 <- ifelse(x2<Inf,x2,"+\\infty")
-   z2 <- ifelse(z2<Inf,z2,"+\\infty")
    cat("\\begin{eqnarray*}
-   P(",x1,"<",vnam,"\\leq ",x2,") &=& P\\left( \\frac {",x1," - ",mm,"}{\\sqrt{",ss,"}} < \\frac {",vnam," - ",mu,"}{",sigma,"} \\leq \\frac {",x2," - ",mm,"}{\\sqrt{",ss,"}}\\right)  \\\\
-              &=& P\\left( ",z1," < Z \\leq ",z2,"\\right) \\\\
-              &=& \\Phi(",z2,")-\\Phi(",z1,")\\\\
+   P(",x1,"<",vnam,"\\leq ",x_2,") &=& P\\left( \\frac {",x1," - ",mm,"}{\\sqrt{",ss,"}} < \\frac {",vnam," - ",mu,"}{",sigma,"} \\leq \\frac {",x_2," - ",mm,"}{\\sqrt{",ss,"}}\\right)  \\\\
+              &=& P\\left( ",z1," < Z \\leq ",z_2,"\\right) \\\\
+              &=& \\Phi(",z_2,")-\\Phi(",z1,")\\\\
               &=& ",p1,"
               &=& ",res,"
    \\end{eqnarray*}
