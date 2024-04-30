@@ -662,7 +662,6 @@ draw_dist <- function(dist,z1,z2,density = 20, border = NA,col=1,...){   # aggiu
 
 idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss="S"){
   if (!is.null(mus)){
-   sd <- ifelse(dist_=="t",sd*sqrt(n/(n-1)),sd)
    SEs <- paste("\\frac{",ss,"}{\\sqrt{n}}")
    SEn <- paste("\\frac{",p(sd),"}{\\sqrt{",n,"}}")
   }
