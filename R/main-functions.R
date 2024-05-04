@@ -660,10 +660,13 @@ draw_dist <- function(dist,z1,z2,density = 20, border = NA,col=1,...){   # aggiu
 #'
 #' @rdname intervallo-di-confidenza
 
-idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss="S"){
-  if (!is.null(mus)){
-   SEs <- paste("\\frac{",ss,"}{\\sqrt{n}}")
-   SEn <- paste("\\frac{",p(sd),"}{\\sqrt{",n,"}}")
+idc <- function(xm,sd=NULL,alpha=0.05,n,dist_,mus=NULL,ss=NULL){
+  tstat <- ifelse(dist_=="z",qnorm(1-alpha/2),qt(1-alpha/2,n-1))
+  tsimb <- ifelse(dist_=="z","z_{\\alpha/2}","t_{n-1;\\alpha/2}")
+  
+  if (is.null(mus)&is.null(ss)){
+   mus <- "\\hat\\mu"
+   ss <- ifelse(dist_=="t","S","\\sigma")
   }
   if (is.null(sd)){
    cat("\\[
@@ -675,33 +678,25 @@ idc <- function(xm,sd=NULL,alpha,n,dist_,mus=NULL,ss="S"){
    SEs  <- "\\sqrt{\\frac{\\hat\\pi(1-\\hat\\pi)}{n}}"
    SEn  <- paste("\\sqrt{\\frac{",p(xm),"(1-",p(xm),")}{",n,"}}")
   }
-  if (!is.null(sd)&is.null(mus)&dist_=="z"){
-   mus <- "\\hat\\mu"
-   SEs  <- "\\frac{\\sigma}{\\sqrt{n}}"
+  if (!is.null(sd)&dist_=="z"){
+   SEs  <- paste("\\frac{",ss,"}{\\sqrt{n}}")
    SEn <- paste("\\frac{",sd,"}{\\sqrt{",n,"}}")
+   idcn <- xm+c(-1,1)*tstat*sd/sqrt(n)
   }
-  if (!is.null(sd)&is.null(mus)&dist_=="t"){
+  if (!is.null(sd)&dist_=="t"){
    mus <- "\\hat\\mu"
    SEs  <- "\\frac{S}{\\sqrt{n}}"
-   SEn <- paste("\\frac{",p(sd*sqrt(n/(n-1))),"}{\\sqrt{",n,"}}")
-  }
-  
-  tstat <- ifelse(dist_=="z",qnorm(1-alpha/2),qt(1-alpha/2,n-1))
-  tsimb <- ifelse(dist_=="z","z_{\\alpha/2}","t_{n-1;\\alpha/2}")
-  if (dist_=="z"){
-  sc <- sd
-  idcn <- xm+c(-1,1)*tstat*sd/sqrt(n)
-  }
-  if (dist_=="t"){
+   SEn <- paste("\\frac{",sd*sqrt(n/(n-1)),"}{\\sqrt{",n,"}}")
    sc <- sqrt(n/(n-1))*sd
    cat(
      "\\[
      ",ss," =\\sqrt{\\frac {n}{n-1}}\\cdot\\hat\\sigma =
      \\sqrt{\\frac {",n,"}{",n-1,"}}\\cdot", sd,"=",p(sc),
-      "\\]\n")
-     idcn <- xm+c(-1,1)*tstat*sc/sqrt(n)
-     sd <- sc
+     "\\]\n")
+   idcn <- xm+c(-1,1)*tstat*sc/sqrt(n)
+   sd <- sc
    }
+  
   cat(
   "\\begin{eqnarray*}
   Idc: & & ",mus,"\\pm ",tsimb,"\\times",SEs,"\\\\
