@@ -658,7 +658,7 @@ draw_dist <- function(dist,z1,z2,density = 20, border = NA,col=1,...){   # aggiu
 #' # Intervallo di confidenza per la proporzione
 #' idc(xm = 120, alpha = 0.05, n = 200, dist_ = "z")
 #'
-#' @rdname intervallo-di-confidenza
+#' @rdname intervallo-di-confidenza 
 
 idc <- function(xm,sd=NULL,alpha=0.05,n,dist_,mus=NULL,ss=NULL){
   tstat <- ifelse(dist_=="z",qnorm(1-alpha/2),qt(1-alpha/2,n-1))
