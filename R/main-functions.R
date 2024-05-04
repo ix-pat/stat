@@ -686,7 +686,7 @@ idc <- function(xm,sd=NULL,alpha=0.05,n,dist_,mus=NULL,ss=NULL){
   if (!is.null(sd)&dist_=="t"){
    mus <- "\\hat\\mu"
    SEs  <- "\\frac{S}{\\sqrt{n}}"
-   SEn <- paste("\\frac{",sd*sqrt(n/(n-1)),"}{\\sqrt{",n,"}}")
+   SEn <- paste("\\frac{",p(sd*sqrt(n/(n-1))),"}{\\sqrt{",n,"}}")
    sc <- sqrt(n/(n-1))*sd
    cat(
      "\\[
