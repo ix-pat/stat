@@ -684,10 +684,10 @@ idc <- function(xm,sd=NULL,alpha=0.05,n,dist_,mus=NULL,ss=NULL){
    idcn <- xm+c(-1,1)*tstat*sd/sqrt(n)
   }
   if (!is.null(sd)&dist_=="t"){
+   sc <- sqrt(n/(n-1))*sd
    mus <- "\\hat\\mu"
    SEs  <- "\\frac{S}{\\sqrt{n}}"
-   SEn <- paste("\\frac{",p(sd*sqrt(n/(n-1))),"}{\\sqrt{",n,"}}")
-   sc <- sqrt(n/(n-1))*sd
+   SEn <- paste("\\frac{",p(sc),"}{\\sqrt{",n,"}}")
    cat(
      "\\[
      ",ss," =\\sqrt{\\frac {n}{n-1}}\\cdot\\hat\\sigma =
