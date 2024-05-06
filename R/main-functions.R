@@ -670,18 +670,20 @@ idc <- function(xm,sd=NULL,alpha=0.05,n,dist_,mus=NULL,ss=NULL){
   }
   if (is.null(sd)){
    cat("\\[
-      \\hat\\pi = \\frac{S_n}n = \\frac{",xm,"}{",n,"}=",xm/n,"
-      \\]\n\n")
+  \\hat\\pi = \\frac{S_n}n = \\frac{",xm,"}{",n,"}=",xm/n,"
+\\]\n\n")
    mus <- "\\hat\\pi"
    xm <- xm/n
-   sd <- sqrt(xm*(1-xm))
+   sd_ <- sqrt(xm*(1-xm))
    SEs  <- "\\sqrt{\\frac{\\hat\\pi(1-\\hat\\pi)}{n}}"
    SEn  <- paste("\\sqrt{\\frac{",p(xm),"(1-",p(xm),")}{",n,"}}")
+   idcn <- xm+c(-1,1)*tstat*sd_/sqrt(n)
   }
   if (!is.null(sd)&dist_=="z"){
    SEs  <- paste("\\frac{",ss,"}{\\sqrt{n}}")
    SEn <- paste("\\frac{",sd,"}{\\sqrt{",n,"}}")
    idcn <- xm+c(-1,1)*tstat*sd/sqrt(n)
+   sd_ <- sd
   }
   if (!is.null(sd)&dist_=="t"){
    sc <- sqrt(n/(n-1))*sd
@@ -692,18 +694,18 @@ idc <- function(xm,sd=NULL,alpha=0.05,n,dist_,mus=NULL,ss=NULL){
      "\\[
      ",ss," =\\sqrt{\\frac {n}{n-1}}\\cdot\\hat\\sigma =
      \\sqrt{\\frac {",n,"}{",n-1,"}}\\cdot", sd,"=",p(sc),
-     "\\]\n")
+     "\n\\]\n")
    idcn <- xm+c(-1,1)*tstat*sc/sqrt(n)
-   sd <- sc
+   sd_ <- sc
    }
   
   cat(
   "\\begin{eqnarray*}
   Idc: & & ",mus,"\\pm ",tsimb,"\\times",SEs,"\\\\
      & & ",xm, "\\pm ",tstat, "\\times",SEn,"\\\\
-     & & ",xm, "\\pm ",tstat,"\\times ",sd/sqrt(n),"\\\\
+     & & ",xm, "\\pm ",tstat,"\\times ",sd_/sqrt(n),"\\\\
      & & [",idcn[1],", ",idcn[2],"]
-  \\end{eqnarray*}\n")
+\\end{eqnarray*}\n")
 }
 
 #' Test Z e Test T: Proporzione e Media
