@@ -118,11 +118,11 @@ i $gdl$
 $$
 (",n,"-1)\\times(",m,"-1)=",gdl,"
 $$
-$\\alpha=",alpha,"$ e quindi $\\chi_{1,",alpha,"}^2=",chi_th,"$
+$\\alpha=",alpha,"$ e quindi $\\chi_{",gdl,",",alpha,"}^2=",chi_th,"$
 \n\n
 Essendo 
 $$
-\\chi^2_{obs}=",chi_ob," ",segno,"\\chi_{1,",alpha,"}^2=",chi_th,"
+\\chi^2_{obs}=",chi_ob," ",segno,"\\chi_{",gdl,",",alpha,"}^2=",chi_th,"
 $$
 \n
 allora ",decis," $H_0$ al lds dell'",alpha*100," percento. 

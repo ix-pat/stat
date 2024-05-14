@@ -4,7 +4,7 @@
 \alias{idc}
 \title{Calcolo dell'Intervallo di Confidenza}
 \usage{
-idc(xm, sd = NULL, alpha, n, dist_, mus = NULL, ss = "S")
+idc(xm, sd = NULL, alpha = 0.05, n, dist_, mus = NULL, ss = NULL)
 }
 \arguments{
 \item{xm}{Media campionaria o somma delle successi.}
