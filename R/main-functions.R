@@ -1200,7 +1200,7 @@ $$
       }
      }
      
-     cat("**Test $Z$ per due medie, (omogeneità)**\n\n")
+     cat("**Test $T$ per due medie, (omogeneità)**\n\n")
 
      cat("\\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI
   
@@ -1228,14 +1228,14 @@ $$
   ")
      
      H1 <- h1
-     if (h1=='\\neq' & tc < 0) h1 <- ifelse(tc<0,"<",">")
+     if (h1=='\\neq') h1 <- ifelse(tc<0,"<",">")
      
      
      cat("\\(\\fbox{C}\\) DECISIONE
-  Dalle tavole si ha \\(t_{(", n1,"+", n2,"-2);\\, ", alpha,"} = ", tc,"\\).
-  $$t_{\\text{obs}} = ", tobs," ", ifelse(tobs<tc,"<",">")," t_{", n1+n2-2,";\\, ", alpha,"} = ", tc,"$$\n\n")
-     
-     cat("CONCLUSIONE: i dati ", ifelse(tobs<tc & h1=="<" | tobs>tc & h1==">", " non sono", "sono")," coerenti con \\(H_{0}\\) al LdS del ", ifelse(H1=="\\neq",2*alpha*100,alpha*100),"%")
+   Dalle tavole si ha \\(t_{(",n1,"+",n2,"-2);\\, ",alpha,"} = ",tc,"\\).
+   $$t_{\\text{obs}} = ",tobs," ",ifelse(tobs<tc,"<",">")," t_{",n1+n2-2,";\\, ",alpha,"} = ",tc,"$$
+   CONCLUSIONE: i dati ",ifelse(tobs<tc & h1=="<" | tobs>tc & h1==">", " non sono", "sono")," coerenti con \\(H_{0}\\) al LdS del ",ifelse(H1=="\\neq",2*alpha*100,alpha*100),"%
+   ")
      
      cat("\n\n **Graficamente**\n\n")
      if (H1 == ">") {R <- c(tc,4); A <- c(-4,tc)}
