@@ -1,7 +1,7 @@
 Package: pat.book
 Type: Package
 Title: Automazione formule
-Version: 0.1.0
+Version: 1.0
 Author: Patrizio Frederic
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: Automatizza i procedimenti di scrittura per realizzare il libro e i compiti

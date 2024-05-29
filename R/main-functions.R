@@ -1568,7 +1568,7 @@ Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.
    cat("$\\fbox{C}$ DECISIONE
    Dalle tavole si ha $t_{(",n,"-2);\\, ",alpha,"} = ",tc,"$.
    \\[t_{\\text{obs}} = ",tobs," ",ifelse(tobs<tc,"<",">")," t_{",n-2,";\\, ",alpha,"} = ",tc,"\\]
-   CONCLUSIONE: i dati ",ifelse(tobs<tc & h1=="<" | tobs>tc & h1==">", " **non** sono", "**sono**")," coerenti con $H_{0}$ al LdS del ",ifelse(H1=="\\\\neq",2*alpha*100,alpha*100),"%
+   CONCLUSIONE: i dati ",ifelse(tobs<tc & h1=="<" | tobs>tc & h1==">", " **non** sono", "**sono**")," coerenti con $H_{0}$ al LdS del ",ifelse(H1=="\\neq",2*alpha*100,alpha*100),"%
    \n\n **Graficamente** \n\n",sep="")
      
 
