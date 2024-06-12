@@ -132,11 +132,6 @@ A_ <- function(lst,tipo,lab1="A",lab2="B",um=""){
   simb <-  ifelse(grepl("pi",tipo),"\\pi","\\mu")
   th0_s <- ifelse(grepl("1",tipo),paste0(simb,"_0=",theta0,um),paste0(simb,"_",lab2))
   th1_s <- ifelse(grepl("1",tipo),simb,paste0(simb,"_",lab1))
-  if (grepl("beta",tipo)){
-    simb <- "\\beta"
-    th0_s <- ifelse(grepl("1",tipo),paste0(simb,"_{1;H_0}=",theta0),paste0(simb,"_{0;H_0}=",theta0))
-    th1_s <- ifelse(grepl("1",tipo),paste0(simb,"_1"),paste0(simb,"_0"))
-    }
   
   cat(" \\(\\fbox{A}\\) FORMULAZIONE DELLE IPOTESI \n\n
    $$\\begin{cases}
@@ -397,7 +392,7 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
 #' ttest_2c_om(mu1 = 5.1, mu2 = 5.8, s1h = 1.5, s2h = 1.7, n1 = 30, n2 = 30, h1 = "\\neq")
 #'
 #' @rdname test-su-due-campioni
-test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000)){
+test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um=""){
   #### Test su due proporzioni ----------------
   if (!s1h) # s1h = F, non ci sono le sd, è un test su proporzioni
   {
@@ -409,7 +404,7 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um=
     pc <- (s1+s2)/n
     se <- sqrt((pc*(1-pc))/n1+(pc*(1-pc))/n2)
 
-    lst <- test(theta1 = p1,theta0 = p2,se = se,h1 = h1,n = n1+n2,alpha = alpha)
+    lst <- test(theta1 = p1,theta0 = p2,se = se,h1 = h1,n = n1+n2)
     ls2e(lst)
     cat("**Test $Z$ per due proporzioni**\n\n")
 
@@ -446,9 +441,10 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um=
     s2 <- sqrt(n2/(n2-1))*s2h
     s2p <- (n1*s1h+n2*s2h)/(n1+n2-2)
     se <- sqrt(s1^2/n1+s2^2/n2)
+    q1 <- a; q2 <- b
     s2f1<- s1^2; s2f2 <- s2^2
 
-    lst <- test(theta1 = mu1,theta0 = mu2,se = se,h1 = h1,gdl = n1+n2-2,n = n1+n2,alpha = alpha)
+    lst <- test(theta1 = mu1,theta0 = mu2,se = se,h1 = h1,gdl = n1+n2-2,n = n1+n2)
     ls2e(lst)
 
     cat("**Test $t$ per due medie, (eterogeneità)**\n\n")
@@ -465,7 +461,7 @@ $$
 
     cat("\\begin{eqnarray*}
    \\frac{\\hat\\mu_\\text{",a,"} - \\hat\\mu_\\text{",b,"}}
-   {\\sqrt{\\frac {S^2_\\text{",a,"}}{n_\\text{",a,"}}+\\frac {S^2_\\text{",b,"}}{n_\\text{",b,"}}}}&\\sim&t_{n_\\text{",a,"}+n_\\text{",b,"}-2}\\\\
+   {\\sqrt{\\frac {S^2_\\text{",q1,"}}{n_\\text{",a,"}}+\\frac {S^2_\\text{",q2,"}}{n_\\text{",b,"}}}}&\\sim&t_{n_\\text{",a,"}+n_\\text{",b,"}-2}\\\\
    t_{\\text{obs}}
    &=& \\frac{ (",mu1,"- ",mu2,")} {\\sqrt{\\frac{",s2f1,"}{",n1,"}+\\frac{",s2f2,"}{",n2,"}}}
    =  ",tobs,"\\, .
@@ -484,7 +480,7 @@ $$
       s2p <- (n1*s1h^2+n2*s2h^2)/(n1+n2-2)
       se <- sqrt(s2p/n1+s2p/n2)
       s2f1<- s1^2; s2f2 <- s2^2
-      lst <- test(theta1 = mu1,theta0 = mu2,se = se,h1 = h1,gdl = n1+n2-2,n = n1+n2,alpha = alpha)
+      lst <- test(theta1 = mu1,theta0 = mu2,se = se,h1 = h1,gdl = n1+n2-2,n = n1+n2)
       ls2e(lst)
       cat("**Test $T$ per due medie, (omogeneità)**\n\n")
 
@@ -516,15 +512,15 @@ $$
 
 
 #' @rdname test-su-due-campioni
-ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000)){
+ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um=""){
   test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=T,a=a,b=b,um=um)
 }
 #' @rdname test-su-due-campioni
-ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000)){
+ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um=""){
   test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=F,a=a,b=b,um=um)
 }
 #' @rdname test-su-due-campioni
-ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq",a="1",b="2",alpha = c(1/10,5/100,1/100,1/1000)){
+ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq",a="1",b="2"){
   test_2c(mu1 = s1,mu2 = s2,s1h = F,s2h = F,n1 = n1,n2 = n2,h1 = h1,alpha = alpha,a = a,b = b)
 }
 
@@ -691,33 +687,6 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
   )
 }  
 
-#' Stampa i Coefficienti di Regressione in LaTeX
-#'
-#' Questa funzione genera l'output LaTeX per il calcolo dei coefficienti di regressione lineare,
-#' includendo i coefficienti \(\beta_1\) e \(\beta_0\) (o \(\alpha_1\) e \(\alpha_0\) se viene
-#' utilizzato il calcolo inverso) basati sui dati forniti. La funzione permette di scegliere tra
-#' una stampa dettagliata dei calcoli intermedi o una più semplice che include solo i coefficienti.
-#'
-#' @param semplice Un valore booleano che, se TRUE, produce una stampa semplificata contenente solo i
-#'                 coefficienti di regressione. Se FALSE, produce un output dettagliato con tutti i
-#'                 calcoli intermedi. Il default è FALSE.
-#' @param inv Un valore booleano che, se TRUE, inverte i ruoli di X e Y nel calcolo della regressione.
-#'            Il default è FALSE.
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         nell'ambiente di chiamata.
-#'
-#' @examples
-#' x <- rnorm(100)
-#' y <- x + rnorm(100,0,.1)
-#' ls2e(regr(x,y))
-#' # Calcolo normale con output dettagliato
-#' calcolo_beta(semplice = FALSE)
-#'
-#' # Calcolo invertito con output semplice
-#' calcolo_beta(semplice = TRUE, inv = TRUE)
-#'
-#' @export
 calcolo_beta <- function(semplice=F,inv = F){
   if (!inv){
     if (!semplice) {
@@ -759,63 +728,11 @@ calcolo_beta <- function(semplice=F,inv = F){
   }
 }
 
-#' Stampa la Previsione di Y Data un Valore X in LaTeX
-#'
-#' Questa funzione calcola e stampa l'equazione di previsione per un valore \(x\) dato,
-#' utilizzando i coefficienti di regressione lineare \(\hat\\beta_0\) e \(\hat\\beta_1\).
-#' L'output è in formato LaTeX e mostra l'equazione di previsione completa, includendo i calcoli
-#' effettivi per il valore specificato di \(x\).
-#'
-#' @param x Il valore di \(x\) per cui si desidera calcolare la previsione di \(y\).
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         nell'ambiente di chiamata.
-#'
-#' @details Si assume che i coefficienti \(\hat\\beta_0\) e \(\hat\\beta_1\) siano definiti
-#'          e accessibili nello scope da cui la funzione viene chiamata. La funzione controlla se
-#'          \(\hat\\beta_1\) è negativo, ma non esegue operazioni specifiche in tal caso; questa
-#'          condizione può essere espansa per gestire scenari specifici.
-#'
-#' @examples
-#' x <- rnorm(100)
-#' y <- x + rnorm(100,0,.1)
-#' ls2e(regr(x,y))
-#' # Calcola la previsione per x = 10
-#' previsione(10)
-#'
-#' @export
-
 previsione <- function(x){
   if (b1 < 0) {
   }
   cat("\\[\\hat y_{X=",x,"}=\\hat\\beta_0+\\hat\\beta_1 x=",b0,"+",p(b1),"\\times",p(x),"=",b0+b1*x,"\\]")
 }
-
-#' Stampa il Calcolo del Residuo per una Coppia (x, y) in LaTeX
-#'
-#' Questa funzione calcola e stampa il residuo \(\hat \\varepsilon_i\) per una coppia di valori
-#' \(x_i\) e \(y_i\), utilizzando i coefficienti di regressione lineare \(\hat\\beta_0\) e
-#' \(\hat\\beta_1\). L'output è in formato LaTeX e mostra i passaggi del calcolo del valore previsto
-#' \(\hat y_i\) e del residuo \(\hat \\varepsilon_i\).
-#'
-#' @param x Il valore di \(x_i\) per il quale si desidera calcolare il residuo.
-#' @param y Il valore di \(y_i\) corrispondente a \(x_i\).
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         nell'ambiente di chiamata.
-#'
-#' @details Si assume che i coefficienti \(\hat\\beta_0\) e \(\hat\\beta_1\) siano definiti
-#'          e accessibili nello scope da cui la funzione viene chiamata. La funzione stampa l'equazione
-#'          per calcolare \(\hat y_i\) e il residuo \(\hat \\varepsilon_i\).
-#'
-#' @examples
-#' x <- rnorm(100)
-#' y <- x + rnorm(100,0,.1)
-#' ls2e(regr(x,y))
-#' # Calcolo del residuo per la coppia (x = 10, y = 20)
-#' residuo(10, 20)
-#'
-#' @export
 
 residuo <- function(x,y){
   cat("\\begin{eqnarray*}\n")
@@ -826,28 +743,6 @@ residuo <- function(x,y){
   cat("\\end{eqnarray*}\n")  
 }
 
-#' Stampa e Valuta il Coefficiente di Determinazione \(r^2\) in LaTeX
-#'
-#' Questa funzione calcola il coefficiente di correlazione \(r\), il suo quadrato \(r^2\),
-#' e stampa queste statistiche in formato LaTeX. Inoltre, valuta se \(r^2\) indica un buon adattamento
-#' del modello ai dati confrontando \(r^2\) con il valore soglia 0.75.
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         e un messaggio testuale che valuta la bontà di adattamento del modello nell'ambiente di chiamata.
-#'
-#' @details Si assume che le variabili `r`, `co`, `sx`, e `sy` (correlazione, covarianza di X e Y,
-#'          deviazione standard di X e deviazione standard di Y, rispettivamente) siano definite e
-#'          accessibili nello scope da cui la funzione viene chiamata. La funzione determina se
-#'          il modello si adatta bene ai dati basandosi su se \(r^2\) è maggiore o minore di 0.75.
-#'
-#' @examples
-#' # Calcolo e valutazione di r^2 supponendo che r, co, sx, sy siano già definiti
-#' x <- rnorm(100)
-#' y <- x + rnorm(100,0,.1)
-#' ls2e(regr(x,y))
-#' R2()
-#'
-#' @export
 R2 <- function(){
   sgn <- ifelse(r^2>.75,">","<")
   cat("\\begin{eqnarray*}\n")
@@ -856,25 +751,7 @@ R2 <- function(){
   cat("\\end{eqnarray*}\n")  
   cat(ifelse(r^2>.75,"Il modello si adatta bene ai dati.","Il modello **non** si adatta bene ai dati."))
 }
-#' Stampa i Componenti della Varianza Totale dei Dati in LaTeX
-#'
-#' Questa funzione calcola e stampa il Total Sum of Squares (TSS), Explained Sum of Squares (ESS),
-#' e Residual Sum of Squares (RSS) utilizzando il coefficiente di determinazione \(R^2\). La funzione
-#' stampa queste statistiche in formato LaTeX, illustrando come TSS è suddiviso in ESS e RSS.
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         nell'ambiente di chiamata.
-#'
-#' @details Si assume che le variabili `n`, `vy`, e `r^2` (numero di osservazioni, varianza di Y,
-#'          e il quadrato del coefficiente di correlazione, rispettivamente) siano definite e
-#'          accessibili nello scope da cui la funzione viene chiamata. La funzione dimostra la
-#'          relazione \(TSS = ESS + RSS\).
-#'
-#' @examples
-#' # Calcolo e stampa di TSS, ESS e RSS supponendo che n, vy e r^2 siano già definiti
-#' TSS()
-#'
-#' @export
+
 TSS <- function(){
   cat("\\begin{eqnarray*}
    TSS &=& n\\hat\\sigma^2_Y\\\\
@@ -886,58 +763,12 @@ TSS <- function(){
    RSS &=& (1-R^2)\\cdot TSS\\\\
       &=& (1-",r^2,")\\cdot",n*vy,"\\\\
       &=& ",(1-r^2)*n*vy, "\\\\
-   TSS &=& ESS+RSS \\\\", 
+   TSS &=& RSS+TSS \\\\", 
       n*vy," &=& ", r^2*n*vy, "+", (1-r^2)*n*vy, "
   \\end{eqnarray*}")
 }
 
-#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\hat{\beta}_1\)
-#'
-#' Questa funzione calcola e stampa, in formato LaTeX, la varianza stimata e l'errore standard
-#' per il coefficiente di regressione \(\hat{\beta}_1\) utilizzando la varianza residua.
-#' Il calcolo include la stima dell'errore standard basato su varianze corrette.
-#'
-#' @param sig_eps Se TRUE, calcola prima la varianza residua corretta per poi procedere al
-#'                calcolo delle varianze e degli errori standard dei coefficienti di regressione.
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         nell'ambiente di chiamata.
-#'
-#' @details Si assume che le variabili `n`, `vy`, `vx`, `r^2`, `sh2`, `se2` e `vb1` siano definite
-#'          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-#'          varianze e errori standard sono stimati per \(\hat{\beta}_1\).
-#'
-#' @examples
-#' x <- rnorm(100)
-#' y <- x + rnorm(100, 0, .1)
-#' ls2e(regr(x, y))  # Assume regr and ls2e are properly defined
-#' se_beta1(TRUE)
-#'
-#' @export
 
-#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\hat{\beta}_0\)
-#'
-#' Questa funzione calcola e stampa, in formato LaTeX, la varianza stimata e l'errore standard
-#' per il coefficiente di regressione \(\hat{\beta}_0\) utilizzando la varianza residua.
-#' Il calcolo include la stima dell'errore standard basato su varianze corrette.
-#'
-#' @param sig_eps Se TRUE, calcola prima la varianza residua corretta per poi procedere al
-#'                calcolo delle varianze e degli errori standard dei coefficienti di regressione.
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         nell'ambiente di chiamata.
-#'
-#' @details Si assume che le variabili `n`, `vy`, `vx`, `mx`, `r^2`, `sh2`, `se2` e `vb0` siano definite
-#'          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-#'          varianze e errori standard sono stimati per \(\hat{\beta}_0\).
-#'
-#' @examples
-#' x <- rnorm(100)
-#' y <- x + rnorm(100, 0, .1)
-#' ls2e(regr(x, y))  # Assume regr and ls2e are properly defined
-#' se_beta0(TRUE)
-#'
-#' @rdname se_beta
 se_beta1 <- function(sig_eps = TRUE){
   if (sig_eps){cat(
     "\\begin{eqnarray*}
@@ -961,7 +792,6 @@ V(\\hat\\beta_{1}) &=& \\frac{\\sigma_{\\varepsilon}^{2}} {n \\hat{\\sigma}^{2}_
 ")
 }
 
-#' @rdname se_beta
 se_beta0 <- function(sig_eps = TRUE)  {
   if (sig_eps){cat(
     "\\begin{eqnarray*}
@@ -984,42 +814,22 @@ V(\\hat\\beta_{0}) &=& \\sigma_{\\varepsilon}^{2} \\left( \\frac{1} {n}  +  \\fr
 \\end{eqnarray*}")
 }
 
-#' Conduce e Stampa l'Analisi di un t-Test per un Coefficiente di Regressione in LaTeX
-#'
-#' Questa funzione esegue un t-test su uno dei coefficienti di regressione (\(\hat{\beta}_0\) o \(\hat{\beta}_1\)),
-#' stampando il calcolo della statistica del test e altri output correlati in formato LaTeX. 
-#' La funzione può anche eseguire e stampare il calcolo dell'errore standard del coefficiente se specificato.
-#'
-#' @param cof Indice del coefficiente su cui eseguire il test (0 per \(\hat{\beta}_0\), 1 per \(\hat{\beta}_1\)).
-#' @param bj0 Valore ipotizzato per il coefficiente sotto l'ipotesi nulla.
-#' @param h1 L'ipotesi alternativa del test (\(\\neq\), \(>\), o \(<\)).
-#' @param alpha Un vettore di livelli di significatività da utilizzare per il test.
-#' @param SE Se TRUE, esegue e stampa il calcolo dell'errore standard del coefficiente specificato.
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         e produce grafici e p-value associati al test, nell'ambiente di chiamata.
-#'
-#' @details Si assume che le variabili `b0`, `b1`, `vb0`, `vb1`, e `n` siano definite e accessibili
-#'          nello scope da cui la funzione viene chiamata. Include funzioni di supporto come `A_`, `C_`,
-#'          `graf`, e `p_value` che dovrebbero essere definite per eseguire analisi aggiuntive e stampa.
-#'
-#' @examples
-#' x <- rnorm(100)
-#' y <- x + rnorm(100, 0, .1)
-#' ls2e(regr(x, y))  # Assume regr and ls2e are properly defined
-#' ttest_beta(cof = 0, bj0 = 0)  # Test su \(\hat{\beta}_0\)
-#' ttest_beta(cof = 1, bj0 = 1, SE = TRUE)  # Test su \(\hat{\beta}_1\) con errore standard
-#'
-#' @export
-
-ttest_beta <-  function(cof,bj0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),SE=F){
+ttest_beta <-  function(cof,bj0,h1 = "\\neq", alpha = 0.05){
   bj <- ifelse(cof==0,b0,b1)
   vbj <-  ifelse(cof==0,(vb0),(vb1))
-  lst <- test(theta1 = bj,theta0 = bj0,se = sqrt(vbj),h1 = h1,alpha = alpha,gdl = n-2,n=n)
-  A_(lst,tipo=paste("beta",cof))
-  
-  cat("$\\fbox{B}$ SCELTA E CALCOLO STATISTICA-TEST, $T$
-Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.\n\n
+  tobs <- (bj - bj0)/sqrt(vbj)
+  if (h1==">") tc <- qt(1-alpha,n-1)
+  if (h1=="<") tc <- -qt(1-alpha,n-1)
+  if (h1=="\\neq") tc <- sign(tobs)*qt(1-alpha/2,n-2)
+  if (h1=="\\neq") alpha <- alpha/2
+  cat("$\\fbox{A}$ FORMULAZIONE DELLE IPOTESI
+\\[\\begin{cases}
+H_0:\\beta_{",cof,"} =     ",bj0,"\\\\
+H_1:\\beta_{",cof,"} ",h1," ",bj0,"
+\\end{cases}\\]
+",ifelse(h1=="\\neq","Siccome $H_1$ è bilaterale, considereremo $\\alpha/2$, anziché $\\alpha$\n\n","\n\n"),"
+$\\fbox{B}$ SCELTA E CALCOLO STATISTICA-TEST, $T$
+Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.
 \\begin{eqnarray*}
  \\frac{\\hat\\beta_{",cof,"} - \\beta_{",cof,";H_0}} {\\widehat{SE(\\hat\\beta_{",cof,"})}}&\\sim&t_{n-2}\\\\
    t_{\\text{obs}}
@@ -1027,11 +837,37 @@ Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.\n\n
  =  ",tobs,"\\, .
 \\end{eqnarray*}
 ")
-  if (SE&(cof==0)) se_beta0(sig_eps = T)
-  if (SE&(cof==1)) se_beta1(sig_eps = T)
-  C_(lst = lst)
-  graf(lst)
-  p_value(lst)
+  H1 <- h1
+  if (h1=='\\neq') h1 <- ifelse(tc<0,"<",">")
   
+  cat("$\\fbox{C}$ DECISIONE
+   Dalle tavole si ha $t_{(",n,"-2);\\, ",alpha,"} = ",tc,"$.
+   \\[t_{\\text{obs}} = ",tobs," ",ifelse(tobs<tc,"<",">")," t_{",n-2,";\\, ",alpha,"} = ",tc,"\\]
+   CONCLUSIONE: i dati ",ifelse(tobs<tc & h1=="<" | tobs>tc & h1==">", " **non** sono", "**sono**")," coerenti con $H_{0}$ al LdS del ",ifelse(H1=="\\neq",2*alpha*100,alpha*100),"%
+   \n\n **Graficamente** \n\n",sep="")
+  
+  
+  t1 <- floor(max(-8,qt(0.0000316712,n-2)))
+  t2 <- ceiling(min(8,qt(1-0.0000316712,n-2)))
+  if (H1 == ">") {R <- c(tc,t2); A <- c(t1,tc)}
+  if (H1 == "<") {R <- c(t1,tc); A <- c(tc,t2)}
+  if (H1 == "\\neq") {A <- c(-abs(tc),abs(tc)); R1 <- c(t1,-abs(tc)); R <- c(t2,abs(tc))}
+  curve(dt(x,n-2),t1,t2,axes=F,xlab="T",ylab="")
+  
+  lines(A,c(0,0),lwd=2,col=4)
+  if (H1 == "\\neq") {
+    lines(R1,c(0,0),lwd=2,col=2)
+    axis(1,c(t1,-tc,0,tc,t2),round(c(t1,-tc,0,tc,t2),3))
+  } else axis(1,round(c(t1,t2,0,tc),3))
+  lines(R,c(0,0),lwd=2,col=2)
+  points(tobs,0,pch=4,cex=2)
+  text(tobs,.05,expression(t[obs]))
+  axis(2)
+  if (H1 == ">") {pval <- paste("P(T_{n-2}>t_{\\text{obs}})=P(T_{n-2}>",round(tobs,3),")=",format(1-pt(tobs,n-2),digits = 4, scipen=8))}
+  if (H1 == "<") {pval <- paste("P(T_{n-2}<t_{\\text{obs}})=P(T_{n-2}<",round(tobs,3),")=",format(pt(tobs,n-2),digits = 4, scipen=8))}
+  if (H1 == "\\neq") {pval <- paste("P(|T_{n-2}|>|t_{\\text{obs}}|)=2P(T_{n-2}>|t_{\\text{obs}}|)=2P(T_{n-2}>|",round(tobs,4),"|)=",format(2*pt(-abs(tobs),n-2),digits = 4, scipen=8))}
+  
+  cat("\n\n il $p_{\\text{value}}$ è
+   $$",pval,"$$\n\n")
 }
 
