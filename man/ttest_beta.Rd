@@ -13,7 +13,7 @@ ttest_beta(
 )
 }
 \arguments{
-\item{cof}{Indice del coefficiente su cui eseguire il test (0 per \(\hat{\beta}_0\), 1 per \(\hat{\beta}_1\)).}
+\item{cof}{Indice del coefficiente su cui eseguire il test (0 per \eqn{\hat{\beta}_0}, 1 per  \eqn{\hat{\beta}_1}).}
 
 \item{bj0}{Valore ipotizzato per il coefficiente sotto l'ipotesi nulla.}
 
@@ -28,7 +28,7 @@ La funzione non ritorna un valore ma stampa direttamente l'output in formato LaT
         e produce grafici e p-value associati al test, nell'ambiente di chiamata.
 }
 \description{
-Questa funzione esegue un t-test su uno dei coefficienti di regressione (\(\hat{\beta}_0\) o \(\hat{\beta}_1\)),
+Questa funzione esegue un t-test su uno dei coefficienti di regressione \eqn{\hat{\beta}_0} o \eqn{\hat\beta_1},
 stampando il calcolo della statistica del test e altri output correlati in formato LaTeX. 
 La funzione può anche eseguire e stampare il calcolo dell'errore standard del coefficiente se specificato.
 }

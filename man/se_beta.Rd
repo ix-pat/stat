@@ -3,7 +3,7 @@
 \name{se_beta1}
 \alias{se_beta1}
 \alias{se_beta0}
-\title{Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\hat{\beta}_1\)}
+\title{Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\\hat{\\beta}_1\)}
 \usage{
 se_beta1(sig_eps = TRUE)
 
@@ -22,17 +22,17 @@ La funzione non ritorna un valore ma stampa direttamente l'output in formato LaT
 }
 \description{
 Questa funzione calcola e stampa, in formato LaTeX, la varianza stimata e l'errore standard
-per il coefficiente di regressione \(\hat{\beta}_1\) utilizzando la varianza residua.
+per il coefficiente di regressione \(\\hat{\\beta}_1\) utilizzando la varianza residua.
 Il calcolo include la stima dell'errore standard basato su varianze corrette.
 }
 \details{
 Si assume che le variabili `n`, `vy`, `vx`, `r^2`, `sh2`, `se2` e `vb1` siano definite
          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-         varianze e errori standard sono stimati per \(\hat{\beta}_1\).
+         varianze e errori standard sono stimati per \(\\hat{\\beta}_1\).
 
 Si assume che le variabili `n`, `vy`, `vx`, `mx`, `r^2`, `sh2`, `se2` e `vb0` siano definite
          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-         varianze e errori standard sono stimati per \(\hat{\beta}_0\).
+         varianze e errori standard sono stimati per \(\\hat{\\beta}_0\).
 }
 \examples{
 x <- rnorm(100)

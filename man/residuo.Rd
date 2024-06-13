@@ -7,24 +7,24 @@
 residuo(x, y)
 }
 \arguments{
-\item{x}{Il valore di \(x_i\) per il quale si desidera calcolare il residuo.}
+\item{x}{Il valore di \eqn{x_i} per il quale si desidera calcolare il residuo.}
 
-\item{y}{Il valore di \(y_i\) corrispondente a \(x_i\).}
+\item{y}{Il valore di \eqn{y_i} corrispondente a \eqn{x_i}.}
 }
 \value{
 La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
         nell'ambiente di chiamata.
 }
 \description{
-Questa funzione calcola e stampa il residuo \(\hat \\varepsilon_i\) per una coppia di valori
-\(x_i\) e \(y_i\), utilizzando i coefficienti di regressione lineare \(\hat\\beta_0\) e
-\(\hat\\beta_1\). L'output è in formato LaTeX e mostra i passaggi del calcolo del valore previsto
-\(\hat y_i\) e del residuo \(\hat \\varepsilon_i\).
+Questa funzione calcola e stampa il residuo \eqn{\hat\varepsilon_i} per una coppia di valori
+\(x_i\) e \(y_i\), utilizzando i coefficienti di regressione lineare \eqn{\hat\beta_0} e
+\eqn{\hat\beta_1}. L'output è in formato LaTeX e mostra i passaggi del calcolo del valore previsto
+\eqn{\hat y_i} e del residuo \eqn{\hat\varepsilon_i}.
 }
 \details{
-Si assume che i coefficienti \(\hat\\beta_0\) e \(\hat\\beta_1\) siano definiti
+Si assume che i coefficienti \(\\hat\\beta_0\) e \(\\hat\\beta_1\) siano definiti
          e accessibili nello scope da cui la funzione viene chiamata. La funzione stampa l'equazione
-         per calcolare \(\hat y_i\) e il residuo \(\hat \\varepsilon_i\).
+         per calcolare \(\\hat y_i\) e il residuo \(\\hat \\varepsilon_i\).
 }
 \examples{
 x <- rnorm(100)

@@ -20,7 +20,7 @@ La funzione non ritorna un valore ma stampa direttamente l'output in formato LaT
 }
 \description{
 Questa funzione genera l'output LaTeX per il calcolo dei coefficienti di regressione lineare,
-includendo i coefficienti \(\beta_1\) e \(\beta_0\) (o \(\alpha_1\) e \(\alpha_0\) se viene
+includendo i coefficienti \(\\beta_1\) e \(\\beta_0\) (o \(\\alpha_1\) e \(\\alpha_0\) se viene
 utilizzato il calcolo inverso) basati sui dati forniti. La funzione permette di scegliere tra
 una stampa dettagliata dei calcoli intermedi o una più semplice che include solo i coefficienti.
 }

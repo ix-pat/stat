@@ -15,14 +15,14 @@ La funzione non ritorna un valore ma stampa direttamente l'output in formato LaT
 }
 \description{
 Questa funzione calcola e stampa l'equazione di previsione per un valore \(x\) dato,
-utilizzando i coefficienti di regressione lineare \(\hat\\beta_0\) e \(\hat\\beta_1\).
+utilizzando i coefficienti di regressione lineare \eqn{\hat\beta_0} e \eqn{\hat\beta_1}.
 L'output è in formato LaTeX e mostra l'equazione di previsione completa, includendo i calcoli
 effettivi per il valore specificato di \(x\).
 }
 \details{
-Si assume che i coefficienti \(\hat\\beta_0\) e \(\hat\\beta_1\) siano definiti
+Si assume che i coefficienti \eqn{\hat\beta_0} e \eqn{\hat\beta_1} siano definiti
          e accessibili nello scope da cui la funzione viene chiamata. La funzione controlla se
-         \(\hat\\beta_1\) è negativo, ma non esegue operazioni specifiche in tal caso; questa
+         \eqn{\hat\beta_1} è negativo, ma non esegue operazioni specifiche in tal caso; questa
          condizione può essere espansa per gestire scenari specifici.
 }
 \examples{

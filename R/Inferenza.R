@@ -702,7 +702,7 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
 #' Stampa i Coefficienti di Regressione in LaTeX
 #'
 #' Questa funzione genera l'output LaTeX per il calcolo dei coefficienti di regressione lineare,
-#' includendo i coefficienti \(\beta_1\) e \(\beta_0\) (o \(\alpha_1\) e \(\alpha_0\) se viene
+#' includendo i coefficienti \(\\beta_1\) e \(\\beta_0\) (o \(\\alpha_1\) e \(\\alpha_0\) se viene
 #' utilizzato il calcolo inverso) basati sui dati forniti. La funzione permette di scegliere tra
 #' una stampa dettagliata dei calcoli intermedi o una più semplice che include solo i coefficienti.
 #'
@@ -770,7 +770,7 @@ calcolo_beta <- function(semplice=F,inv = F){
 #' Stampa la Previsione di Y Data un Valore X in LaTeX
 #'
 #' Questa funzione calcola e stampa l'equazione di previsione per un valore \(x\) dato,
-#' utilizzando i coefficienti di regressione lineare \(\hat\\beta_0\) e \(\hat\\beta_1\).
+#' utilizzando i coefficienti di regressione lineare \eqn{\hat\beta_0} e \eqn{\hat\beta_1}.
 #' L'output è in formato LaTeX e mostra l'equazione di previsione completa, includendo i calcoli
 #' effettivi per il valore specificato di \(x\).
 #'
@@ -779,9 +779,9 @@ calcolo_beta <- function(semplice=F,inv = F){
 #' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
 #'         nell'ambiente di chiamata.
 #'
-#' @details Si assume che i coefficienti \(\hat\\beta_0\) e \(\hat\\beta_1\) siano definiti
+#' @details Si assume che i coefficienti \eqn{\hat\beta_0} e \eqn{\hat\beta_1} siano definiti
 #'          e accessibili nello scope da cui la funzione viene chiamata. La funzione controlla se
-#'          \(\hat\\beta_1\) è negativo, ma non esegue operazioni specifiche in tal caso; questa
+#'          \eqn{\hat\beta_1} è negativo, ma non esegue operazioni specifiche in tal caso; questa
 #'          condizione può essere espansa per gestire scenari specifici.
 #'
 #' @examples
@@ -801,20 +801,20 @@ previsione <- function(x){
 
 #' Stampa il Calcolo del Residuo per una Coppia (x, y) in LaTeX
 #'
-#' Questa funzione calcola e stampa il residuo \(\hat \\varepsilon_i\) per una coppia di valori
-#' \(x_i\) e \(y_i\), utilizzando i coefficienti di regressione lineare \(\hat\\beta_0\) e
-#' \(\hat\\beta_1\). L'output è in formato LaTeX e mostra i passaggi del calcolo del valore previsto
-#' \(\hat y_i\) e del residuo \(\hat \\varepsilon_i\).
+#' Questa funzione calcola e stampa il residuo \eqn{\hat\varepsilon_i} per una coppia di valori
+#' \(x_i\) e \(y_i\), utilizzando i coefficienti di regressione lineare \eqn{\hat\beta_0} e
+#' \eqn{\hat\beta_1}. L'output è in formato LaTeX e mostra i passaggi del calcolo del valore previsto
+#' \eqn{\hat y_i} e del residuo \eqn{\hat\varepsilon_i}.
 #'
-#' @param x Il valore di \(x_i\) per il quale si desidera calcolare il residuo.
-#' @param y Il valore di \(y_i\) corrispondente a \(x_i\).
+#' @param x Il valore di \eqn{x_i} per il quale si desidera calcolare il residuo.
+#' @param y Il valore di \eqn{y_i} corrispondente a \eqn{x_i}.
 #'
 #' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
 #'         nell'ambiente di chiamata.
 #'
-#' @details Si assume che i coefficienti \(\hat\\beta_0\) e \(\hat\\beta_1\) siano definiti
+#' @details Si assume che i coefficienti \(\\hat\\beta_0\) e \(\\hat\\beta_1\) siano definiti
 #'          e accessibili nello scope da cui la funzione viene chiamata. La funzione stampa l'equazione
-#'          per calcolare \(\hat y_i\) e il residuo \(\hat \\varepsilon_i\).
+#'          per calcolare \(\\hat y_i\) e il residuo \(\\hat \\varepsilon_i\).
 #'
 #' @examples
 #' x <- rnorm(100)
@@ -899,10 +899,10 @@ TSS <- function(){
   \\end{eqnarray*}")
 }
 
-#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\hat{\beta}_1\)
+#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\\hat{\\beta}_1\)
 #'
 #' Questa funzione calcola e stampa, in formato LaTeX, la varianza stimata e l'errore standard
-#' per il coefficiente di regressione \(\hat{\beta}_1\) utilizzando la varianza residua.
+#' per il coefficiente di regressione \(\\hat{\\beta}_1\) utilizzando la varianza residua.
 #' Il calcolo include la stima dell'errore standard basato su varianze corrette.
 #'
 #' @param sig_eps Se TRUE, calcola prima la varianza residua corretta per poi procedere al
@@ -913,7 +913,7 @@ TSS <- function(){
 #'
 #' @details Si assume che le variabili `n`, `vy`, `vx`, `r^2`, `sh2`, `se2` e `vb1` siano definite
 #'          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-#'          varianze e errori standard sono stimati per \(\hat{\beta}_1\).
+#'          varianze e errori standard sono stimati per \(\\hat{\\beta}_1\).
 #'
 #' @examples
 #' x <- rnorm(100)
@@ -923,10 +923,10 @@ TSS <- function(){
 #'
 #' @export
 
-#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\hat{\beta}_0\)
+#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\\hat{\\beta}_0\)
 #'
 #' Questa funzione calcola e stampa, in formato LaTeX, la varianza stimata e l'errore standard
-#' per il coefficiente di regressione \(\hat{\beta}_0\) utilizzando la varianza residua.
+#' per il coefficiente di regressione \(\\hat{\\beta}_0\) utilizzando la varianza residua.
 #' Il calcolo include la stima dell'errore standard basato su varianze corrette.
 #'
 #' @param sig_eps Se TRUE, calcola prima la varianza residua corretta per poi procedere al
@@ -937,7 +937,7 @@ TSS <- function(){
 #'
 #' @details Si assume che le variabili `n`, `vy`, `vx`, `mx`, `r^2`, `sh2`, `se2` e `vb0` siano definite
 #'          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-#'          varianze e errori standard sono stimati per \(\hat{\beta}_0\).
+#'          varianze e errori standard sono stimati per \(\\hat{\\beta}_0\).
 #'
 #' @examples
 #' x <- rnorm(100)
@@ -994,11 +994,11 @@ V(\\hat\\beta_{0}) &=& \\sigma_{\\varepsilon}^{2} \\left( \\frac{1} {n}  +  \\fr
 
 #' Conduce e Stampa l'Analisi di un t-Test per un Coefficiente di Regressione in LaTeX
 #'
-#' Questa funzione esegue un t-test su uno dei coefficienti di regressione (\(\hat{\beta}_0\) o \(\hat{\beta}_1\)),
+#' Questa funzione esegue un t-test su uno dei coefficienti di regressione \eqn{\hat{\beta}_0} o \eqn{\hat\beta_1},
 #' stampando il calcolo della statistica del test e altri output correlati in formato LaTeX. 
 #' La funzione può anche eseguire e stampare il calcolo dell'errore standard del coefficiente se specificato.
 #'
-#' @param cof Indice del coefficiente su cui eseguire il test (0 per \(\hat{\beta}_0\), 1 per \(\hat{\beta}_1\)).
+#' @param cof Indice del coefficiente su cui eseguire il test (0 per \eqn{\hat{\beta}_0}, 1 per  \eqn{\hat{\beta}_1}).
 #' @param bj0 Valore ipotizzato per il coefficiente sotto l'ipotesi nulla.
 #' @param h1 L'ipotesi alternativa del test (\(\\neq\), \(>\), o \(<\)).
 #' @param alpha Un vettore di livelli di significatività da utilizzare per il test.
