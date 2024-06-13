@@ -159,6 +159,7 @@ p <- function(x, ax = 4) {
   paste(p1, round(x, ax), p2, sep = "")
 }
 
+p0 <- paste0
 
 ## Statistica Descrittiva ####
 

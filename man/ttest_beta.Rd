@@ -4,7 +4,13 @@
 \alias{ttest_beta}
 \title{Conduce e Stampa l'Analisi di un t-Test per un Coefficiente di Regressione in LaTeX}
 \usage{
-ttest_beta(cof, bj0, h1 = "\\\\neq", alpha = 0.05)
+ttest_beta(
+  cof,
+  bj0,
+  h1 = "\\\\neq",
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  SE = F
+)
 }
 \arguments{
 \item{cof}{Indice del coefficiente su cui eseguire il test (0 per \(\hat{\beta}_0\), 1 per \(\hat{\beta}_1\)).}

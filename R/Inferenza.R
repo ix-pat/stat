@@ -142,8 +142,7 @@ A_ <- function(lst,tipo,lab1="A",lab2="B",um=""){
    $$\\begin{cases}
    H_0:",th1_s,"=",th0_s,"\\\\
    H_1:",th1_s,h1,th0_s,"
-   \\end{cases}$$\n\n", 
-      ifelse(h1=="\\neq","Siccome \\(H_1\\) è bilaterale, considereremo \\(\\alpha/2\\), anziché \\(\\alpha\\)\n","\n"))
+   \\end{cases}$$\n\n")
 }
 
 
@@ -153,8 +152,8 @@ C_ <- function(lst){
   tsimb <- ifelse(is.null(gdl),"z","t")
   if (is.null(gdl)){
     if (h1 =="\\neq"){
-    ped   <- paste0("_",alpha/2)
-      } else {ped <- paste0("_",alpha) }
+    ped   <- paste0("_{",alpha/2,"}")
+      } else {ped <- paste0("_{",alpha,"}") }
   } else {
     if (h1 =="\\neq"){
       ped   <- paste0("_{",alpha,"/2;",n,"-",param,"}")
@@ -169,27 +168,29 @@ C_ <- function(lst){
   }
   H1 <- h1
   H1 <- ifelse(h1 == "\\neq",">",H1)
+  cat( "\n\n\\(\\fbox{C}\\) CONCLUSIONE \n\n",
+       ifelse(h1=="\\neq","Siccome \\(H_1\\) è bilaterale, considereremo \\(\\alpha/2\\), anziché \\(\\alpha\\)\n\n","\n\n"),
+       sep = "")
   if (length(alpha)!=1){
     if(h1 == "<") {
       tcrit <- rev(tcrit)
       livello <- 5-livello}
     conc <- switch(livello+1,
                   "0"=paste0("$",tobs_s,ifelse(h1=="<",">","<"),tcrit[1],"$, quindi **non** rifiuto $H_0$ a **nessun** livello di significatività, $p_\\text{value}>0.1$"),
-                  "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]),"$, indecisione sul rifiuto di $H_0$ al 10%, $0.05<p_\\text{value}<0.1$, _marginalmente significativo_ $\\box{.}$."),
-                  "2"=paste0("$",min(tcrit[2:3]),"<",tobs_s,"<",max(tcrit[2:3]),"$, quindi **rifiuto** $H_0$ al 5%, $0.01<p_\\text{value}<0.05$, _significativo_   $\\box{*}$."),
-                  "3"=paste0("$",min(tcrit[3:4]),"<",tobs_s,"<",max(tcrit[3:4]),"$, quindi **rifiuto** $H_0$ all'1%, $0.001<p_\\text{value}<0.01$, _molto significativo_  $\\box{**}$."),
-                  "4"=paste0("$",tobs_s,H1,tcrit[4],"$, quindi **rifiuto** $H_0$ sotto all'1‰, $p_\\text{value}<0.001$, _estremamente significativo_ $\\box{***}$."),
+                  "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]),"$, indecisione sul rifiuto di $H_0$ al 10%, $0.05<p_\\text{value}<0.1$,\n\n _marginalmente significativo_ $\\fbox{.}$."),
+                  "2"=paste0("$",min(tcrit[2:3]),"<",tobs_s,"<",max(tcrit[2:3]),"$, quindi **rifiuto** $H_0$ al 5%, $0.01<p_\\text{value}<0.05$,\n\n _significativo_   $\\fbox{*}$."),
+                  "3"=paste0("$",min(tcrit[3:4]),"<",tobs_s,"<",max(tcrit[3:4]),"$, quindi **rifiuto** $H_0$ all'1%, $0.001<p_\\text{value}<0.01$,\n\n _molto significativo_  $\\fbox{**}$."),
+                  "4"=paste0("$",tobs_s,H1,tcrit[4],"$, quindi **rifiuto** $H_0$ sotto all'1‰, $p_\\text{value}<0.001$,\n\n _estremamente significativo_ $\\fbox{***}$."),
                    )
-    cat( "\\(\\fbox{C}\\) CONCLUSIONE \n\n
-         i valori critici sono\n\n
-         \\[
-         ",paste(tcrit,collapse=";"),"
-         \\]\n\n", conc)
+    
+    cat("I valori critici sono\n\n",
+         "$",paste0(tcrit,collapse="$;$"),"$\n\n", 
+         "Siccome ",conc,sep = "")
   } else {
       if (h1=="\\neq") tobs <-abs(tobs)
-      cat("$\\alpha=$", alpha," e dalle tavole osserviamo $",tcrit,"$.\n\n
-          Essendo",tobs_s,ifelse(tobs>tc,">","<"),tcrit,
-          "allora",ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$","**non** rifiuto $H_0$"),"al ",alpha*100,"%")
+      cat("La siginficatitività è $\\alpha=", alpha,"$, dalle tavole osserviamo $",tcrit,"$.\n\n",
+          "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora", ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$","**non** rifiuto $H_0$"),"al ",alpha*100,"%\n\n",
+          sep="")
     }
 }
 
@@ -334,7 +335,9 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/10
   )
   
   C_(lst = lst)
+  
   graf(lst = lst)
+  
   if (pvalue) p_value(lst)
 }
 
@@ -434,7 +437,9 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um=
    \\end{eqnarray*}
    ")
   C_(lst = lst)
+  
   graf(lst = lst)
+  
   p_value(lst)
 
   } else
@@ -473,7 +478,9 @@ $$
    ")
     
     C_(lst)
+    
     graf(lst)
+    
     p_value(lst)
 
     } else # et = F omogeneo
@@ -505,24 +512,25 @@ $$
   =  ", tobs,"\\, .
   \\end{eqnarray*}\n\n
   ")
-
       C_(lst)
-      graf(lst)
-      p_value(lst)
       
+      graf(lst)
+      
+      p_value(lst)
     }
   }
 }
 
-
 #' @rdname test-su-due-campioni
-ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000)){
+ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000) ){
   test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=T,a=a,b=b,um=um)
 }
+
 #' @rdname test-su-due-campioni
 ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000)){
   test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=F,a=a,b=b,um=um)
 }
+
 #' @rdname test-su-due-campioni
 ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq",a="1",b="2",alpha = c(1/10,5/100,1/100,1/1000)){
   test_2c(mu1 = s1,mu2 = s2,s1h = F,s2h = F,n1 = n1,n2 = n2,h1 = h1,alpha = alpha,a = a,b = b)
@@ -1016,10 +1024,17 @@ ttest_beta <-  function(cof,bj0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),
   bj <- ifelse(cof==0,b0,b1)
   vbj <-  ifelse(cof==0,(vb0),(vb1))
   lst <- test(theta1 = bj,theta0 = bj0,se = sqrt(vbj),h1 = h1,alpha = alpha,gdl = n-2,n=n)
+  ls2e(lst)
   A_(lst,tipo=paste("beta",cof))
-  
+
+    
   cat("$\\fbox{B}$ SCELTA E CALCOLO STATISTICA-TEST, $T$
-Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.\n\n
+Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.\n\n")
+
+  if (SE&(cof==0)) se_beta0(sig_eps = T)
+  if (SE&(cof==1)) se_beta1(sig_eps = T)
+  
+cat("  
 \\begin{eqnarray*}
  \\frac{\\hat\\beta_{",cof,"} - \\beta_{",cof,";H_0}} {\\widehat{SE(\\hat\\beta_{",cof,"})}}&\\sim&t_{n-2}\\\\
    t_{\\text{obs}}
@@ -1027,10 +1042,11 @@ Test su un coefficiente di regressione: $\\Rightarrow$ t-Test.\n\n
  =  ",tobs,"\\, .
 \\end{eqnarray*}
 ")
-  if (SE&(cof==0)) se_beta0(sig_eps = T)
-  if (SE&(cof==1)) se_beta1(sig_eps = T)
+  
   C_(lst = lst)
+  
   graf(lst)
+  
   p_value(lst)
   
 }
