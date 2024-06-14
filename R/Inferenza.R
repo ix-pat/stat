@@ -295,21 +295,28 @@ test_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000)){
   cat("La stima
    $$\\hat\\pi=\\frac {", sn,"} {", n,"}=", ph," $$\n\n")
   
-  A_(lst = lst,tipo = "pi 1")
+  # A Formulazione delle Ipotesi
+  
+  A_(lst = lst,tipo = "pi 1") 
+  
+  # B Scelta e calcolo statistica test
+  
   cat("\n\n \\(\\fbox{B}\\) SCELTA E CALCOLO STATISTICA-TEST, \\(Z\\)
         Test Binomiale per \\(n\\) grande: \\(\\Rightarrow\\) z-Test.\n\n
    \\begin{eqnarray*}
    \\frac{\\hat\\pi - \\pi_{0}} {\\sqrt {\\pi_0(1-\\pi_0)/\\,n}}&\\sim&N(0,1)\\\\
    z_{\\text{obs}}
    &=& \\frac{ (", ph,"- ", p0,")} {\\sqrt{", p0,"(1-", p0,")/", n,"}}
-   =  ", tobs,"\\, .
+   =  ", tobs,"\\,.
    \\end{eqnarray*}")
 
+  # C conclusioni
+  
   C_(lst)
   
-  graf(lst)
+  graf(lst) # grafico
   
-  p_value(lst)
+  p_value(lst) # p-value
 
 }
 
