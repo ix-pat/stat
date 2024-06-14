@@ -41,7 +41,7 @@ Si assume che le variabili `b0`, `b1`, `vb0`, `vb1`, e `n` siano definite e acce
 x <- rnorm(100)
 y <- x + rnorm(100, 0, .1)
 ls2e(regr(x, y))  # Assume regr and ls2e are properly defined
-ttest_beta(cof = 0, bj0 = 0)  # Test su \(\hat{\beta}_0\)
-ttest_beta(cof = 1, bj0 = 1, SE = TRUE)  # Test su \(\hat{\beta}_1\) con errore standard
+ttest_beta(cof = 0, bj0 = 0)  # Test su beta_0
+ttest_beta(cof = 1, bj0 = 1, SE = TRUE)  # Test su beta_1 con errore standard
 
 }

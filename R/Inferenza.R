@@ -906,29 +906,6 @@ TSS <- function(){
   \\end{eqnarray*}")
 }
 
-#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\\hat{\\beta}_1\)
-#'
-#' Questa funzione calcola e stampa, in formato LaTeX, la varianza stimata e l'errore standard
-#' per il coefficiente di regressione \(\\hat{\\beta}_1\) utilizzando la varianza residua.
-#' Il calcolo include la stima dell'errore standard basato su varianze corrette.
-#'
-#' @param sig_eps Se TRUE, calcola prima la varianza residua corretta per poi procedere al
-#'                calcolo delle varianze e degli errori standard dei coefficienti di regressione.
-#'
-#' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
-#'         nell'ambiente di chiamata.
-#'
-#' @details Si assume che le variabili `n`, `vy`, `vx`, `r^2`, `sh2`, `se2` e `vb1` siano definite
-#'          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-#'          varianze e errori standard sono stimati per \(\\hat{\\beta}_1\).
-#'
-#' @examples
-#' x <- rnorm(100)
-#' y <- x + rnorm(100, 0, .1)
-#' ls2e(regr(x, y))  # Assume regr and ls2e are properly defined
-#' se_beta1(TRUE)
-#'
-#' @export
 
 #' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\\hat{\\beta}_0\)
 #'
@@ -1022,11 +999,10 @@ V(\\hat\\beta_{0}) &=& \\sigma_{\\varepsilon}^{2} \\left( \\frac{1} {n}  +  \\fr
 #' x <- rnorm(100)
 #' y <- x + rnorm(100, 0, .1)
 #' ls2e(regr(x, y))  # Assume regr and ls2e are properly defined
-#' ttest_beta(cof = 0, bj0 = 0)  # Test su \(\hat{\beta}_0\)
-#' ttest_beta(cof = 1, bj0 = 1, SE = TRUE)  # Test su \(\hat{\beta}_1\) con errore standard
-#'
+#' ttest_beta(cof = 0, bj0 = 0)  # Test su beta_0
+#' ttest_beta(cof = 1, bj0 = 1, SE = TRUE)  # Test su beta_1 con errore standard
+#' 
 #' @export
-
 ttest_beta <-  function(cof,bj0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),SE=F){
   bj <- ifelse(cof==0,b0,b1)
   vbj <-  ifelse(cof==0,(vb0),(vb1))
