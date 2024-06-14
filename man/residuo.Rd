@@ -22,9 +22,9 @@ Questa funzione calcola e stampa il residuo \eqn{\hat\varepsilon_i} per una copp
 \eqn{\hat y_i} e del residuo \eqn{\hat\varepsilon_i}.
 }
 \details{
-Si assume che i coefficienti \(\\hat\\beta_0\) e \(\\hat\\beta_1\) siano definiti
+Si assume che i coefficienti \eqn{\hat{\beta_1}} e \eqn{\hat{\beta_0}}  siano definiti
          e accessibili nello scope da cui la funzione viene chiamata. La funzione stampa l'equazione
-         per calcolare \(\\hat y_i\) e il residuo \(\\hat \\varepsilon_i\).
+         per calcolare \eqn{\hat y_i}e il residuo \eqn{\hat{\varepsilon_i}}.
 }
 \examples{
 x <- rnorm(100)

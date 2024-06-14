@@ -709,7 +709,7 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
 #' Stampa i Coefficienti di Regressione in LaTeX
 #'
 #' Questa funzione genera l'output LaTeX per il calcolo dei coefficienti di regressione lineare,
-#' includendo i coefficienti \(\\beta_1\) e \(\\beta_0\) (o \(\\alpha_1\) e \(\\alpha_0\) se viene
+#' includendo i coefficienti \eqn{\hat{\beta_1}} e \eqn{\hat{\beta_0}} \eqn{\hat{\alpha_1}} e \eqn{\hat{\alpha_0}} se viene
 #' utilizzato il calcolo inverso) basati sui dati forniti. La funzione permette di scegliere tra
 #' una stampa dettagliata dei calcoli intermedi o una più semplice che include solo i coefficienti.
 #'
@@ -819,9 +819,9 @@ previsione <- function(x){
 #' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
 #'         nell'ambiente di chiamata.
 #'
-#' @details Si assume che i coefficienti \(\\hat\\beta_0\) e \(\\hat\\beta_1\) siano definiti
+#' @details Si assume che i coefficienti \eqn{\hat{\beta_1}} e \eqn{\hat{\beta_0}}  siano definiti
 #'          e accessibili nello scope da cui la funzione viene chiamata. La funzione stampa l'equazione
-#'          per calcolare \(\\hat y_i\) e il residuo \(\\hat \\varepsilon_i\).
+#'          per calcolare \eqn{\hat y_i}e il residuo \eqn{\hat{\varepsilon_i}}.
 #'
 #' @examples
 #' x <- rnorm(100)
@@ -907,10 +907,10 @@ TSS <- function(){
 }
 
 
-#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \(\\hat{\\beta}_0\)
+#' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \eqn{\hat{\beta_0}}
 #'
 #' Questa funzione calcola e stampa, in formato LaTeX, la varianza stimata e l'errore standard
-#' per il coefficiente di regressione \(\\hat{\\beta}_0\) utilizzando la varianza residua.
+#' per il coefficiente di regressione \eqn{\hat{\beta_0}} utilizzando la varianza residua.
 #' Il calcolo include la stima dell'errore standard basato su varianze corrette.
 #'
 #' @param sig_eps Se TRUE, calcola prima la varianza residua corretta per poi procedere al
@@ -921,7 +921,7 @@ TSS <- function(){
 #'
 #' @details Si assume che le variabili `n`, `vy`, `vx`, `mx`, `r^2`, `sh2`, `se2` e `vb0` siano definite
 #'          e accessibili nello scope da cui la funzione viene chiamata. I calcoli mostrano come
-#'          varianze e errori standard sono stimati per \(\\hat{\\beta}_0\).
+#'          varianze e errori standard sono stimati per \eqn{\hat{\beta_0}}.
 #'
 #' @examples
 #' x <- rnorm(100)
