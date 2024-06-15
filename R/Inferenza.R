@@ -286,7 +286,7 @@ p_value <- function(lst){
 #'
 #' @rdname test-z-t
 
-test_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000)){
+ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000)){
   ph <- sn/n
   se <- sqrt(p0*(1-p0)/n)
 
