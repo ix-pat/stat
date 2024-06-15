@@ -292,6 +292,7 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000)){
 
   cat("**Test $Z$ per una proporzione**\n\n")
   lst <- test(theta1 = ph,theta0 = p0,se = se,h1 = h1,n = n,alpha = alpha)
+  ls2e(lst)
   cat("La stima
    $$\\hat\\pi=\\frac {", sn,"} {", n,"}=", ph," $$\n\n")
   
