@@ -8,6 +8,46 @@
 srt <- ""
 src_ <- function(x) {paste(srt,x,sep = "")}
 
+#' Colori di base
+#'
+#' Questi colori di base sono definiti utilizzando il modello di colore RGB. 
+#' I colori includono diverse tonalità di blu e un colore rosso.
+#'
+#' @details
+#' I colori definiti sono:
+#' \itemize{
+#'   \item \code{iblue}: Una versione scurita del colore base blu.
+#'   \item \code{mblue}: Il colore base blu.
+#'   \item \code{ablue}: Una versione più chiara del colore base blu.
+#'   \item \code{ared}: Il colore base rosso.
+#' }
+#'
+#' La funzione \code{darken} viene utilizzata per regolare la luminosità del colore base blu per creare \code{iblue}.
+#'
+#' @examples
+#' # Visualizza i colori
+#' plot(1,1, col = iblue, pch = 16, cex = 5,xlim=c(0,5),ylim=c(0,5))
+#' points(2,2, col = mblue, pch = 16, cex = 5)
+#' points(3,3, col = ablue, pch = 16, cex = 5)
+#' points(4,4, col = ared, pch = 16, cex = 5)
+#'
+#' @name colori_base
+NULL
+
+# Definizione dei colori di base
+#' @rdname colori_base
+iblue <- darken(rgb(0.024, 0.282, 0.478), amount = .4)
+
+#' @rdname colori_base
+mblue <- rgb(0.024, 0.282, 0.478)
+
+#' @rdname colori_base
+ablue <- rgb(0.729, 0.824, 0.878)
+
+#' @rdname colori_base
+ared  <- rgb(0.671, 0.161, 0.18)
+
+
 #' Converte una Lista in un Ambiente e Assegna gli Elementi alla Global Environment
 #'
 #' Questa funzione prende una lista di oggetti e li assegna alla global environment, 
