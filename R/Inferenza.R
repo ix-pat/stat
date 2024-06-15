@@ -189,7 +189,7 @@ C_ <- function(lst){
   } else {
       if (h1=="\\neq") tobs <-abs(tobs)
       cat("La siginficatitività è $\\alpha=", alpha,"$, dalle tavole osserviamo $",tcrit,"$.\n\n",
-          "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora ", ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$","**non** rifiuto $H_0$ "),"al ",alpha*100,"%.\n\n",
+          "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora ", ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$ ","**non** rifiuto $H_0$ "),"al ",alpha*100,"%.\n\n",
           sep="")
     }
 }
@@ -216,7 +216,8 @@ graf <- function(lst){
   axis(1,tac,round(tac,4),las=2)
   axis(2)
   segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
-  col_ <- c("red","purple","red4","grey","blue")
+  col_ <- c("red",ared,mblue,ablue,iblue)
+  col_ <- colorRampPalette(c(ared,iblue))(5)
   if (length(alpha)==1) col_ <-c("red","blue")
   k <- length(tac)
   for (i in 1:(k/2)){
@@ -249,7 +250,7 @@ p_value <- function(lst){
   tobs2 <- round(tobs,2)
   if (h1 != "\\neq") {pval <- paste0("P(",Tsimb,H1,tobs2,")=",p_val)}
   if (h1 == "\\neq") {pval <- paste0("P(|",Tsimb,"|",H1,"|",tobs2,"|)=","2P(",Tsimb,H1,abs(tobs2),")=",p_val)}
-  cat("\n\n Il \\(p_{\\text{value}}\\) è \n\n $$", pval,"$$\n\n")
+  cat("\n\n Il \\(p_{\\text{value}}\\) è \n\n $$ p_{\\text{value}} =", pval,"$$\n\n")
   if (!is.null(gdl)) cat("Attenzione il calcolo del $p_\\text{value}$ con la $T$ è puramente illustrativo e non può essere riprodotto senza una calcolatrice statistica adeguata.")
 }
 
