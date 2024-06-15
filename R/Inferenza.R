@@ -410,6 +410,8 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
 #' @rdname test-su-due-campioni
 test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000)){
   #### Test su due proporzioni ----------------
+  a <- gsub("\\$", "", a)
+  b <- gsub("\\$", "", b)
   if (!s1h) # s1h = F, non ci sono le sd, è un test su proporzioni
   {
     s1 <- mu1
