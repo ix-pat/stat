@@ -332,9 +332,9 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/10
 
   A_(lst = lst,tipo = "mu 1",um = um)
   
-  cat("\n\n \\(\\fbox{B}\\) SCELTA E CALCOLO STATISTICA-TEST, \\(Z\\)\n\n
-     \\(\\sigma^{2}\\) di \\(\\cal{P}\\) è nota: \\(\\Rightarrow\\) z-Test.
-   \\begin{eqnarray*}
+  cat("\n\n \\(\\fbox{B}\\) SCELTA E CALCOLO STATISTICA-TEST, \\(Z\\)\n\n",
+     "\\(\\sigma^{2}\\) di \\(\\cal{P}\\) è nota: \\(\\Rightarrow\\) z-Test.\n\n",
+   "\\begin{eqnarray*}
    \\frac{\\hat\\mu - \\mu_{0}} {\\sigma/\\sqrt{n}}&\\sim&N(0,1)\\\\
    z_{\\text{obs}}
    &=& \\frac{ (",muh,"- ",mu0,")} {",s,"/\\sqrt{",n,"}}
