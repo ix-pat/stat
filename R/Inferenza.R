@@ -189,7 +189,7 @@ C_ <- function(lst){
   } else {
       if (h1=="\\neq") tobs <-abs(tobs)
       cat("La siginficatitività è $\\alpha=", alpha,"$, dalle tavole osserviamo $",tcrit,"$.\n\n",
-          "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora", ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$","**non** rifiuto $H_0$"),"al ",alpha*100,"%\n\n",
+          "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora ", ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$","**non** rifiuto $H_0$ "),"al ",alpha*100,"%.\n\n",
           sep="")
     }
 }
