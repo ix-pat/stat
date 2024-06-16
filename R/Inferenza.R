@@ -130,8 +130,8 @@ test <- function(theta1,theta0,se,h1,gdl=NULL,n,alpha = c(1/10,5/100,1/100,1/100
 A_ <- function(lst,tipo,lab1="A",lab2="B",um=""){
   ls2e(lst)
   simb <-  ifelse(grepl("pi",tipo),"\\pi","\\mu")
-  th0_s <- ifelse(grepl("1",tipo),paste0(simb,"_0=",theta0,um),paste0(simb,"_",lab2))
-  th1_s <- ifelse(grepl("1",tipo),simb,paste0(simb,"_",lab1))
+  th0_s <- ifelse(grepl("1",tipo),paste0(simb,"_0=",theta0,um),paste0(simb,"_\\text{",lab2,"}"))
+  th1_s <- ifelse(grepl("1",tipo),simb,paste0(simb,"_\\text{",lab1,"}"))
   if (grepl("beta",tipo)){
     simb <- "\\beta"
     th0_s <- ifelse(grepl("1",tipo),paste0(simb,"_{1;H_0}=",theta0),paste0(simb,"_{0;H_0}=",theta0))
@@ -184,8 +184,8 @@ C_ <- function(lst){
                    )
     
     cat("I valori critici sono\n\n",
-         "$",paste0(tcrit,collapse="$;$"),"$\n\n", 
-         "Siccome ",conc,sep = "")
+         "$",paste0(tcrit,collapse="$; $"),"$\n\n", 
+         "Siccome ",conc,"\n\n",sep = "")
   } else {
       if (h1=="\\neq") tobs <-abs(tobs)
       cat("La siginficatitività è $\\alpha=", alpha,"$, dalle tavole osserviamo $",tcrit,"$.\n\n",
@@ -217,7 +217,7 @@ graf <- function(lst){
   axis(2)
   segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
   col_ <- c("red",ared,mblue,ablue,iblue)
-  col_ <- colorRampPalette(c(ared,iblue))(5)
+  col_ <- colorRampPalette(c("red","pink",iblue))(5)
   if (length(alpha)==1) col_ <-c("red","blue")
   k <- length(tac)
   for (i in 1:(k/2)){
@@ -411,8 +411,6 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
 #' @rdname test-su-due-campioni
 test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000)){
   #### Test su due proporzioni ----------------
-  a <- gsub("\\$", "", a)
-  b <- gsub("\\$", "", b)
   if (!s1h) # s1h = F, non ci sono le sd, è un test su proporzioni
   {
     s1 <- mu1
@@ -891,6 +889,9 @@ R2 <- function(){
 #'
 #' @examples
 #' # Calcolo e stampa di TSS, ESS e RSS supponendo che n, vy e r^2 siano già definiti
+#' x <- rnorm(100)
+#' y <- x + rnorm(100,0,.1)
+#' ls2e(regr(x,y))
 #' TSS()
 #'
 #' @export
@@ -910,6 +911,36 @@ TSS <- function(){
   \\end{eqnarray*}")
 }
 
+#' Calcolo della varianza di epsilon
+#'
+#' Questa funzione calcola la varianza di epsilon (\eqn{S_\varepsilon^2}) utilizzando le formule mostrate.
+#'
+#' @details
+#' La funzione visualizza le seguenti equazioni utilizzando la notazione LaTeX:
+#' \deqn{\hat{\sigma_\varepsilon}^2 = (1-r^2)\hat{\sigma_Y}^2}
+#' \deqn{(1-r^2)\times \text{vy}}
+#' \deqn{S_\varepsilon^2 = \frac{n} {n-2} \hat{\sigma_\varepsilon}^2}
+#' \deqn{\frac{n} {n-2} \times \text{sh2} = \text{se2}}
+#'
+#' @examples
+#' # Esempio di utilizzo
+#' x <- rnorm(100)
+#' y <- x + rnorm(100,0,.1)
+#' ls2e(regr(x,y))
+#' S_epsilon()
+#'
+#' @export
+S_epsilon <- function(){
+  cat(
+  "\\begin{eqnarray*}
+\\hat{\\sigma_\\varepsilon}^2&=&(1-r^2)\\hat\\sigma_Y^2\\\\
+&=& (1-",r^2,")\\times",vy,"\\\\
+   &=& ",sh2,"\\\\
+   S_\\varepsilon^2 &=& \\frac{n} {n-2} \\hat{\\sigma_\\varepsilon}^2\\\\
+   &=&  \\frac{",n,"} {",n,"-2} \\hat{\\sigma_\\varepsilon}^2 \\\\
+ &=&  \\frac{",n,"} {",n,"-2} \\times ",sh2," = ",se2," 
+\\end{eqnarray*}")
+  }
 
 #' Stampa il Calcolo della Varianza Stimata e dell'Errore Standard per \eqn{\hat{\beta_0}}
 #'
@@ -935,17 +966,9 @@ TSS <- function(){
 #'
 #' @rdname se_beta
 se_beta1 <- function(sig_eps = TRUE){
-  if (sig_eps){cat(
-    "\\begin{eqnarray*}
-\\hat{\\sigma_\\varepsilon}^2&=&(1-r^2)\\hat\\sigma_Y^2\\\\
-&=& (1-",r^2,")\\times",vy,"\\\\
-   &=& ",sh2,"\\\\
-   S_\\varepsilon^2 &=& \\frac{n} {n-2} \\hat{\\sigma_\\varepsilon}^2\\\\
-   &=&  \\frac{",n,"} {",n,"-2} \\hat{\\sigma_\\varepsilon}^2 \\\\
- &=&  \\frac{",n,"} {",n,"-2} \\times ",sh2," = ",se2," 
-\\end{eqnarray*}
-
-E quindi")}
+  if (sig_eps){
+    S_epsilon()
+cat("\n\n E quindi")}
   
   cat("\\begin{eqnarray*}
 V(\\hat\\beta_{1}) &=& \\frac{\\sigma_{\\varepsilon}^{2}} {n \\hat{\\sigma}^{2}_{X}} \\\\
@@ -959,17 +982,9 @@ V(\\hat\\beta_{1}) &=& \\frac{\\sigma_{\\varepsilon}^{2}} {n \\hat{\\sigma}^{2}_
 
 #' @rdname se_beta
 se_beta0 <- function(sig_eps = TRUE)  {
-  if (sig_eps){cat(
-    "\\begin{eqnarray*}
-\\hat{\\sigma_\\varepsilon}^2&=&(1-r^2)\\hat\\sigma_Y^2\\\\
-&=& (1-",r^2,")\\times",vy,"\\\\
-   &=& ",sh2,"\\\\
-   S_\\varepsilon^2 &=& \\frac{n} {n-2} \\hat{\\sigma_\\varepsilon}^2\\\\
-   &=&  \\frac{",n,"} {",n,"-2} \\hat{\\sigma_\\varepsilon}^2 \\\\
- &=&  \\frac{",n,"} {",n,"-2} \\times ",sh2," = ",se2," 
-\\end{eqnarray*}
-
-E quindi")}
+  if (sig_eps){
+    S_epsilon()
+    cat("\n\n E quindi")}
   
   cat("\\begin{eqnarray*}
 V(\\hat\\beta_{0}) &=& \\sigma_{\\varepsilon}^{2} \\left( \\frac{1} {n}  +  \\frac{\\bar{x}^{2}} {n \\hat{\\sigma}^{2}_{X}} \\right)\\\\

@@ -23,6 +23,9 @@ Si assume che le variabili `n`, `vy`, e `r^2` (numero di osservazioni, varianza 
 }
 \examples{
 # Calcolo e stampa di TSS, ESS e RSS supponendo che n, vy e r^2 siano già definiti
+x <- rnorm(100)
+y <- x + rnorm(100,0,.1)
+ls2e(regr(x,y))
 TSS()
 
 }
