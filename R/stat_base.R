@@ -1,3 +1,43 @@
+#' Calcoli Statistici: Varianza e Deviazione Standard
+#'
+#' Queste funzioni forniscono il calcolo della varianza e della deviazione standard per una popolazione,
+#' e una funzione aggiuntiva per il calcolo della varianza quando si dispone di una distribuzione di probabilità.
+#'
+#' @details La funzione \code{s2c} calcola la varianza di una popolazione. La funzione \code{sc}
+#' calcola la deviazione standard di una popolazione. La funzione \code{vvv} calcola la varianza
+#' per una distribuzione di probabilità o per dati grezzi se le probabilità non sono fornite.
+#'
+#' @param x Un vettore di valori numerici.
+#' @param p Un vettore opzionale di probabilità associato a \code{x}.
+#'
+#' @return
+#' \code{s2c} e \code{vvv} restituiscono la varianza calcolata.
+#' \code{sc} restituisce la deviazione standard calcolata.
+#'
+#' @examples
+#' x <- c(1, 2, 3, 4, 5)
+#' p <- c(0.1, 0.2, 0.3, 0.2, 0.2)
+#' s2c(x)
+#' sc(x)
+#' vvv(x, p)
+#'
+#' @rdname calcoli-varianza
+s2c <- function(x) {
+  (mean(x^2) - mean(x)^2)  # varianza di popolazione
+}
+
+#' @rdname calcoli-varianza
+sc <- function(x) {
+  sqrt(s2c(x))  # sd di popolazione
+}
+
+#' @rdname calcoli-varianza
+vvv <- function(x, p = NULL) {
+  # varianza per distribuzione di probabilità
+  if (is.null(p)) v <- mean(x^2) - mean(x)^2
+  else v <- sum(p*x^2) - (sum(p*x))^2
+  return(v)
+}
 #' Genera Dati
 #'
 #' Questa funzione genera un insieme di dati basato sui parametri forniti. Può generare dati casuali o uniformi
