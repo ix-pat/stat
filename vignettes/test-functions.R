@@ -16,16 +16,6 @@ library(pat.book)
 options(digits=4,knitr.kable.NA = '',scipen = 8,big.mark=" ")
 opts_knit$set(global.par = TRUE,warning = FALSE, message = FALSE, fig.align = "center",fig.pos = "H", out.extra = "",results = 'asis',echo=FALSE)
 
-ls2e <- function(x){
-  invisible(list2env(x,envir = globalenv()))
-}
-# Colors
-
-iblue <- darken(rgb(0.024,0.282,0.478),amount = .4)
-mblue <- rgb(0.024,0.282,0.478)
-ablue <- rgb(0.729,0.824,0.878)
-ared  <- rgb(0.671,0.161,0.18)
-
 par(lwd=.5,col.main=iblue,mfrow=c(1,1))
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
 virg <- "`"
@@ -47,7 +37,7 @@ nomex <- "Nome della X"          # nome della X
 samp <- genera_dati(
   brk = brk,hhh = hhh,n = n)     # genera i dati dall'istogramma
 
-list2env(stat_base(samp = samp,brk = brk),envir = globalenv())      # crea il data set e la tabella dat3
+ls2e(stat_base(samp = samp,brk = brk))      # crea il data set e la tabella dat3
 
 tabl(dat3)
 
