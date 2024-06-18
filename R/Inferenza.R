@@ -174,7 +174,9 @@ C_ <- function(lst){
   if (length(alpha)!=1){
     if(h1 == "<") {
       tcrit <- rev(tcrit)
-      livello <- 5-livello}
+      livello <- 5-livello
+      livello <- ifelse(livello==5,0,livello)
+      }
     conc <- switch(livello+1,
                   "0"=paste0("$",tobs_s,ifelse(h1=="<",">","<"),tcrit[1],"$, quindi **non** rifiuto $H_0$ a **nessun** livello di significatività, $p_\\text{value}>0.1$"),
                   "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]),"$, indecisione sul rifiuto di $H_0$ al 10%, $0.05<p_\\text{value}<0.1$,\n\n _marginalmente significativo_ $\\fbox{.}$."),
