@@ -2,18 +2,18 @@
 ## Probabilità ####
 #' Calcolo della probabilità dell'unione di due eventi
 #'
-#' Questa funzione calcola la probabilità dell'unione di due eventi \(A\) e \(B\) dati le probabilità individuali \(P(A)\) e \(P(B)\).
+#' Questa funzione calcola la probabilità dell'unione di due eventi \eqn{A} e \eqn{B} dati le probabilità individuali \eqn{P(A)} e \eqn{P(B)}.
 #'
-#' @param pa La probabilità dell'evento \(A\).
-#' @param pb La probabilità dell'evento \(B\).
-#' @param A Il nome dell'evento \(A\) (opzionale, predefinito è "A").
-#' @param B Il nome dell'evento \(B\) (opzionale, predefinito è "B").
+#' @param pa La probabilità dell'evento \eqn{A}.
+#' @param pb La probabilità dell'evento \eqn{B}.
+#' @param A Il nome dell'evento \eqn{A} (opzionale, predefinito è "A").
+#' @param B Il nome dell'evento \eqn{B} (opzionale, predefinito è "B").
 #' @param dig Il numero di cifre decimali per l'arrotondamento (opzionale, predefinito è 4).
 #'
 #' @details
-#' La probabilità dell'unione di due eventi \(A\) e \(B\) è data dalla formula:
+#' La probabilità dell'unione di due eventi \eqn{A} e \eqn{B} è data dalla formula:
 #' \deqn{P(A \cup B) = P(A) + P(B) - P(A \cap B)}
-#' dove \(P(A \cap B) = P(A) \cdot P(B)\) se \(A\) e \(B\) sono indipendenti.
+#' dove \eqn{P(A \cap B) = P(A) \cdot P(B)} se \eqn{A} e \eqn{B} sono indipendenti.
 #'
 #' La funzione stampa la formula e il risultato calcolato in notazione LaTeX.
 #'
@@ -27,9 +27,43 @@ p_aub <- function(pa,pb,A="A",B="B",dig = 4){
   round_all(4)
   cat("\\begin{eqnarray}
       P(",A,"\\cup",B,") &=& P(",A,")+P(",B,")-P(",A,"\\cap",B,") \\\\
+                         &=& P(",A,")+P(",B,")-P(",A,")\\cdot (",B,") \\\\
                          &=& ",pa,"+",pb,"-",pa,"\\times",pb," \\\\
-                         &=& ", pab
+                         &=& ", pab,
+      "\\end{eqnarray}"
       )
+}
+#' Calcolo della probabilità dell'intersezione di due eventi
+#'
+#' Questa funzione calcola la probabilità dell'intersezione di due eventi \eqn{A} e \eqn{B} dati le probabilità individuali \eqn{P(A)} e \eqn{P(B)}.
+#'
+#' @param pa La probabilità dell'evento \eqn{A}.
+#' @param pb La probabilità dell'evento \eqn{B}.
+#' @param A Il nome dell'evento \eqn{A} (opzionale, predefinito è "A").
+#' @param B Il nome dell'evento \eqn{B} (opzionale, predefinito è "B").
+#' @param dig Il numero di cifre decimali per l'arrotondamento (opzionale, predefinito è 4).
+#'
+#' @details
+#' La probabilità dell'intersezione di due eventi \eqn{A} e \eqn{B} è data dalla formula:
+#' \deqn{P(A \cap B) = P(A) \cdot P(B)}
+#' se \eqn{A} e \eqn{B} sono indipendenti.
+#'
+#' La funzione stampa la formula e il risultato calcolato in notazione LaTeX.
+#'
+#' @examples
+#' p_ab(0.5, 0.3)
+#' p_ab(0.5, 0.3, A = "Evento1", B = "Evento2", dig = 2)
+#'
+#' @export
+p_ab <- function(pa,pb,A="A",B="B",dig = 4){
+  pab <- pa*pb
+  round_all(4)
+  cat("\\begin{eqnarray}
+      P(",A,"\\cap",B,") &=& P(",A,")\\cdot (",B,") \\\\
+                         &=& ", pa,"\\times",pb," \\\\
+                         &=& ", pab,
+      "\\end{eqnarray}"
+  )
 }
 
 #' Convolution: Metodi Dettagliati
