@@ -13,7 +13,7 @@ chi_print_conf(Freq_c, Freq_0, X, Y)
 
 chi_test(dat, alpha = c(1/10, 5/10, 1/100, 1/1000))
 
-chi_conf(Freq_c, Freq_0, X, Y, alpha = 0.05)
+chi_conf(Freq_c, Freq_0, X, Y, alpha = c(1/10, 5/10, 1/100, 1/1000))
 }
 \arguments{
 \item{dat}{Matrice o data frame contenente i dati per `chi_print` e `chi_test`.}

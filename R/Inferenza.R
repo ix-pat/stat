@@ -217,7 +217,7 @@ graf <- function(lst){
   tac <- c(floor(q_distr(1/5000)),tc1,ceiling(q_distr(1-1/5000)))
   kk <- length(tac)
   curve(d_distr,from = tac[1],to = tac[kk],n = 1001,axes=F,xlab = tsimb,ylab = paste0("f(",tsimb,")"))
-  axis(1,tac,round(tac,4),las=2)
+  axis(1,tac[-c(1,kk)],round(tac[-c(1,kk)],4),las=2)
   axis(2)
   segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
   col_ <- c("red",ared,mblue,ablue,iblue)
@@ -249,6 +249,9 @@ p_value <- function(lst){
   Tsimb <- ifelse(is.null(gdl),"Z",paste0("T_{",n,"-",param,"}"))
   tobs_s <- paste0(tsimb,"_\\text{obs}=",tobs)
   #round_all(4)
+  
+  alpha_c <- c(1,1/10,5/100,1/100,1/1000,0)
+  signif_ <- max(which(alpha_c>p_val))
 
   H1 <- ifelse(h1=="\\neq",">",h1)
   tobs2 <- round(tobs,2)
@@ -256,6 +259,7 @@ p_value <- function(lst){
   if (h1 == "\\neq") {pval <- paste0("P(|",Tsimb,"|",H1,"|",tobs2,"|)=","2P(",Tsimb,H1,abs(tobs2),")=",p_val)}
   cat("\n\n Il \\(p_{\\text{value}}\\) è \n\n $$ p_{\\text{value}} =", pval,"$$\n\n")
   if (!is.null(gdl)) cat("Attenzione il calcolo del $p_\\text{value}$ con la $T$ è puramente illustrativo e non può essere riprodotto senza una calcolatrice statistica adeguata.")
+  cat("\\[\n",alpha_c[signif_+1],"\\leq p_\\text{value}=",p_val, "<",alpha_c[signif_],"\n\\]")
 }
 
 #' Test Z e Test T: Proporzione e Media

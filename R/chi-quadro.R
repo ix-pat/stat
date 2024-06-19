@@ -32,13 +32,14 @@ graf_chi <- function(lst){
     d_distr <- function(x) dchisq(x,gdl)
     q_distr <- function(p) qchisq(p,gdl)
     p_distr <- function(q) pchisq(q,gdl)
-    tsimb <- "\\chi^2"
+    tsimb <- expression(chi^2)
+    ysimb <- expression(f(chi2))
   round_all(4)
   
   tac <- c(0,tc,ceiling(q_distr(1-1/5000)))
   kk <- length(tac)
-  curve(d_distr,from = tac[1],to = tac[kk],n = 1001,axes=F,xlab = tsimb,ylab = paste0("f(",tsimb,")"))
-  axis(1,tac,round(tac,4),las=2)
+  curve(d_distr,from = tac[1],to = tac[kk],n = 1001,axes=F,xlab = tsimb,ylab = ysimb)
+  axis(1,tac[-kk],round(tac[-kk],4),las=2)
   axis(2)
   segments(tac[-kk],0,tac[-kk],d_distr(tac[-kk]),lty=2)
   col_ <- colorRampPalette(rev(c("red","pink",iblue)))(5)
@@ -59,10 +60,16 @@ p_value_chi <- function(lst){
   round_all(4)
   
   tobs2 <- round(tobs,2)
-  pval <- paste0("P(",tsimb,">",tobs2,")=",1-p_distr(tobs2))
+  p_val <- 1-p_distr(tobs2)
+  pval <- paste0("P(",tsimb,">",tobs2,")=",p_val)
+  
+  alpha_c <- c(1,1/10,5/100,1/100,1/1000,0)
+  signif_ <- max(which(alpha_c>p_val))
+  
 
     cat("\n\n Il \\(p_{\\text{value}}\\) è \n\n $$ p_{\\text{value}} =", pval,"$$\n\n")
   cat("Attenzione il calcolo del $p_\\text{value}$ con la distribuzione $\\chi^2$ è puramente illustrativo e non può essere riprodotto senza una calcolatrice statistica adeguata.")
+  cat("\\[\n",alpha_c[signif_+1],"\\leq p_\\text{value}=",p_val, "<",alpha_c[signif_],"\n\\]")
 }
 
 
@@ -196,7 +203,7 @@ cat("
 }
 
 #' @rdname chi-quadrato
-chi_conf <- function(Freq_c,Freq_0,X,Y,alpha=0.05){
+chi_conf <- function(Freq_c,Freq_0,X,Y,alpha=c(1/10,5/10,1/100,1/1000)){
   Freq_0 <- round(Freq_0,2)
   n <- sum(Freq_c)
   S <- c(Freq_c,sum(Freq_c))
