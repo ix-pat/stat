@@ -156,8 +156,8 @@ C_ <- function(lst){
       } else {ped <- paste0("_{",alpha,"}") }
   } else {
     if (h1 =="\\neq"){
-      ped   <- paste0("_{",alpha,"/2;",n,"-",param,"}")
-    } else {ped <- paste0("_{",alpha,"/2;",n,"-",param,"}")}
+      ped   <- paste0("_{",n,"-",param,";",alpha/2,"}")
+    } else {ped   <- paste0("_{",n,"-",param,";",alpha,"}")}
     
   }
   round_all(4)
@@ -169,7 +169,9 @@ C_ <- function(lst){
   H1 <- h1
   H1 <- ifelse(h1 == "\\neq",">",H1)
   cat( "\n\n\\(\\fbox{C}\\) CONCLUSIONE \n\n",
-       ifelse(h1=="\\neq","Siccome \\(H_1\\) è bilaterale, considereremo \\(\\alpha/2\\), anziché \\(\\alpha\\)\n\n","\n\n"),
+       ifelse(h1=="\\neq",
+        paste0("Siccome \\(H_1\\) è bilaterale, considereremo \\(\\alpha/2\\), anziché \\(\\alpha\\)\n\n $\\alpha=",paste0(alpha,collapse=", "),"$ e quindi $\\alpha/2=",paste0(alpha/2,collapse=", "),"$"),
+        paste0("Consideriamo $\\alpha=",paste0(alpha,collapse=", "),"$ \n\n")),
        sep = "")
   if (length(alpha)!=1){
     if(h1 == "<") {
@@ -185,7 +187,7 @@ C_ <- function(lst){
                   "4"=paste0("$",tobs_s,H1,tcrit[4],"$, quindi **rifiuto** $H_0$ sotto all'1‰, $p_\\text{value}<0.001$,\n\n _estremamente significativo_ $\\fbox{***}$."),
                    )
     
-    cat("I valori critici sono\n\n",
+    cat("\n\n I valori critici sono\n\n",
          "$",paste0(tcrit,collapse="$; $"),"$\n\n", 
          "Siccome ",conc,"\n\n",sep = "")
   } else {

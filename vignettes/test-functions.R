@@ -16,6 +16,9 @@ library(pat.book)
 options(digits=4,knitr.kable.NA = '',scipen = 8,big.mark=" ")
 opts_knit$set(global.par = TRUE,warning = FALSE, message = FALSE, fig.align = "center",fig.pos = "H", out.extra = "",results = 'asis',echo=FALSE)
 
+# Colors
+
+
 par(lwd=.5,col.main=iblue,mfrow=c(1,1))
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
 virg <- "`"
@@ -64,6 +67,10 @@ stat_(1:4)                      # media e varianza insieme (new)
 stat_(1:4,p = c(2,4,5,1))       # vettore dei pesi p
 stat_(rep(1:4,times=c(2,4,5,1)),semp = T) # in frazione
 
+
+## ----results='asis'-----------------------------------------------------------
+p_ab(pa = 0.5,pb = 0.6)
+p_aub(pa = 0.5,pb = 0.6)
 
 ## ----results='asis'-----------------------------------------------------------
 # Somma di due dadi
@@ -122,17 +129,17 @@ idc(xm = 7.4,sd = sqrt(7.4),alpha = .05,n = 75,dist_ = "z",mus = "\\lambda",
         ss = "\\sqrt\\lambda")
 
 ## ----results='asis'-----------------------------------------------------------
-ztest_mu(muh = 0,s = 1,10,mu0 = .1,h1 = "\\neq",alpha = 0.05)
+ztest_mu(muh = 0,s = 1,10,mu0 = .1,h1 = "\\neq")
 ttest_mu(muh = 0,sh = 1,n = 10,mu0 = .1,h1 = "<",alpha = 0.01)
-ztest_pi(sn = 60,n = 100,p0 = .5,h1 = ">",alpha = 0.05)
+ztest_pi(sn = 60,n = 100,p0 = .5,h1 = ">")
 test_2c(mu1 = 11,mu2 = 12,s1h = 1.1,s2h = 1.2,n1 = 10,n2 = 12,
-            h1 = "\\neq",alpha = .05,et = T)
+            h1 = "\\neq",alpha = .01,et = T)
 test_2c(mu1 = 11,mu2 = 12,s1h = 1.1,s2h = 1.2,n1 = 10,n2 = 12,
-            h1 = "\\neq",alpha = .05,et = F)
+            h1 = "\\neq",et = F)
 test_2c(mu1 = 11,mu2 = 12,s1h = F,s2h = NULL,n1 = 50,n2 = 60,
             h1 = "\\neq",alpha = .05,et = T)
 ttest_2c_et(mu1 = 11,mu2 = 12,s1h = 1.1,s2h = 1.2,n1 = 10,n2 = 12,
-                h1 = "\\neq",alpha = .05)
+                h1 = "\\neq")
 ttest_2c_om(mu1 = 11,mu2 = 12,s1h = 1.1,s2h = 1.2,n1 = 10,n2 = 12,
                 h1 = "\\neq",alpha = .001)
 ztest_2c_pi(s1 = 120,s2 = 130,n1 = 250,n2 = 260,h1 = "<",alpha = .01)
