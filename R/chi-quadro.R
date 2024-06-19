@@ -1,3 +1,72 @@
+C_chi <- function(lst){
+  ls2e(lst)
+  tsimb <- "\\chi^2"
+  ped <- paste0("_{",gdl,";",alpha,"}")
+  
+  round_all(4)
+  tobs_s <- paste0("\\chi^2","_\\text{obs}=",tobs)
+  tcrit  <- paste0("\\chi^2",ped,"=",tc)
+  cat( "\n\n\\(\\fbox{C}\\) CONCLUSIONE \n\n",
+       sep = "")
+  if (length(alpha)!=1){
+    conc <- switch(livello+1,
+                   "0"=paste0("$",tobs_s,ifelse(h1=="<",">","<"),tcrit[1],"$, quindi **non** rifiuto $H_0$ a **nessun** livello di significatività, $p_\\text{value}>0.1$"),
+                   "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]),"$, indecisione sul rifiuto di $H_0$ al 10%, $0.05<p_\\text{value}<0.1$,\n\n _marginalmente significativo_ $\\fbox{.}$."),
+                   "2"=paste0("$",min(tcrit[2:3]),"<",tobs_s,"<",max(tcrit[2:3]),"$, quindi **rifiuto** $H_0$ al 5%, $0.01<p_\\text{value}<0.05$,\n\n _significativo_   $\\fbox{*}$."),
+                   "3"=paste0("$",min(tcrit[3:4]),"<",tobs_s,"<",max(tcrit[3:4]),"$, quindi **rifiuto** $H_0$ all'1%, $0.001<p_\\text{value}<0.01$,\n\n _molto significativo_  $\\fbox{**}$."),
+                   "4"=paste0("$",tobs_s,">",tcrit[4],"$, quindi **rifiuto** $H_0$ sotto all'1‰, $p_\\text{value}<0.001$,\n\n _estremamente significativo_ $\\fbox{***}$."),
+    )
+    
+    cat("I valori critici sono\n\n",
+        "$",paste0(tcrit,collapse="$; $"),"$\n\n", 
+        "Siccome ",conc,"\n\n",sep = "")
+  } else {
+    cat("La siginficatitività è $\\alpha=", alpha,"$, dalle tavole osserviamo $",tcrit,"$.\n\n",
+        "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora ", ifelse(tobs > tc,"**rifiuto** $H_0$ ","**non** rifiuto $H_0$ "),"al ",alpha*100,"%.\n\n",
+        sep="")
+  }
+}
+
+graf_chi <- function(lst){
+  ls2e(lst)
+    d_distr <- function(x) dchisq(x,gdl)
+    q_distr <- function(p) qchisq(p,gdl)
+    p_distr <- function(q) pchisq(q,gdl)
+    tsimb <- "\\chi^2"
+  round_all(4)
+  
+  tac <- c(0,tc,ceiling(q_distr(1-1/5000)))
+  kk <- length(tac)
+  curve(d_distr,from = tac[1],to = tac[kk],n = 1001,axes=F,xlab = tsimb,ylab = paste0("f(",tsimb,")"))
+  axis(1,tac,round(tac,4),las=2)
+  axis(2)
+  segments(tac[-kk],0,tac[-kk],d_distr(tac[-kk]),lty=2)
+  col_ <- colorRampPalette(rev(c("red","pink",iblue)))(5)
+  if (length(alpha)==1) col_ <-c("blue","red")
+  
+  for (i in 1:(kk-1)){
+    segments(tac[i],0,tac[i+1],0,col=col_[i],lwd=2)
+  }
+  points(tobs,0,pch=4,cex=2)
+}
+
+p_value_chi <- function(lst){
+  ls2e(lst)
+  d_distr <- function(x) dchisq(x,gdl)
+  q_distr <- function(p) qchisq(p,gdl)
+  p_distr <- function(q) pchisq(q,gdl)
+  tsimb <- paste0("\\chi^2_{",gdl,"}")
+  round_all(4)
+  
+  tobs2 <- round(tobs,2)
+  pval <- paste0("P(",tsimb,">",tobs2,")=",1-p_distr(tobs2))
+
+    cat("\n\n Il \\(p_{\\text{value}}\\) è \n\n $$ p_{\\text{value}} =", pval,"$$\n\n")
+  cat("Attenzione il calcolo del $p_\\text{value}$ con la distribuzione $\\chi^2$ è puramente illustrativo e non può essere riprodotto senza una calcolatrice statistica adeguata.")
+}
+
+
+
 
 #' Test e Visualizzazione del Chi Quadrato
 #'
@@ -69,7 +138,7 @@ chi_print_conf <- function(Freq_c,Freq_0,X,Y){
 }
 
 #' @rdname chi-quadrato
-chi_test <- function(dat,alpha){
+chi_test <- function(dat,alpha=c(1/10,5/10,1/100,1/1000)){
   
   n <- dim(dat)[1]
   m <- dim(dat)[2]
@@ -107,45 +176,23 @@ $$"
   cat(tabl((thr-dat)^2/thr,digits = 3,row.names = T) %>%
     column_spec(column = 1,bold = T))
   
-  
-  cat("$\\fbox{C}$ DECISIONE
-$$
-\\chi^2_{obs}=",chi_ob,"
-$$
-\n
-i $gdl$
-\n
-$$
-(",n,"-1)\\times(",m,"-1)=",gdl,"
-$$
-$\\alpha=",alpha,"$ e quindi $\\chi_{",gdl,",",alpha,"}^2=",chi_th,"$
-\n\n
-Essendo 
-$$
-\\chi^2_{obs}=",chi_ob," ",segno,"\\chi_{",gdl,",",alpha,"}^2=",chi_th,"
-$$
-\n
-allora ",decis," $H_0$ al lds dell'",alpha*100," percento. 
-\n\n
-**Graficamente**\n\n",sep="")
-  
-  
-  R <- c(chi_th,100); A <- c(0,chi_th)
-  b <- qchisq(.9999,gdl)
-  curve(dchisq(x,gdl),0,b,axes=F,xlab="T",ylab="")
-  lines(c(0,chi_th),c(0,0),col=4,lwd=2)
-  lines(c(chi_th,b),c(0,0),col=2,lwd=2)
-  points(chi_ob,0,pch=4,cex=2)
-  text(chi_ob,.05,expression(chi[obs]^2))
-  axis(1,c(0,chi_th,round(b,0)))
-  
-  
-  cat("
-\n\n il $p_{\\text{value}}$ è
-\\[
-P(\\chi^2_{",gdl,"}> \\chi^2_{\\text{obs}})=",format((1-pchisq(chi_ob,gdl)),digits = 4,scientific = 8),"
-\\]
-")
+  livello <- max(which(chi_ob > chi_th))
+
+cat("
+  $$
+    \\chi^2_{obs}=",chi_ob,"
+  $$
+  \n
+  i $gdl$
+  \n
+  $$
+    (",n,"-1)\\times(",m,"-1)=",gdl,"
+  $$"
+)
+  lst <- list(alpha = alpha, tobs=chi_ob, tc = chi_th, h1 = ">",gdl = gdl,livello = livello)
+  C_chi(lst)
+  graf_chi(lst)
+  p_value_chi(lst)
 }
 
 #' @rdname chi-quadrato
@@ -186,24 +233,22 @@ n^*_j = n\\cdot \\pi^*_{\\text{",Y[2],"},j}
   cat("La tabella delle distanze:\n\n")
   cat(tabl(D1))
   
-  chi <- qchisq(c(.95,.99),gdl)
+cat("
+  $$
+    \\chi^2_{obs}=",chi_ob,"
+  $$
+  \n
+  i $gdl$
+  \n
+  $$
+    (",k,"-1)=",gdl,"
+  $$"
+)
   
-  cat("$\\fbox{C}$ Decisione \n\n
-Il chi quadro osservato è ",ch[k+1]," è ",segno," di $\\chi^2_{",k-1,";",alpha,"}=",chi_th,"$, e quindi **",decis,"** $H_0$, al livello di significatività del ",alpha*100,"$\\%$. 
-\n\n
-**Graficamente**\n\n",sep="")
+  livello <- max(which(chi_ob > chi_th))
+  lst <- list(alpha = alpha, tobs=chi_ob, tc = chi_th, h1 = ">",gdl = gdl,livello = livello)
+  C_chi(lst)
+  graf_chi(lst)
+  p_value_chi(lst)
   
-  R <- c(chi_th,100); A <- c(0,chi_th)
-  b <- qchisq(.9999,gdl)
-  curve(dchisq(x,gdl),0,b,axes=F,xlab="T",ylab="")
-  lines(c(0,chi_th),c(0,0),col=4,lwd=2)
-  lines(c(chi_th,b),c(0,0),col=2,lwd=2)
-  points(chi_ob,0,pch=4,cex=2)
-  text(chi_ob,.05,expression(chi[obs]^2))
-  axis(1,c(0,chi_th,round(b,0)))
-  cat("\n\n il $p_{\\text{value}}$ è
-\\[
-P(\\chi^2_{",gdl,"}> \\chi^2_{\\text{obs}})=",format((1-pchisq(chi_ob,gdl)),digits = 4,scientific = 8),"
-\\]
-") 
 }

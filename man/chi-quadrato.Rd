@@ -11,7 +11,7 @@ chi_print(dat, nome_x, nome_y, print = TRUE)
 
 chi_print_conf(Freq_c, Freq_0, X, Y)
 
-chi_test(dat, alpha)
+chi_test(dat, alpha = c(1/10, 5/10, 1/100, 1/1000))
 
 chi_conf(Freq_c, Freq_0, X, Y, alpha = 0.05)
 }
