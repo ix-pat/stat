@@ -158,23 +158,28 @@ tabl <- function(x, ...) {
 #'
 #' @export
 
-item <- function(new=FALSE){
+item <- function(new=FALSE,num = FALSE){
   sp <- "."
-  sp2 <- ""
+  sp2 <- " "
   if (!exists("i1"))  {i1 <- NULL;sp <- "";sp2 <- "."}
   if (!exists("i2"))  {i2 <- 0} 
   if (new) assign("i2",1, envir = .GlobalEnv) else assign("i2",i2 + 1, envir = .GlobalEnv)
-  it <- (paste(i1,sp,letters[i2],sp2,sep = ""))
+  it <- (paste(i1,sp,ifelse(num,i2,letters[i2]),sp2,sep = ""))
   return(it)}
 
 
-item2 <- function(new=FALSE,start=FALSE){
+item2 <- function(new=FALSE,start=FALSE,num = FALSE){
+  sp <- "."
+  sp2 <- " "
   if (start) assign("i1",0, envir = .GlobalEnv)
   if (new)   assign("i1",i1 + 1, envir = .GlobalEnv)
   if (new)   assign("i2",1, envir = .GlobalEnv) else assign("i2",i2 + 1, envir = .GlobalEnv)
-  it <- (paste(i1,".",letters[i2],sep = ""))
+  it <- (paste(i1,sp,ifelse(num,i2,letters[i2]),sp2,sep = ""))
   return(it)}
 
+item_start <- function(num = TRUE) item2(new = TRUE,start = TRUE,num = num)
+item_      <- function(num = TRUE) item2(new = FALSE,start = FALSE,num = num)
+item_next  <- function(num = TRUE) item2(new = TRUE,start = FALSE,num = num)
 
 #' Formatta Numeri con Parentesi per Valori Negativi
 #'
