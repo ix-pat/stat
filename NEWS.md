@@ -1,5 +1,10 @@
 # Changelog
 
+## Versione 2.3.0 (2024-06-25)
+
+- Aggiunte `item_start`, `item_` e `item_next`  
+- Compilato sotto R 4.4.1
+
 ## Versione 2.2.0 (2024-06-19)
 
 - Modificate le funzione `chi_test` e `chi_conf` per output omogenei agli altri test.
