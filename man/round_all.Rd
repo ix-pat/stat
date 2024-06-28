@@ -4,11 +4,14 @@
 \alias{round_all}
 \title{Arrotonda Tutte le Variabili Numeriche in un Ambiente}
 \usage{
-round_all(dig = 4, env = parent.frame())
+round_all(dig = 4, exclude = NULL, env = parent.frame())
 }
 \arguments{
 \item{dig}{Un intero che specifica il numero di cifre decimali a cui i valori numerici devono
 essere arrotondati. Il valore di default è 4.}
+
+\item{exclude}{Un vettore di caratteri che specifica i nomi delle variabili da escludere
+dall'arrotondamento. Il valore di default è NULL.}
 
 \item{env}{L'ambiente in cui le variabili numeriche devono essere arrotondate.
 Il valore di default è il frame genitore da cui viene chiamata la funzione.}
@@ -26,7 +29,12 @@ la funzione viene chiamata.
 # Supponiamo di avere alcune variabili numeriche nell'ambiente globale:
 x <- 3.14159
 y <- 2.71828
-# Utilizziamo round_all per arrotondarle a 2 cifre decimali
-round_all(dig = 2)
+z <- 1.61803
+# Utilizziamo round_all per arrotondarle a 2 cifre decimali, escludendo 'y'
+round_all(dig = 2, exclude = c("y"))
+
+print(x) # 3.14
+print(y) # 2.71828 (non arrotondato)
+print(z) # 1.62
 
 }

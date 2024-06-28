@@ -1,5 +1,10 @@
 # Changelog
 
+## Versione 2.4.0 (2024-06-28)
+
+- Aggiunta opzione su round_all per escludere oggetti a scelta
+- piccole modifiche dell'output del p-value
+
 ## Versione 2.3.0 (2024-06-25)
 
 - Aggiunte `item_start`, `item_` e `item_next`  
