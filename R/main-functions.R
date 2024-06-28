@@ -171,6 +171,8 @@ item <- function(new=FALSE,num = FALSE){
 item2 <- function(new=FALSE,start=FALSE,num = FALSE){
   sp <- "."
   sp2 <- " "
+  if (!exists("i1")) assign("i1",1, envir = .GlobalEnv)
+  if (!exists("i2")) assign("i2",0, envir = .GlobalEnv)
   if (start) assign("i1",0, envir = .GlobalEnv)
   if (new)   assign("i1",i1 + 1, envir = .GlobalEnv)
   if (new)   assign("i2",1, envir = .GlobalEnv) else assign("i2",i2 + 1, envir = .GlobalEnv)
