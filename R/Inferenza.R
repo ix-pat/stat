@@ -104,7 +104,7 @@ test <- function(theta1,theta0,se,h1,gdl=NULL,n,alpha = c(1/10,5/100,1/100,1/100
   }
   
   # Modificare tc in base al tipo di test
-  round_all()
+  round_all(exclude = "p_val")
   tc <- switch(h1,
                ">" = tc,
                "<" = sort(-tc),
@@ -254,12 +254,13 @@ p_value <- function(lst){
   signif_ <- max(which(alpha_c>p_val))
 
   H1 <- ifelse(h1=="\\neq",">",h1)
+  p_val <- format(p_val,nsmall=6,scientific=ifelse((p_val< 1e-6),T,F),digits = 1)
   tobs2 <- round(tobs,2)
   if (h1 != "\\neq") {pval <- paste0("P(",Tsimb,H1,tobs2,")=",p_val)}
   if (h1 == "\\neq") {pval <- paste0("P(|",Tsimb,"|",H1,"|",tobs2,"|)=","2P(",Tsimb,H1,abs(tobs2),")=",p_val)}
   cat("\n\n Il \\(p_{\\text{value}}\\) è \n\n $$ p_{\\text{value}} =", pval,"$$\n\n")
   if (!is.null(gdl)) cat("Attenzione il calcolo del $p_\\text{value}$ con la $T$ è puramente illustrativo e non può essere riprodotto senza una calcolatrice statistica adeguata.")
-  cat("\\[\n",alpha_c[signif_+1],"\\leq p_\\text{value}=",p_val, "<",alpha_c[signif_],"\n\\]")
+  cat("\\[\n",alpha_c[signif_+1],"< p_\\text{value}=",p_val, "\\leq",alpha_c[signif_],"\n\\]")
 }
 
 #' Test Z e Test T: Proporzione e Media

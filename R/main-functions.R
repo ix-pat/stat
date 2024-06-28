@@ -79,6 +79,8 @@ ls2e <- function(x) {invisible(list2env(x, envir = parent.frame()))}
 #'
 #' @param dig Un intero che specifica il numero di cifre decimali a cui i valori numerici devono
 #'            essere arrotondati. Il valore di default è 4.
+#' @param exclude Un vettore di caratteri che specifica i nomi delle variabili da escludere
+#'                dall'arrotondamento. Il valore di default è NULL.
 #' @param env L'ambiente in cui le variabili numeriche devono essere arrotondate.
 #'            Il valore di default è il frame genitore da cui viene chiamata la funzione.
 #'
@@ -89,16 +91,25 @@ ls2e <- function(x) {invisible(list2env(x, envir = parent.frame()))}
 #' # Supponiamo di avere alcune variabili numeriche nell'ambiente globale:
 #' x <- 3.14159
 #' y <- 2.71828
-#' # Utilizziamo round_all per arrotondarle a 2 cifre decimali
-#' round_all(dig = 2)
+#' z <- 1.61803
+#' # Utilizziamo round_all per arrotondarle a 2 cifre decimali, escludendo 'y'
+#' round_all(dig = 2, exclude = c("y"))
 #' 
+#' print(x) # 3.14
+#' print(y) # 2.71828 (non arrotondato)
+#' print(z) # 1.62
+#'
 #' @export
 
-round_all <- function(dig = 4, env = parent.frame()) {
+round_all <- function(dig = 4, exclude = NULL, env = parent.frame()) {
   nomi_variabili <- ls(envir = env)
   
   # Itera sui nomi delle variabili per arrotondare quelle numeriche
   for (nome in nomi_variabili) {
+    # Controlla se la variabile è nella lista degli esclusi
+    if (!is.null(exclude) && nome %in% exclude) {
+      next
+    }
     valore <- get(nome, envir = env)
     if (is.numeric(valore)) {
       # Arrotonda il valore e aggiornalo nell'ambiente specificato
@@ -106,7 +117,6 @@ round_all <- function(dig = 4, env = parent.frame()) {
     }
   }
 }
-
 
 
 #' Crea una Tabella Stilizzata con kable e kableExtra
