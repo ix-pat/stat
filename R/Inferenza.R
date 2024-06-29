@@ -31,6 +31,7 @@
 #' @rdname intervallo-di-confidenza
 
 idc <- function(xm,sd=NULL,alpha=0.05,n,dist_,mus=NULL,ss=NULL){
+  cat("\n\n $1-\\alpha =",1-alpha,"$ e quindi $\\alpha=",alpha,"\\rightarrow \\alpha/2=",alpha/2,"$\n\n",sep="")
   tstat <- ifelse(dist_=="z",qnorm(1-alpha/2),qt(1-alpha/2,n-1))
   tsimb <- ifelse(dist_=="z","z_{\\alpha/2}","t_{n-1;\\alpha/2}")
   
