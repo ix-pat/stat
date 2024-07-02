@@ -15,5 +15,5 @@ Imports:
 Suggests:
     rmarkdown
 VignetteBuilder: knitr, rmarkdown
-RoxygenNote: 7.3.1.9000
+RoxygenNote: 7.3.2
 News: NEWS.md
