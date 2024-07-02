@@ -145,7 +145,7 @@ chi_print_conf <- function(Freq_c,Freq_0,X,Y){
 }
 
 #' @rdname chi-quadrato
-chi_test <- function(dat,alpha=c(1/10,5/10,1/100,1/1000)){
+chi_test <- function(dat,alpha=c(1/10,5/100,1/100,1/1000)){
   
   n <- dim(dat)[1]
   m <- dim(dat)[2]
@@ -203,7 +203,7 @@ cat("
 }
 
 #' @rdname chi-quadrato
-chi_conf <- function(Freq_c,Freq_0,X,Y,alpha=c(1/10,5/10,1/100,1/1000)){
+chi_conf <- function(Freq_c,Freq_0,X,Y,alpha=c(1/10,5/100,1/100,1/1000)){
   Freq_0 <- round(Freq_0,2)
   n <- sum(Freq_c)
   S <- c(Freq_c,sum(Freq_c))
