@@ -1,8 +1,13 @@
 # Changelog
 
+## Versione 2.5.0 (2024-07-02)
+
+- Aggiunta `plot_FdR`
+- Aggiustato `alpha` di default su `chi_test` e `chi_conf`
+
 ## Versione 2.4.0 (2024-06-28)
 
-- Aggiunta opzione su round_all per escludere oggetti a scelta
+- Aggiunta opzione su `round_all` per escludere oggetti a scelta
 - piccole modifiche dell'output del p-value
 
 ## Versione 2.3.0 (2024-06-25)

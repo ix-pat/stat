@@ -519,11 +519,67 @@ tlc <- function(tipo, x1, x2=NULL,verso, mu = F, s2 = NULL, n){
   
 }
 
+#' Disegna una distribuzione tratteggiata
+#'
+#' Questa funzione aggiunge una distribuzione tratteggiata a un grafico esistente, utilizzando un poligono e una curva.
+#'
+#' @param dist Una funzione che definisce la distribuzione da tracciare.
+#' @param z1 Il limite inferiore dell'intervallo su cui tracciare la distribuzione.
+#' @param z2 Il limite superiore dell'intervallo su cui tracciare la distribuzione.
+#' @param density La densità delle linee tratteggiate (opzionale, predefinito è 20).
+#' @param border Il colore del bordo del poligono (opzionale, predefinito è NA).
+#' @param col Il colore della distribuzione (opzionale, predefinito è 1).
+#' @param ... Argomenti addizionali passati alla funzione \code{polygon}.
+#'
+#' @details
+#' La funzione disegna un poligono tratteggiato per rappresentare la distribuzione tra \code{z1} e \code{z2}, e aggiunge una curva della distribuzione sopra il poligono.
+#'
+#' @examples
+#' # Definisce una distribuzione normale standard
+#' dist <- function(x) dnorm(x, mean = 0, sd = 1)
+#' 
+#' # Disegna la distribuzione normale tra -2 e 2
+#' plot(0, type = "n", xlim = c(-3, 3), ylim = c(0, 0.5))
+#' draw_dist(dist, -2, 2, col = "blue", density = 30, angle = 45)
+#'
+#' @export
 
-draw_dist <- function(dist,z1,z2,density = 20, border = NA,col=1,...){   # aggiunge una distribuzione tratteggiata
-  xx <- c(z1,seq(z1,z2,length=100),z2)
-  yy <- c(0 ,dist(seq(z1,z2,length=100)),0)
-  polygon(xx,yy,...,border = border,density = density,col=col)
-  curve(dist,z1,z2,add=T,col=col)
+draw_dist <- function(dist, z1, z2, density = 20, border = NA, col = 1, ...) {
+  xx <- c(z1, seq(z1, z2, length = 100), z2)
+  yy <- c(0, dist(seq(z1, z2, length = 100)), 0)
+  polygon(xx, yy, ..., border = border, density = density, col = col)
+  curve(dist, z1, z2, add = TRUE, col = col)
 }
 
+#' Traccia la funzione di distribuzione cumulativa
+#'
+#' Questa funzione traccia la funzione di distribuzione cumulativa (F(x)) utilizzando punti e segmenti per rappresentare la distribuzione discreta data dai valori di ingresso.
+#'
+#' @param sx Un vettore di valori x per i punti della distribuzione.
+#' @param pp Un vettore di probabilità corrispondenti ai valori in \code{sx}.
+#' @param xmin Il valore minimo di x per la trama.
+#' @param xmax Il valore massimo di x per la trama.
+#'
+#' @details
+#' La funzione prende i valori di ingresso \code{sx} e \code{pp} e traccia la funzione di distribuzione cumulativa utilizzando segmenti orizzontali e verticali. I valori cumulativi sono tracciati sull'asse y.
+#'
+#' @examples
+#' sx <- c(1, 2, 3)
+#' pp <- c(0.2, 0.5, 0.3)
+#' xmin <- 0
+#' xmax <- 4
+#' plot_FdR(sx, pp, xmin, xmax)
+#'
+#' @export
+plot_FdR <- function(sx, pp, xmin, xmax) {
+  x <- c(xmin, sx, xmax)
+  px <- c(0, pp, 0)
+  kk <- length(px)
+  plot(x, pbinom(x, 2, 0.5), type = "n", ylab = "F(x)", axes = FALSE)
+  axis(1, x)
+  axis(2, cumsum(px), las = 2)
+  segments(x[1:(kk - 1)], cumsum(px)[1:(kk - 1)], x[2:kk], cumsum(px)[1:(kk - 1)])
+  segments(x[2:kk], cumsum(px)[1:(kk - 1)], x[2:kk], cumsum(px)[2:kk], lty = 2)
+  points(x[2:(kk - 1)], cumsum(px)[1:(kk - 2)])
+  points(x[2:(kk - 1)], cumsum(px)[2:(kk - 1)], pch = 16)
+}
