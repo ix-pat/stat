@@ -19,7 +19,8 @@ test_2c(
   a = "A",
   b = "B",
   um = "",
-  alpha = c(1/10, 5/100, 1/100, 1/1000)
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  pv_only = FALSE
 )
 
 ttest_2c_et(
@@ -33,7 +34,8 @@ ttest_2c_et(
   a = "1",
   b = "2",
   um = "",
-  alpha = c(1/10, 5/100, 1/100, 1/1000)
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  pv_only = FALSE
 )
 
 ttest_2c_om(
@@ -47,7 +49,8 @@ ttest_2c_om(
   a = "1",
   b = "2",
   um = "",
-  alpha = c(1/10, 5/100, 1/100, 1/1000)
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  pv_only = FALSE
 )
 
 ztest_2c_pi(
@@ -58,7 +61,8 @@ ztest_2c_pi(
   h1 = "\\\\neq",
   a = "1",
   b = "2",
-  alpha = c(1/10, 5/100, 1/100, 1/1000)
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  pv_only = TRUE
 )
 }
 \arguments{

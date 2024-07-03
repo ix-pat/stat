@@ -9,7 +9,8 @@ ttest_beta(
   bj0,
   h1 = "\\\\neq",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  SE = F
+  SE = F,
+  pv_only = F
 )
 }
 \arguments{

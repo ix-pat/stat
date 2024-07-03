@@ -69,7 +69,10 @@ ared  <- rgb(0.671, 0.161, 0.18)
 #' c # Dovrebbe restituire 3
 #'
 #' @export
-ls2e <- function(x) {invisible(list2env(x, envir = parent.frame()))}
+ls2e <- function(x) {
+  n <- sys.parent()
+  invisible(list2env(x, envir = parent.frame(n = n+1)))
+  }
 
 #' Arrotonda Tutte le Variabili Numeriche in un Ambiente
 #'

@@ -6,7 +6,14 @@
 \alias{ttest_mu}
 \title{Test Z e Test T: Proporzione e Media}
 \usage{
-ztest_pi(sn, n, p0, h1 = "\\\\neq", alpha = c(1/10, 5/100, 1/100, 1/1000))
+ztest_pi(
+  sn,
+  n,
+  p0,
+  h1 = "\\\\neq",
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  pv_only = TRUE
+)
 
 ztest_mu(
   muh,
@@ -16,7 +23,8 @@ ztest_mu(
   h1 = "\\\\neq",
   um = "",
   pvalue = T,
-  alpha = c(1/10, 5/100, 1/100, 1/1000)
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  pv_only = FALSE
 )
 
 ttest_mu(
@@ -26,7 +34,8 @@ ttest_mu(
   mu0,
   h1 = "\\\\neq",
   um = "",
-  alpha = c(1/10, 5/100, 1/100, 1/1000)
+  alpha = c(1/10, 5/100, 1/100, 1/1000),
+  pv_only = FALSE
 )
 }
 \arguments{

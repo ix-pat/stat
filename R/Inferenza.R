@@ -147,7 +147,8 @@ A_ <- function(lst,tipo,lab1="A",lab2="B",um=""){
 }
 
 
-C_ <- function(lst){
+C_ <- function(lst,pv_only=FALSE,pvalue=TRUE){
+  if (pv_only) alpha <- c(1/10,1/20,1/100,1/1000)
   ls2e(lst)
   param <- n-gdl
   tsimb <- ifelse(is.null(gdl),"z","t")
@@ -169,24 +170,57 @@ C_ <- function(lst){
   }
   H1 <- h1
   H1 <- ifelse(h1 == "\\neq",">",H1)
-  cat( "\n\n\\(\\fbox{C}\\) CONCLUSIONE \n\n",
-       ifelse(h1=="\\neq",
-        paste0("Siccome \\(H_1\\) è bilaterale, considereremo \\(\\alpha/2\\), anziché \\(\\alpha\\)\n\n $\\alpha=",paste0(alpha,collapse=", "),"$ e quindi $\\alpha/2=",paste0(alpha/2,collapse=", "),"$"),
-        paste0("Consideriamo $\\alpha=",paste0(alpha,collapse=", "),"$ \n\n")),
-       sep = "")
   if (length(alpha)!=1){
     if(h1 == "<") {
       tcrit <- rev(tcrit)
       livello <- 5-livello
       livello <- ifelse(livello==5,0,livello)
-      }
+    }
     conc <- switch(livello+1,
-                  "0"=paste0("$",tobs_s,ifelse(h1=="<",">","<"),tcrit[1],"$, quindi **non** rifiuto $H_0$ a **nessun** livello di significatività, \n\n $p_\\text{value}>0.1$, _non significativo_"),
-                  "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]),"$, indecisione sul rifiuto di $H_0$ al 10%, \n\n $0.05<p_\\text{value}<0.1$, _marginalmente significativo_ $\\fbox{.}$."),
-                  "2"=paste0("$",min(tcrit[2:3]),"<",tobs_s,"<",max(tcrit[2:3]),"$, quindi **rifiuto** $H_0$ al 5%, \n\n $0.01<p_\\text{value}<0.05$, _significativo_   $\\fbox{*}$."),
-                  "3"=paste0("$",min(tcrit[3:4]),"<",tobs_s,"<",max(tcrit[3:4]),"$, quindi **rifiuto** $H_0$ all'1%, \n\n $0.001<p_\\text{value}<0.01$, _molto significativo_  $\\fbox{**}$."),
-                  "4"=paste0("$",tobs_s,H1,tcrit[4],"$, quindi **rifiuto** $H_0$ sotto all'1‰,\n\n $p_\\text{value}<0.001$, _estremamente significativo_ $\\fbox{***}$."),
-                   )
+                   "0"=paste0("$",tobs_s,ifelse(h1=="<",">","<"),tcrit[1], 
+                              "$, quindi **non** rifiuto $H_0$ a **nessun** 
+                             livello di significatività, \n\n $p_\\text{value}>0.1$, 
+                             _non significativo_"),
+                   "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]),
+                              "$, indecisione sul rifiuto di $H_0$ al 10%, \n\n 
+                             $0.05<p_\\text{value}<0.1$, 
+                             _marginalmente significativo_ $\\fbox{.}$."),
+                   "2"=paste0("$",min(tcrit[2:3]),"<",tobs_s,"<",max(tcrit[2:3]),
+                              "$, quindi **rifiuto** $H_0$ al 5%, \n\n 
+                             $0.01<p_\\text{value}<0.05$, 
+                             _significativo_   $\\fbox{*}$."),
+                   "3"=paste0("$",min(tcrit[3:4]),"<",tobs_s,"<",max(tcrit[3:4]),
+                              "$, quindi **rifiuto** $H_0$ all'1%, \n\n 
+                             $0.001<p_\\text{value}<0.01$, 
+                             _molto significativo_  $\\fbox{**}$."),
+                   "4"=paste0("$",tobs_s,H1,tcrit[4],
+                              "$, quindi **rifiuto** $H_0$ sotto all'1‰,\n\n 
+                             $p_\\text{value}<0.001$, 
+                             _estremamente significativo_ $\\fbox{***}$.")
+    )
+    conc_pv_only <- switch(livello+1,
+                   "0"=paste0("**Non** rifiuto $H_0$ a **nessun** 
+                             livello di significatività, \n\n $p_\\text{value}>0.1$, 
+                             _non significativo_"),
+                   "1"=paste0("Indecisione sul rifiuto di $H_0$ al 10%, \n\n $0.05<p_\\text{value}<0.1$, _marginalmente significativo_ $\\fbox{.}$."),
+                   "2"=paste0("**Rifiuto** $H_0$ al 5%, \n\n $0.01<p_\\text{value}<0.05$, _significativo_   $\\fbox{*}$."),
+                   "3"=paste0("**Rifiuto** $H_0$ all'1%, \n\n $0.001<p_\\text{value}<0.01$, _molto significativo_  $\\fbox{**}$."),
+                   "4"=paste0("**Rifiuto** $H_0$ sotto all'1‰,\n\n $p_\\text{value}<0.001$,  _estremamente significativo_ $\\fbox{***}$.")
+    )
+  }  
+    
+  cat( "\n\n\\(\\fbox{C}\\) CONCLUSIONE \n\n")
+  if (!pv_only){
+    if (length(alpha)!=1){
+  cat(       
+    ifelse(h1=="\\neq",
+        paste0( "Siccome \\(H_1\\) è bilaterale, considereremo \\(\\alpha/2\\), 
+                anziché \\(\\alpha\\)\n\n $\\alpha=",paste0(alpha,collapse=", "), 
+                "$ e quindi $\\alpha/2=",paste0(alpha/2,collapse=", "),"$"),
+        paste0("Consideriamo $\\alpha=",paste0(alpha,collapse=", "),"$ \n\n")
+        ), 
+    sep = "")
+  
     
     cat("\n\n I valori critici sono\n\n",
          "$",paste0(tcrit,collapse="$; $"),"$\n\n", 
@@ -196,10 +230,19 @@ C_ <- function(lst){
       cat("La siginficatitività è $\\alpha=", alpha,"$, dalle tavole osserviamo $",tcrit,"$.\n\n",
           "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora ", ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$ ","**non** rifiuto $H_0$ "),"al ",alpha*100,"%.\n\n",
           sep="")
-    }
+  }
+  graf(lst = lst)
+  if (pvalue) p_value(lst = lst)
+  
+  } else {
+    p_value(lst = lst)
+    graf(lst = lst,T)
+    cat("\n\n ",conc_pv_only,"\n\n",sep = "")
+    
+  }
 }
 
-graf <- function(lst){
+graf <- function(lst,pv = FALSE){
   ls2e(lst)
   segn <- ifelse(h1 == "<",-1,1)
   if (is.null(gdl))  {
@@ -218,8 +261,9 @@ graf <- function(lst){
   tac <- c(floor(q_distr(1/5000)),tc1,ceiling(q_distr(1-1/5000)))
   kk <- length(tac)
   curve(d_distr,from = tac[1],to = tac[kk],n = 1001,axes=F,xlab = tsimb,ylab = paste0("f(",tsimb,")"))
-  axis(1,tac[-c(1,kk)],round(tac[-c(1,kk)],4),las=2)
   axis(2)
+  if (!pv){
+  axis(1,tac[-c(1,kk)],round(tac[-c(1,kk)],4),las=2)
   segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
   col_ <- c("red",ared,mblue,ablue,iblue)
   col_ <- colorRampPalette(c("red","pink",iblue))(5)
@@ -229,6 +273,20 @@ graf <- function(lst){
   segments(tac[i],0,tac[k-i+1],0,col=col_[i],lwd=2)
   }
   points(tobs,0,pch=4,cex=2)
+  } else {
+    
+    if (h1 == "<") {
+      draw_dist(d_distr,z1 = tac[1],z2 = tobs,col = ared)
+      axis(1,c(tac[1],tobs,tac[kk]))
+    } else if (h1 == ">") {
+      draw_dist(d_distr,z1 = tobs,z2 = tac[kk],col = ared)
+      axis(1,c(tac[1],tobs,tac[kk]))
+    } else {
+      draw_dist(d_distr,z1 = tac[1],z2 = -abs(tobs),col = ared)
+      draw_dist(d_distr,z1 = abs(tobs),z2 = tac[kk],col = ared)
+      axis(1,c(tac[1],tobs,-tobs,tac[kk]))
+    }
+  }
 }
 
 p_value <- function(lst){
@@ -297,7 +355,7 @@ p_value <- function(lst){
 #'
 #' @rdname test-z-t
 
-ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000)){
+ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),pv_only = TRUE){
   ph <- sn/n
   se <- sqrt(p0*(1-p0)/n)
 
@@ -324,18 +382,18 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000)){
 
   # C conclusioni
   
-  C_(lst)
+  C_(lst,pv_only)
   
-  graf(lst) # grafico
-  
-  p_value(lst) # p-value
+  # graf(lst) # grafico
+  # 
+  # p_value(lst) # p-value
 
 }
 
 
 
 #' @rdname test-z-t
-ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/100,1/100,1/1000)){
+ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
   se <- s/sqrt(n)
   lst <- test(theta1 = muh,theta0 = mu0,se = se,h1 = h1,n = n,alpha = alpha)
   ls2e(lst)
@@ -353,15 +411,15 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/10
    \\end{eqnarray*}\n\n"
   )
   
-  C_(lst = lst)
+  C_(lst,pv_only,pvalue)
   
-  graf(lst = lst)
-  
-  if (pvalue) p_value(lst)
+  # graf(lst = lst)
+  # 
+  # if (pvalue) p_value(lst)
 }
 
 #' @rdname test-z-t
-ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100,1/1000)){
+ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
   s <- sqrt(n/(n-1))*sh
   se <- s/sqrt(n)
 
@@ -384,9 +442,9 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
    \\end{eqnarray*}
    ")
 
-  C_(lst = lst)
-  graf(lst = lst)
-   p_value(lst)
+  C_(lst,pv_only)
+  # graf(lst = lst)
+  #  p_value(lst)
   
 }
 #' Test su Due Campioni: Proporzioni e Medie
@@ -419,7 +477,7 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
 #' ttest_2c_om(mu1 = 5.1, mu2 = 5.8, s1h = 1.5, s2h = 1.7, n1 = 30, n2 = 30, h1 = "\\neq")
 #'
 #' @rdname test-su-due-campioni
-test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000)){
+test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
   #### Test su due proporzioni ----------------
   if (!s1h) # s1h = F, non ci sono le sd, è un test su proporzioni
   {
@@ -455,11 +513,11 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um=
    =  ",tobs,"\\, .
    \\end{eqnarray*}
    ")
-  C_(lst = lst)
+  C_(lst,pv_only)
   
-  graf(lst = lst)
-  
-  p_value(lst)
+  # graf(lst = lst)
+  # 
+  # p_value(lst)
 
   } else
     #### Test su due medie (eterogeneità) ----------------
@@ -496,11 +554,11 @@ $$
    \\end{eqnarray*}\n\n
    ")
     
-    C_(lst)
+    C_(lst,pv_only)
     
-    graf(lst)
-    
-    p_value(lst)
+    # graf(lst)
+    # 
+    # p_value(lst)
 
     } else # et = F omogeneo
       #### Test su due medie (omogeneità) ----------------
@@ -531,28 +589,28 @@ $$
   =  ", tobs,"\\, .
   \\end{eqnarray*}\n\n
   ")
-      C_(lst)
+      C_(lst,pv_only)
       
-      graf(lst)
-      
-      p_value(lst)
+      # graf(lst)
+      # 
+      # p_value(lst)
     }
   }
 }
 
 #' @rdname test-su-due-campioni
-ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000) ){
-  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=T,a=a,b=b,um=um)
+ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000) ,pv_only = FALSE){
+  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=T,a=a,b=b,um=um, pv_only = pv_only)
 }
 
 #' @rdname test-su-due-campioni
-ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000)){
-  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=F,a=a,b=b,um=um)
+ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
+  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=F,a=a,b=b,um=um,pv_only = pv_only)
 }
 
 #' @rdname test-su-due-campioni
-ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq",a="1",b="2",alpha = c(1/10,5/100,1/100,1/1000)){
-  test_2c(mu1 = s1,mu2 = s2,s1h = F,s2h = F,n1 = n1,n2 = n2,h1 = h1,alpha = alpha,a = a,b = b)
+ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq",a="1",b="2",alpha = c(1/10,5/100,1/100,1/1000),pv_only = TRUE){
+  test_2c(mu1 = s1,mu2 = s2,s1h = F,s2h = F,n1 = n1,n2 = n2,h1 = h1,alpha = alpha,a = a,b = b,pv_only = pv_only)
 }
 
 ## Regressione ####
@@ -1032,7 +1090,7 @@ V(\\hat\\beta_{0}) &=& \\sigma_{\\varepsilon}^{2} \\left( \\frac{1} {n}  +  \\fr
 #' ttest_beta(cof = 1, bj0 = 1, SE = TRUE)  # Test su beta_1 con errore standard
 #' 
 #' @export
-ttest_beta <-  function(cof,bj0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),SE=F){
+ttest_beta <-  function(cof,bj0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),SE=F,pv_only=F){
   bj <- ifelse(cof==0,b0,b1)
   vbj <-  ifelse(cof==0,(vb0),(vb1))
   lst <- test(theta1 = bj,theta0 = bj0,se = sqrt(vbj),h1 = h1,alpha = alpha,gdl = n-2,n=n)
@@ -1055,11 +1113,11 @@ cat("
 \\end{eqnarray*}
 ")
   
-  C_(lst = lst)
+  C_(lst,pv_only)
   
-  graf(lst)
-  
-  p_value(lst)
+  # graf(lst)
+  # 
+  # p_value(lst)
   
 }
 
