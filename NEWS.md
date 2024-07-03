@@ -1,5 +1,9 @@
 # Changelog
 
+## Versione 2.6.0 (2024-07-03)
+
+- Modificate le funzioni `test` con la funzione `C_`
+
 ## Versione 2.5.0 (2024-07-02)
 
 - Aggiunta `plot_FdR`
