@@ -178,25 +178,15 @@ C_ <- function(lst,pv_only=FALSE,pvalue=TRUE){
     }
     conc <- switch(livello+1,
                    "0"=paste0("$",tobs_s,ifelse(h1=="<",">","<"),tcrit[1], 
-                              "$, quindi **non** rifiuto $H_0$ a **nessun** 
-                             livello di significatività, \n\n $p_\\text{value}>0.1$, 
-                             _non significativo_"),
-                   "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]),
-                              "$, indecisione sul rifiuto di $H_0$ al 10%, \n\n 
-                             $0.05<p_\\text{value}<0.1$, 
-                             _marginalmente significativo_ $\\fbox{.}$."),
+                              "$, quindi **non** rifiuto $H_0$ a **nessun** livello di significatività, \n\n $p_\\text{value}>0.1$, _non significativo_"),
+                   "1"=paste0("$",min(tcrit[1:2]),"<",tobs_s,"<",max(tcrit[1:2]), 
+                              "$, indecisione sul rifiuto di $H_0$ al 10%, \n\n $0.05<p_\\text{value}<0.1$, _marginalmente significativo_ $\\fbox{.}$."),
                    "2"=paste0("$",min(tcrit[2:3]),"<",tobs_s,"<",max(tcrit[2:3]),
-                              "$, quindi **rifiuto** $H_0$ al 5%, \n\n 
-                             $0.01<p_\\text{value}<0.05$, 
-                             _significativo_   $\\fbox{*}$."),
+                              "$, quindi **rifiuto** $H_0$ al 5%, \n\n $0.01<p_\\text{value}<0.05$, _significativo_   $\\fbox{*}$."),
                    "3"=paste0("$",min(tcrit[3:4]),"<",tobs_s,"<",max(tcrit[3:4]),
-                              "$, quindi **rifiuto** $H_0$ all'1%, \n\n 
-                             $0.001<p_\\text{value}<0.01$, 
-                             _molto significativo_  $\\fbox{**}$."),
+                              "$, quindi **rifiuto** $H_0$ all'1%, \n\n $0.001<p_\\text{value}<0.01$, _molto significativo_  $\\fbox{**}$."),
                    "4"=paste0("$",tobs_s,H1,tcrit[4],
-                              "$, quindi **rifiuto** $H_0$ sotto all'1‰,\n\n 
-                             $p_\\text{value}<0.001$, 
-                             _estremamente significativo_ $\\fbox{***}$.")
+                              "$, quindi **rifiuto** $H_0$ sotto all'1‰,\n\n $p_\\text{value}<0.001$, _estremamente significativo_ $\\fbox{***}$.")
     )
     conc_pv_only <- switch(livello+1,
                    "0"=paste0("**Non** rifiuto $H_0$ a **nessun** 
