@@ -483,7 +483,7 @@ tlc <- function(tipo, x1, x2=NULL,verso, mu = F, s2 = NULL, n){
       allora:",
         "\\begin{eqnarray*}
   \\hat\\pi & \\mathop{\\sim}\\limits_{a}& N(\\pi,\\pi(1-\\pi)/n) \\\\
-  &\\sim & N\\left(",mu,",\\frac{",mu,"\\cdot(1-",mu,"))}{",n,"}\\right) \\\\
+  &\\sim & N\\left(",mu,",\\frac{",mu,"\\cdot(1-",mu,")}{",n,"}\\right) \\\\
      &\\sim & N(",mu,",",mu*(1-mu)/n,") 
   \\end{eqnarray*}",sep="")
     cat(norm_int(x1 = x1,x2 = x2,verso = verso,mm = mu,ss = mu*(1-mu)/n,vnam = "\\hat\\pi",mu = "\\pi",sigma = "\\sqrt{\\pi(1-\\pi)/n}"))
