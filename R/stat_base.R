@@ -237,25 +237,29 @@ percentile <- function(p=0.5){
 ")}
 #' @rdname h.int
 #' @export
-F_print <- function(x,verso="<",x2=0){
+F_print <- function(x,verso="<",x2=0,dc=4){
+  x <- round(x,dc)
+  x2 <- round(x2,dc)
   br1  <- brk[-(k+1)]
   br2  <- brk[-1]
   datp <- round(dat2,4)
+  F_x <- round(F.int(x),dc)
+  F_2 <-  F.int(x2)
   if (verso == "<"){
     j <- max(which(brk <= x))
     if(j==1) {
       cat("\\begin{eqnarray*}
      \\%(X<",x,") &=&",x,"\\times h_1 \\\\
               &=&",x,"\\times ",datp$hj[1],"\\\\
-              &=& ",F.int(x),"\\times(100) \\\\
-     \\#(X<",x,") &=&",F.int(x)*n,"
+              &=& ",F_x,"\\times(100) \\\\
+     \\#(X<",x,") &\\approx&",round(F_x*n,0),"
          \\end{eqnarray*}")
     } else {
       cat("\\begin{eqnarray*}
      \\%(X<",x,") &=& ",paste("f_{",1:(j-1),"}\\times 100",collapse="+"),"+(",x,"-",brk[j],")\\times h_{",j,"} \\\\
               &=& ",paste("(",datp$fj[1:(j-1)],")\\times 100",collapse="+"),"+(",x-brk[j],")\\times ",datp$hj[j]," \\\\
-              &=& ",F.int(x),"\\times(100) \\\\
-     \\#(X<",x,") &=&",F.int(x)*n,"
+              &=& ",F_x,"\\times(100) \\\\
+     \\#(X<",x,") &\\approx&",round(F_x*n,0),"
          \\end{eqnarray*}")
     }
   } else if (verso == ">") {
@@ -264,15 +268,15 @@ F_print <- function(x,verso="<",x2=0){
       cat("\\begin{eqnarray*}
      \\%(X>",x,") &=&(",brk[j],"-",x,")\\times h_1 \\\\
               &=&",brk[j]-x,"\\times ",datp$hj[k],"\\\\
-              &=& ",1-F.int(x),"\\times(100)\\\\
-     \\#(X>",x,") &=&",(1-F.int(x))*n,"
+              &=& ",1-F_x,"\\times(100)\\\\
+     \\#(X>",x,") &\\approx&",round((1-F_x)*n,0),"
          \\end{eqnarray*}")
     } else {
       cat("\\begin{eqnarray*}
      \\%(X>",x,") &=& (",brk[j],"-",x,")\\times h_{",j-1,"}+",paste("f_{",(j):(k),"}\\times 100",collapse="+"),"\\\\
               &=& (",brk[j]-x,")\\times",datp$hj[j-1],"+",paste("(",datp$fj[(j):(k)],")\\times 100",collapse="+"), "\\\\
-              &=& ",1-F.int(x),"\\times(100)\\\\
-     \\#(X>",x,") &=&",(1-F.int(x))*n,"
+              &=& ",1-F_x,"\\times(100)\\\\
+     \\#(X>",x,") &\\approx&",round((1-F_x)*n,0),"
          \\end{eqnarray*}")
     }
   } else  {
@@ -308,8 +312,8 @@ F_print <- function(x,verso="<",x2=0){
     cat("\\begin{eqnarray*}",
         c00,c01,c02," \\\\ \n",
         c10,c11,c12," \\\\ \n",
-        "&=& ",F.int(x2)-F.int(x),"\\times(100)\\\\
-     \\#(",x,"< X <",x2,") &=&",(F.int(x2)-F.int(x))*n,"
+        "&=& ",F_2-F_x,"\\times(100)\\\\
+     \\#(",x,"< X <",x2,") &\\approx&",round((F_2-F_x)*n,0),"
          \\end{eqnarray*}")
   }
 }

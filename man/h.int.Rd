@@ -11,7 +11,7 @@ h.int(x1, x2, density = 20, ...)
 
 percentile(p = 0.5)
 
-F_print(x, verso = "<", x2 = 0)
+F_print(x, verso = "<", x2 = 0, dc = 4)
 
 histp(axes = F, ...)
 }
