@@ -12,7 +12,8 @@ ztest_pi(
   p0,
   h1 = "\\\\neq",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  pv_only = TRUE
+  pv_only = TRUE,
+  rbow = FALSE
 )
 
 ztest_mu(
@@ -24,7 +25,8 @@ ztest_mu(
   um = "",
   pvalue = T,
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  pv_only = FALSE
+  pv_only = FALSE,
+  rbow = FALSE
 )
 
 ttest_mu(
@@ -35,7 +37,8 @@ ttest_mu(
   h1 = "\\\\neq",
   um = "",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  pv_only = FALSE
+  pv_only = FALSE,
+  rbow = FALSE
 )
 }
 \arguments{

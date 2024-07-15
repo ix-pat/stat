@@ -147,7 +147,7 @@ A_ <- function(lst,tipo,lab1="A",lab2="B",um=""){
 }
 
 
-C_ <- function(lst,pv_only=FALSE,pvalue=TRUE){
+C_ <- function(lst,pv_only=FALSE,pvalue=TRUE,rbow=FALSE){
   if (pv_only) alpha <- c(1/10,1/20,1/100,1/1000)
   ls2e(lst)
   param <- n-gdl
@@ -221,7 +221,7 @@ C_ <- function(lst,pv_only=FALSE,pvalue=TRUE){
           "Essendo $",tobs_s,ifelse(tobs>tc,">","<"),tcrit,"$ allora ", ifelse((tobs > tc)&(H1==">")|(tobs < tcrit)&(H1=="<"),"**rifiuto** $H_0$ ","**non** rifiuto $H_0$ "),"al ",alpha*100,"%.\n\n",
           sep="")
   }
-  graf(lst = lst)
+  graf(lst = lst,rbow = rbow)
   if (pvalue) p_value(lst = lst)
   
   } else {
@@ -232,7 +232,7 @@ C_ <- function(lst,pv_only=FALSE,pvalue=TRUE){
   }
 }
 
-graf <- function(lst,pv = FALSE){
+graf <- function(lst,pv = FALSE,rbow=F){
   ls2e(lst)
   segn <- ifelse(h1 == "<",-1,1)
   if (is.null(gdl))  {
@@ -253,16 +253,41 @@ graf <- function(lst,pv = FALSE){
   curve(d_distr,from = tac[1],to = tac[kk],n = 1001,axes=F,xlab = tsimb,ylab = paste0("f(",tsimb,")"))
   axis(2)
   if (!pv){
-  axis(1,tac[-c(1,kk)],round(tac[-c(1,kk)],4),las=2)
-  segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
-  col_ <- c("red",ared,mblue,ablue,iblue)
-  col_ <- colorRampPalette(c("red","pink",iblue))(5)
-  if (length(alpha)==1) col_ <-c("red","blue")
-  k <- length(tac)
-  for (i in 1:(k/2)){
-  segments(tac[i],0,tac[k-i+1],0,col=col_[i],lwd=2)
-  }
-  points(tobs,0,pch=4,cex=2)
+    axis(1,tac[-c(1,kk)],round(tac[-c(1,kk)],4),las=2)
+    segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
+    if (!rbow){
+      col_ <- c("red",ared,mblue,ablue,iblue)
+      col_ <- colorRampPalette(c("red","pink",iblue))(5)
+      if (length(alpha)==1) col_ <-c("red","blue")
+      k <- length(tac)
+      for (i in 1:(k/2)){
+      segments(tac[i],0,tac[k-i+1],0,col=col_[i],lwd=2)
+        }
+    } else {
+      den <- 1000
+      if (h1 =="\\neq") {
+        tc1 <- c(seq(tac[1],q_distr(.05),length=den/2),seq(q_distr(.95),tac[kk],length=den/2)) 
+        col1 <- colorRampPalette(rev(c(iblue, "red","orange", "yellow")))(den/2)
+        col2 <- rev(col1)
+        colors <- c(col1,col2)
+        } else {
+        tc1 <- c(segn*tac[1],segn*seq(min(abs(tac[-2])),max(abs(tac)),length=den))
+        colors <- colorRampPalette((c(iblue, "red","orange", "yellow")))(den)
+        }
+      
+      kk <- length(tc1)
+      # Definire l'intervallo di x per il grafico
+      # Creare una palette di colori sfumati
+      
+      
+      # Disegnare i segmenti con colori sfumati
+      for(i in 1:(kk-1)) {
+        segments(tc1[i], 0, tc1[i+1], 0, col = colors[i],lwd = 2)
+      }
+      
+    }
+    points(tobs,0,pch=4,cex=2)
+  
   } else {
     
     if (h1 == "<") {
@@ -345,7 +370,7 @@ p_value <- function(lst){
 #'
 #' @rdname test-z-t
 
-ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),pv_only = TRUE){
+ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),pv_only = TRUE,rbow=FALSE){
   ph <- sn/n
   se <- sqrt(p0*(1-p0)/n)
 
@@ -372,7 +397,7 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),pv_
 
   # C conclusioni
   
-  C_(lst,pv_only)
+  C_(lst,pv_only,rbow=rbow)
   
   # graf(lst) # grafico
   # 
@@ -383,7 +408,7 @@ ztest_pi <- function(sn,n,p0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),pv_
 
 
 #' @rdname test-z-t
-ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
+ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE,rbow=FALSE){
   se <- s/sqrt(n)
   lst <- test(theta1 = muh,theta0 = mu0,se = se,h1 = h1,n = n,alpha = alpha)
   ls2e(lst)
@@ -401,7 +426,7 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/10
    \\end{eqnarray*}\n\n"
   )
   
-  C_(lst,pv_only,pvalue)
+  C_(lst = lst,pv_only = pv_only,pvalue = pvalue,rbow = rbow)
   
   # graf(lst = lst)
   # 
@@ -409,7 +434,7 @@ ztest_mu <- function(muh,s,n,mu0,h1 = "\\neq",um="",pvalue=T,alpha = c(1/10,5/10
 }
 
 #' @rdname test-z-t
-ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
+ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE,rbow =FALSE){
   s <- sqrt(n/(n-1))*sh
   se <- s/sqrt(n)
 
@@ -432,7 +457,7 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
    \\end{eqnarray*}
    ")
 
-  C_(lst,pv_only)
+  C_(lst = lst,pv_only = pv_only,rbow = rbow)
   # graf(lst = lst)
   #  p_value(lst)
   
@@ -467,7 +492,7 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
 #' ttest_2c_om(mu1 = 5.1, mu2 = 5.8, s1h = 1.5, s2h = 1.7, n1 = 30, n2 = 30, h1 = "\\neq")
 #'
 #' @rdname test-su-due-campioni
-test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
+test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE,rbow=FALSE){
   #### Test su due proporzioni ----------------
   if (!s1h) # s1h = F, non ci sono le sd, è un test su proporzioni
   {
@@ -503,8 +528,7 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um=
    =  ",tobs,"\\, .
    \\end{eqnarray*}
    ")
-  C_(lst,pv_only)
-  
+    C_(lst = lst,pv_only = pv_only,rbow = rbow)  
   # graf(lst = lst)
   # 
   # p_value(lst)
@@ -589,18 +613,18 @@ $$
 }
 
 #' @rdname test-su-due-campioni
-ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000) ,pv_only = FALSE){
-  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=T,a=a,b=b,um=um, pv_only = pv_only)
+ttest_2c_et <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000) ,pv_only = FALSE,rbow=FALSE){
+  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=T,a=a,b=b,um=um, pv_only = pv_only,rbow=rbow)
 }
 
 #' @rdname test-su-due-campioni
-ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE){
-  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=F,a=a,b=b,um=um,pv_only = pv_only)
+ttest_2c_om <-  function(mu1,mu2,s1h,s2h,n1,n2,h1 = "\\neq",a="1",b="2",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE,rbow=FALSE){
+  test_2c(mu1=mu1,mu2 = mu2,s1h=s1h,s2h=s2h,n1,n2,h1 = h1, alpha = alpha,et=F,a=a,b=b,um=um,pv_only = pv_only,rbow=rbow)
 }
 
 #' @rdname test-su-due-campioni
-ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq",a="1",b="2",alpha = c(1/10,5/100,1/100,1/1000),pv_only = TRUE){
-  test_2c(mu1 = s1,mu2 = s2,s1h = F,s2h = F,n1 = n1,n2 = n2,h1 = h1,alpha = alpha,a = a,b = b,pv_only = pv_only)
+ztest_2c_pi <-  function(s1,s2,n1,n2,h1 = "\\neq",a="1",b="2",alpha = c(1/10,5/100,1/100,1/1000),pv_only = TRUE,rbow=FALSE){
+  test_2c(mu1 = s1,mu2 = s2,s1h = F,s2h = F,n1 = n1,n2 = n2,h1 = h1,alpha = alpha,a = a,b = b,pv_only = pv_only,rbow=rbow)
 }
 
 ## Regressione ####

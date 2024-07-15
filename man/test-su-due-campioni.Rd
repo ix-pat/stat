@@ -20,7 +20,8 @@ test_2c(
   b = "B",
   um = "",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  pv_only = FALSE
+  pv_only = FALSE,
+  rbow = FALSE
 )
 
 ttest_2c_et(
@@ -35,7 +36,8 @@ ttest_2c_et(
   b = "2",
   um = "",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  pv_only = FALSE
+  pv_only = FALSE,
+  rbow = FALSE
 )
 
 ttest_2c_om(
@@ -50,7 +52,8 @@ ttest_2c_om(
   b = "2",
   um = "",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  pv_only = FALSE
+  pv_only = FALSE,
+  rbow = FALSE
 )
 
 ztest_2c_pi(
@@ -62,7 +65,8 @@ ztest_2c_pi(
   a = "1",
   b = "2",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
-  pv_only = TRUE
+  pv_only = TRUE,
+  rbow = FALSE
 )
 }
 \arguments{
