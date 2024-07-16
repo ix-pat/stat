@@ -254,7 +254,6 @@ graf <- function(lst,pv = FALSE,rbow=F){
   axis(2)
   if (!pv){
     axis(1,tac[-c(1,kk)],round(tac[-c(1,kk)],4),las=2)
-    segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
     if (!rbow){
       col_ <- c("red",ared,mblue,ablue,iblue)
       col_ <- colorRampPalette(c("red","pink",iblue))(5)
@@ -287,7 +286,8 @@ graf <- function(lst,pv = FALSE,rbow=F){
       
     }
     points(tobs,0,pch=4,cex=2)
-  
+    segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
+    
   } else {
     
     if (h1 == "<") {
