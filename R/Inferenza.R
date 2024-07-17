@@ -226,7 +226,7 @@ C_ <- function(lst,pv_only=FALSE,pvalue=TRUE,rbow=FALSE){
   
   } else {
     p_value(lst = lst)
-    graf(lst = lst,T)
+    graf(lst = lst,pv = T,rbow=rbow)
     cat("\n\n ",conc_pv_only,"\n\n",sep = "")
     
   }
@@ -235,6 +235,8 @@ C_ <- function(lst,pv_only=FALSE,pvalue=TRUE,rbow=FALSE){
 graf <- function(lst,pv = FALSE,rbow=F){
   ls2e(lst)
   segn <- ifelse(h1 == "<",-1,1)
+  #cols_ <- c(iblue,ared )
+  cols_ <- c(iblue, "red","orange", "yellow")
   if (is.null(gdl))  {
     d_distr <- function(x) dnorm(x)
     q_distr <- function(p) qnorm(p)
@@ -263,22 +265,21 @@ graf <- function(lst,pv = FALSE,rbow=F){
       segments(tac[i],0,tac[k-i+1],0,col=col_[i],lwd=2)
         }
     } else {
+      
       den <- 1000
       if (h1 =="\\neq") {
         tc1 <- c(seq(tac[1],q_distr(.05),length=den/2),seq(q_distr(.95),tac[kk],length=den/2)) 
-        col1 <- colorRampPalette(rev(c(iblue, "red","orange", "yellow")))(den/2)
+        col1 <- colorRampPalette(rev(cols_))(den/2)
         col2 <- rev(col1)
         colors <- c(col1,col2)
         } else {
         tc1 <- c(segn*tac[1],segn*seq(min(abs(tac[-2])),max(abs(tac)),length=den))
-        colors <- colorRampPalette((c(iblue, "red","orange", "yellow")))(den)
+        colors <- colorRampPalette((cols_))(den)
         }
-      
       kk <- length(tc1)
       # Definire l'intervallo di x per il grafico
       # Creare una palette di colori sfumati
-      
-      
+
       # Disegnare i segmenti con colori sfumati
       for(i in 1:(kk-1)) {
         segments(tc1[i], 0, tc1[i+1], 0, col = colors[i],lwd = 2)
@@ -289,7 +290,27 @@ graf <- function(lst,pv = FALSE,rbow=F){
     segments(tac[-10],0,tac[-10],d_distr(tac[-10]),lty=2)
     
   } else {
-    
+    if (rbow){
+      den <- 1000
+      if (h1 =="\\neq") {
+        tc1 <- c(seq(tac[1],q_distr(.05),length=den/2),seq(q_distr(.95),tac[kk],length=den/2)) 
+        col1 <- colorRampPalette(rev(cols_))(den/2)
+        col2 <- rev(col1)
+        colors <- c(col1,col2)
+      } else {
+        tc1 <- c(segn*tac[1],segn*seq(min(abs(tac[-2])),max(abs(tac)),length=den))
+        colors <- colorRampPalette((cols_))(den)
+      }
+      k1 <- length(tc1)
+      # Definire l'intervallo di x per il grafico
+      # Creare una palette di colori sfumati
+      
+      # Disegnare i segmenti con colori sfumati
+      for(i in 1:(k1-1)) {
+        segments(tc1[i], 0, tc1[i+1], 0, col = colors[i],lwd = 2)
+      }
+      
+    }
     if (h1 == "<") {
       draw_dist(d_distr,z1 = tac[1],z2 = tobs,col = ared)
       axis(1,c(tac[1],tobs,tac[kk]))
@@ -301,6 +322,7 @@ graf <- function(lst,pv = FALSE,rbow=F){
       draw_dist(d_distr,z1 = abs(tobs),z2 = tac[kk],col = ared)
       axis(1,c(tac[1],tobs,-tobs,tac[kk]))
     }
+    
   }
 }
 
@@ -492,7 +514,7 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
 #' ttest_2c_om(mu1 = 5.1, mu2 = 5.8, s1h = 1.5, s2h = 1.7, n1 = 30, n2 = 30, h1 = "\\neq")
 #'
 #' @rdname test-su-due-campioni
-test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE,rbow=FALSE){
+test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um="",alpha = c(1/10,5/100,1/100,1/1000),pv_only = FALSE,rbow=F){
   #### Test su due proporzioni ----------------
   if (!s1h) # s1h = F, non ci sono le sd, è un test su proporzioni
   {
@@ -568,7 +590,7 @@ $$
    \\end{eqnarray*}\n\n
    ")
     
-    C_(lst,pv_only)
+    C_(lst = lst,pv_only = pv_only,rbow = rbow)  
     
     # graf(lst)
     # 
@@ -603,7 +625,7 @@ $$
   =  ", tobs,"\\, .
   \\end{eqnarray*}\n\n
   ")
-      C_(lst,pv_only)
+      C_(lst,pv_only,rbow = rbow)
       
       # graf(lst)
       # 
@@ -789,6 +811,25 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
     )
   )
 }  
+
+print_stat <- function(div = F)
+{
+cat("Si osservano le seguenti statistiche: \n")
+if (!div){
+  cat("\\begin{align*}\n")
+  cat("  \\sum_{i=1}^{",n, "}x_i &= ",sumx,", \\sum_{i=1}^{",n,"}y_i &=",sumy,"\\\\ \n")
+  cat("  \\sum_{i=1}^{",n,"}x_i^2 &=",sumx2,", \\sum_{i=1}^{",n,"}y_i^2 &= ",sumy2,"\\\\ \n")
+  cat("  \\sum_{i=1}^{",n,"}x_iy_i &=",sumxy,"\n")
+  cat("\\end{align*}\n")
+} else {
+  cat("\\begin{align*}\n")
+  cat("  \\frac 1{",n,"}\\sum_{i=1}^{",n, "}x_i &= ",sumx/n,", \\frac 1{",n,"}\\sum_{i=1}^{",n,"}y_i &=",sumy/n,"\\\\ \n")
+  cat("  \\frac 1{",n,"}\\sum_{i=1}^{",n,"}x_i^2 &=",sumx2/n,", \\frac 1{",n,"}\\sum_{i=1}^{",n,"}y_i^2 &= ",sumy2/n,"\\\\ \n")
+  cat("  \\frac 1{",n,"}\\sum_{i=1}^{",n,"}x_iy_i &=",sumxy/n,"\n")
+  cat("\\end{align*}\n")
+  
+}
+}
 
 #' Stampa i Coefficienti di Regressione in LaTeX
 #'
@@ -1104,7 +1145,7 @@ V(\\hat\\beta_{0}) &=& \\sigma_{\\varepsilon}^{2} \\left( \\frac{1} {n}  +  \\fr
 #' ttest_beta(cof = 1, bj0 = 1, SE = TRUE)  # Test su beta_1 con errore standard
 #' 
 #' @export
-ttest_beta <-  function(cof,bj0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),SE=F,pv_only=F){
+ttest_beta <-  function(cof,bj0,h1 = "\\neq",alpha = c(1/10,5/100,1/100,1/1000),SE=F,pv_only=F,rbow=FALSE){
   bj <- ifelse(cof==0,b0,b1)
   vbj <-  ifelse(cof==0,(vb0),(vb1))
   lst <- test(theta1 = bj,theta0 = bj0,se = sqrt(vbj),h1 = h1,alpha = alpha,gdl = n-2,n=n)
@@ -1127,7 +1168,7 @@ cat("
 \\end{eqnarray*}
 ")
   
-  C_(lst,pv_only)
+  C_(lst,pv_only,rbow = rbow)
   
   # graf(lst)
   # 

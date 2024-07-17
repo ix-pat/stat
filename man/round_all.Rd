@@ -4,7 +4,7 @@
 \alias{round_all}
 \title{Arrotonda Tutte le Variabili Numeriche in un Ambiente}
 \usage{
-round_all(dig = 4, exclude = NULL, env = parent.frame())
+round_all(dig = 4, exclude = NULL)
 }
 \arguments{
 \item{dig}{Un intero che specifica il numero di cifre decimali a cui i valori numerici devono

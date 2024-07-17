@@ -21,7 +21,7 @@ test_2c(
   um = "",
   alpha = c(1/10, 5/100, 1/100, 1/1000),
   pv_only = FALSE,
-  rbow = FALSE
+  rbow = F
 )
 
 ttest_2c_et(
