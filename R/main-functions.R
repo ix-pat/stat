@@ -140,7 +140,7 @@ round_all <- function(dig = 4, exclude = NULL) {
   }
   
   # Applicare la funzione a tutte le variabili
-  lapply(nomi_variabili, arrotonda_se_numerico)
+  invisible(lapply(nomi_variabili, arrotonda_se_numerico))
 }
 #' Crea una Tabella Stilizzata con kable e kableExtra
 #'
@@ -240,6 +240,45 @@ p <- function(x, ax = 4) {
 }
 
 p0 <- paste0
+
+#' Prepara i punteggi e le enumerazioni per i compiti
+#'
+#'
+#' @param start logico, si inizia dall'esercizio 1?.
+#' @param nex logico, prossimo esercizio?
+#' @param 
+#'
+#' @return il numero progressivo dell'esercizio e il relativo punteggio
+#' 
+#' @details
+#' l'oggetto \code{punti} va definito nel \code{.GlobalEnv}
+#' 
+#'
+#' @examples
+#' punti <- list(
+#'   e1 = c(14,3,2,2),
+#'   e2 = c(14,3,2,2),
+#'   e3 = c(14),
+#'   e4 = c(3,3,3,3),
+#'   e5 = c(4,10),
+#'   e6 = c(14,3,2,2,2)
+#' )
+#' punt_p(start=T)
+#' punt_p()
+#' punt_p()
+#' punt_p(nex=T)
+#'
+#' punt_p(num=T)
+#' @export
+punt_p <- function(start=F,nex=F,num=F){
+  tot <- sum(unlist(punti))
+  it <- ifelse(start,item_start(num),item_(num))
+  it <- ifelse(nex,item_next(num),it)
+  ptt <- punti[[i1]][i2]
+  ptt_30 <- round(ptt/tot*31,2)
+  paste(it,"**(Punti ",ptt,"/",tot," $\\rightarrow$ ",ptt_30,"/31)**",sep="")
+}
+
 
 ellisse <- function (x, y, a = 1, b = 1, agl = 0, segment = NULL, arc.only = TRUE, 
                      deg = TRUE, nv = 100, border = NULL, col = NA, lty = 1, lwd = 1, 
