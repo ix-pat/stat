@@ -1175,4 +1175,37 @@ cat("
   # p_value(lst)
   
 }
+#' Spline Smussata con Bande di Confidenza
+#'
+#' Questa funzione adatta una spline smussata ai punti dati e traccia i valori
+#' adattati insieme alle bande di confidenza.
+#'
+#' @param x Un vettore numerico dei valori x.
+#' @param y Un vettore numerico dei valori y corrispondenti a `x`.
+#' @param df1 Gradi di libertà per il primo adattamento della spline smussata. Default è 5.
+#' @param df2 Gradi di libertà per l'adattamento della spline sui residui. Default è 5.
+#' @param n Numero di punti da utilizzare per la griglia di previsione. Default è 100.
+#' @param a Valore critico per le bande di confidenza. Default è il 97.5-esimo percentile della distribuzione normale (\code{qnorm(.975)}).
+#' @importFrom stats qnorm
+#' @importFrom graphics lines
+#' @importFrom stats smooth.spline
+#' @return La funzione non restituisce un valore ma traccia le linee della spline smussata e delle bande di confidenza sul grafico corrente.
+#' @examples
+#' 
+#' x <- seq(0,10,length=200)
+#' y <- sin(x) + rnorm(n = 200,0,x^2/100+.1)
+#' plot(x,y)
+#' spline_pat(x,y,df1=10,df2=10)
 
+spline_pat <- function(x, y, df1 = 5, df2 = 5, n = 100, a = qnorm(.975)) {
+  xx <- seq(min(x), max(x), length = n)
+  fit <- smooth.spline(x, y, df = df1)
+  hat_mu <- predict(fit, xx)$y
+  eps <- fit$yin - fit$y
+  eps2 <- eps^2
+  fit2 <- smooth.spline(fit$x, eps2, df = df2)
+  hat_sig <- sqrt(predict(fit2, xx)$y)
+  lines(xx, hat_mu, col = 2, lwd = 2)
+  lines(xx, hat_mu + a * hat_sig, lty = 2)
+  lines(xx, hat_mu - a * hat_sig, lty = 2)
+}
