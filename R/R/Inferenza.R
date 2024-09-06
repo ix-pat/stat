@@ -6,12 +6,12 @@
 #' Calcola l'intervallo di confidenza per la media o la proporzione di una popolazione, utilizzando la distribuzione Normale (z) o t di Student.
 #'
 #' @param xm Media campionaria o somma delle successi.
-#' @param sd Deviazione standard della popolazione, o del campione.
+#' @param sd Deviazione standard della popolazione, se nota.
 #' @param alpha Livello di significatività per l'intervallo di confidenza.
 #' @param n Dimensione del campione.
 #' @param dist_ Tipo di distribuzione ("z" per Normale, "t" per t di Student).
-#' @param mus Simbolo per la media, default \\hat\\mu.
-#' @param ss Simobolo per la varianza
+#' @param mus Media della popolazione, se nota (utilizzato per calcoli specifici).
+#' @param ss Varianza campionaria, se disponibile.
 #'
 #' @details
 #' La funzione `idc` determina l'intervallo di confidenza utilizzando la formula appropriata in base alla distribuzione specificata.
@@ -23,13 +23,10 @@
 #' idc(xm = 5, sd = 2, alpha = 0.05, n = 30, dist_ = "z")
 #'
 #' # Intervallo di confidenza per la media con distribuzione t
-#' idc(xm = 5, sd = 4, alpha = 0.05, n = 30, dist_ = "t")
+#' idc(xm = 5, ss = 4, alpha = 0.05, n = 30, dist_ = "t")
 #'
 #' # Intervallo di confidenza per la proporzione
 #' idc(xm = 120, alpha = 0.05, n = 200, dist_ = "z")
-#'
-#' # Intervallo di confidenza per lambda
-#' idc(xm = 12, sd = sqrt(12), alpha = 0.05, n = 200, dist_ = "z", mus="\\hat\\lambda",ss="\\sqrt{\\hat\\lambda}")
 #'
 #' @rdname intervallo-di-confidenza
 
@@ -565,7 +562,7 @@ test_2c <-  function(mu1,mu2,s1h=F,s2h=F,n1,n2,h1 = "\\neq",et=F,a="A",b="B",um=
     {   
     s1 <- sqrt(n1/(n1-1))*s1h
     s2 <- sqrt(n2/(n2-1))*s2h
-    s2p <- (n1*s1h^2+n2*s2h^2)/(n1+n2-2)
+    s2p <- (n1*s1h+n2*s2h)/(n1+n2-2)
     se <- sqrt(s1^2/n1+s2^2/n2)
     s2f1<- s1^2; s2f2 <- s2^2
 

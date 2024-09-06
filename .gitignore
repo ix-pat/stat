@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/Meta/
+.Rbuildignore
+.gitignore-Lpat
+.gitignore-unimore
+book.Rproj

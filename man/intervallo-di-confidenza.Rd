@@ -9,7 +9,7 @@ idc(xm, sd = NULL, alpha = 0.05, n, dist_, mus = NULL, ss = NULL)
 \arguments{
 \item{xm}{Media campionaria o somma delle successi.}
 
-\item{sd}{Deviazione standard della popolazione, se nota.}
+\item{sd}{Deviazione standard della popolazione, o del campione.}
 
 \item{alpha}{Livello di significatività per l'intervallo di confidenza.}
 
@@ -17,9 +17,9 @@ idc(xm, sd = NULL, alpha = 0.05, n, dist_, mus = NULL, ss = NULL)
 
 \item{dist_}{Tipo di distribuzione ("z" per Normale, "t" per t di Student).}
 
-\item{mus}{Media della popolazione, se nota (utilizzato per calcoli specifici).}
+\item{mus}{Simbolo per la media, default \\hat\\mu.}
 
-\item{ss}{Varianza campionaria, se disponibile.}
+\item{ss}{Simobolo per la varianza}
 }
 \description{
 Calcola l'intervallo di confidenza per la media o la proporzione di una popolazione, utilizzando la distribuzione Normale (z) o t di Student.
@@ -34,9 +34,12 @@ Per la distribuzione t, la deviazione standard campionaria viene corretta per la
 idc(xm = 5, sd = 2, alpha = 0.05, n = 30, dist_ = "z")
 
 # Intervallo di confidenza per la media con distribuzione t
-idc(xm = 5, ss = 4, alpha = 0.05, n = 30, dist_ = "t")
+idc(xm = 5, sd = 4, alpha = 0.05, n = 30, dist_ = "t")
 
 # Intervallo di confidenza per la proporzione
 idc(xm = 120, alpha = 0.05, n = 200, dist_ = "z")
+
+# Intervallo di confidenza per lambda
+idc(xm = 12, sd = sqrt(12), alpha = 0.05, n = 200, dist_ = "z", mus="\\\\hat\\\\lambda",ss="\\\\sqrt{\\\\hat\\\\lambda}")
 
 }
