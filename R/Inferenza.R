@@ -775,7 +775,7 @@ regr <- function(x=NULL,y=NULL,stat1=NULL,stat2=NULL,semp=F,ax=2){
     } else {
       prn <- ml <- bb <- NULL
     }
-  round_all()
+  # round_all(exclude = c(sumx,sumy,sumx2,sumy2,sumxy))
   }  
   
   return(
