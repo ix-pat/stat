@@ -1,4 +1,4 @@
-questa_e_una_prova <- function(){cat("Prova!")}
+questa_e_una_prova <- function(){cat("Prova!!")}
 
 # 
 # library(pat.book)
