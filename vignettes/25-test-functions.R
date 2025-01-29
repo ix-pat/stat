@@ -4,7 +4,11 @@ library(knitr)
 library(kableExtra)
 library(pBrackets)
 library(bookdown)
+<<<<<<< HEAD
 #library(bookdownplus)
+=======
+library(bookdownplus)
+>>>>>>> ffed23050755019243ece136ef07a8f18ec5cefc
 library(plotrix)
 library(colorspace)
 library(haven)
