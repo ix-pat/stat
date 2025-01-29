@@ -10,6 +10,8 @@ punt_p(start = F, nex = F, num = F)
 \item{start}{logico, si inizia dall'esercizio 1?.}
 
 \item{nex}{logico, prossimo esercizio?}
+
+\item{num}{logico, il secondo contatore è numerico?}
 }
 \value{
 il numero progressivo dell'esercizio e il relativo punteggio

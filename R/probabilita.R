@@ -584,3 +584,64 @@ plot_FdR <- function(sx, pp, xmin, xmax) {
   points(x[2:(kk - 1)], cumsum(px)[1:(kk - 2)])
   points(x[2:(kk - 1)], cumsum(px)[2:(kk - 1)], pch = 16)
 }
+
+
+#' Generazione di coppie di valori con media, deviazione standard e covarianza specificate
+#'
+#' Questa funzione genera coppie di valori `(x, y)` distribuiti normalmente, 
+#' garantendo che abbiano le medie, le deviazioni standard e la covarianza desiderate, 
+#' attraverso un processo iterativo di correzione.
+#'
+#' @param xbar Valore atteso della media di `x`. Default: `0`.
+#' @param ybar Valore atteso della media di `y`. Default: `0`.
+#' @param sx Deviazione standard desiderata per `x`. Default: `1`.
+#' @param sy Deviazione standard desiderata per `y`. Default: `1`.
+#' @param sxy Covarianza desiderata tra `x` e `y`. Default: `0`.
+#' @param n Numero di coppie `(x, y)` da generare. Default: `10`.
+#' @param max_iter Numero massimo di iterazioni per la convergenza della covarianza. Default: `10000`.
+#' @param tol Tolleranza per la convergenza della covarianza. Default: `1e-7`.
+#' @param dist Funzione di distribuzione da cui generare i valori di `x`. Default: `rnorm`.
+#' @param contr Se `TRUE`, stampa a video le differenze tra i valori desiderati e quelli ottenuti. Default: `FALSE`.
+#' @param prec Precisione decimale per i risultati della verifica (`contr = TRUE`). Default: `10`.
+#' @param ... Argomenti aggiuntivi da passare alla funzione di generazione `dist`.
+#'
+#' @return Una matrice `n x 2` in cui la prima colonna rappresenta `x` e la seconda colonna rappresenta `y`.
+#'
+#' @examples
+#' set.seed(123)
+#' r_norm(xbar = 5, ybar = 10, sx = 2, sy = 3, sxy = 0.5, n = 100,contr=TRUE)
+#'
+#' @export
+
+r_norm <- function(xbar=0,ybar=0,sx=1,sy=1,sxy=0,n=10,max_iter = 10000,tol= 1e-7,dist=rnorm,contr=FALSE,prec=6,...)
+{
+  x <- dist(n,...)
+  y <- rnorm(n)
+  pop_sd <- function(x) sqrt(vvv(x))
+  for(i in 1:max_iter) {
+    # 1) Shift sulle medie
+    x <- x - mean(x) + xbar
+    y <- y - mean(y) + ybar
+    
+    # 2) Aggiustamento sulle deviazioni standard (non corrette)
+    x <- x * (sx / pop_sd(x))
+    y <- y * (sy / pop_sd(y))
+    
+    # 3) Correzione finale sulla covarianza
+    covar <- mean((x - mean(x)) * (y - mean(y)))  # anche questa non corretta
+    if(abs(covar - sxy) < tol) break
+    alfa <- (sxy - covar) / mean((x - mean(x))^2)
+    xmed <- mean(x)
+    y <- y + alfa * (x - xmed)
+  }
+  
+  if (contr){
+    cat("Media x:", round(abs(mean(x)-xbar),prec), "\n")
+    cat("Media y:", round(abs(mean(y)-ybar),prec), "\n")
+    cat("DevSt x non corretta:", round(abs(pop_sd(x)-sx),prec), "\n")
+    cat("DevSt y non corretta:", round(abs(pop_sd(y)-sy),prec), "\n")
+    cat("Cov non corretta:", round(abs(mean((x - mean(x)) * (y - mean(y)))-sxy),prec), "\n")
+  }
+  return(cbind(x,y))
+}
+

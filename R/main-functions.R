@@ -246,7 +246,7 @@ p0 <- paste0
 #'
 #' @param start logico, si inizia dall'esercizio 1?.
 #' @param nex logico, prossimo esercizio?
-#' @param 
+#' @param num logico, il secondo contatore è numerico?
 #'
 #' @return il numero progressivo dell'esercizio e il relativo punteggio
 #' 

@@ -1,5 +1,10 @@
 # Changelog
 
+
+## Versione 2.7.0 (2025-01-29)
+
+- Aggiunto `r_norm`
+
 ## Versione 2.6.0 (2024-07-03)
 
 - Modificate le funzioni `test` con la funzione `C_`
