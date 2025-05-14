@@ -624,7 +624,7 @@ $$
   \\frac{\\hat\\mu_\\text{", a,"} - \\hat\\mu_\\text{", b,"}}
   {\\sqrt{\\frac {S^2_p}{n_\\text{", a,"}}+\\frac {S^2_p}{n_\\text{", b,"}}}}&\\sim&t_{n_\\text{", a,"}+n_\\text{", b,"}-2}\\\\
   t_{\\text{obs}}
-  &=& \\frac{ (", mu1,"- ", mu2,")} {\\sqrt{\\frac{", s2f1,"}{", n1,"}+\\frac{", s2f2,"}{", n2,"}}}
+  &=& \\frac{ (", mu1,"- ", mu2,")} {\\sqrt{\\frac{", s2p,"}{", n1,"}+\\frac{", s2p,"}{", n2,"}}}
   =  ", tobs,"\\, .
   \\end{eqnarray*}\n\n
   ")
