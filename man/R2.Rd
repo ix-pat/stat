@@ -4,7 +4,12 @@
 \alias{R2}
 \title{Stampa e Valuta il Coefficiente di Determinazione \(r^2\) in LaTeX}
 \usage{
-R2()
+R2(adatto = T, percent = T)
+}
+\arguments{
+\item{adatto}{Logico: deve dire se il modello è adatto?}
+
+\item{percent}{Logico: deve stampare la percentuale di varianza spiegata?.}
 }
 \value{
 La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX

@@ -974,6 +974,9 @@ residuo <- function(x,y){
 #' Questa funzione calcola il coefficiente di correlazione \(r\), il suo quadrato \(r^2\),
 #' e stampa queste statistiche in formato LaTeX. Inoltre, valuta se \(r^2\) indica un buon adattamento
 #' del modello ai dati confrontando \(r^2\) con il valore soglia 0.75.
+#' 
+#' @param adatto Logico: deve dire se il modello è adatto?
+#' @param percent Logico: deve stampare la percentuale di varianza spiegata?.
 #'
 #' @return La funzione non ritorna un valore ma stampa direttamente l'output in formato LaTeX
 #'         e un messaggio testuale che valuta la bontà di adattamento del modello nell'ambiente di chiamata.
@@ -991,13 +994,15 @@ residuo <- function(x,y){
 #' R2()
 #'
 #' @export
-R2 <- function(){
+R2 <- function(adatto = T,percent = T){
   sgn <- ifelse(r^2>.75,">","<")
   cat("\\begin{eqnarray*}\n")
-  cat("r&=&\\frac{\\text{cov}(X,Y)}{\\sigma_X\\sigma_Y}=\\frac{",co,"}{",sx,"\\times",sy,"}=",r,"\\\\")
-  cat("r^2&=&",r^2,sgn,"0.75\n")
-  cat("\\end{eqnarray*}\n")  
-  cat(ifelse(r^2>.75,"Il modello si adatta bene ai dati.","Il modello **non** si adatta bene ai dati."))
+  cat("r&=&\\frac{\\text{cov}(X,Y)}{\\sigma_X\\sigma_Y}=\\frac{",co,"}{",sx,"\\times",sy,"}=",r,"\\\\ \n")
+  if (adatto)  cat("r^2&=&",r^2,sgn,"0.75\n") else cat("r^2&=&",r^2)
+  cat("\\end{eqnarray*}\n\n") 
+  if (adatto) cat(ifelse(r^2>.75,"Il modello si adatta bene ai dati.\n\n",
+                         "Il modello **non** si adatta bene ai dati.\n\n"))
+  if (percent) cat("Il modello spiega il $",p(r^2*100,2),"\\%$ della variabilità totale della $Y$.\n\n",sep="")
 }
 #' Stampa i Componenti della Varianza Totale dei Dati in LaTeX
 #'

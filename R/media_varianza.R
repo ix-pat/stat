@@ -25,15 +25,15 @@ media_ <- function(x,p=NULL,mnam="\\mu",semp = F){
   n <- length(x)
   if (!semp){
     if(is.null(p)){
-      cat("\\[",mnam,"=\\frac 1{",n,"}(",paste(x,collapse = "+"),")=",mean(x),"\\]")
+      cat("$$\n",mnam,"=\\frac 1{",n,"}(",paste(x,collapse = "+"),")=",mean(x),"\n$$")
     }
     if(!is.null(p)){
-      
-      cat("\\[",mnam,"=",paste(paste(x,p,sep = " \\cdot "),collapse = "+"),"=",sum(x*p),"\\]")
+      p <- p/sum(p)
+      cat("$$\n",mnam,"=",paste(paste(x,p,sep = " \\cdot "),collapse = "+"),"=",sum(x*p),"\n$$")
     }} else {
       freq <- table(x)
       xx <- dimnames(freq)$x
-      cat("\\[",mnam,"=\\left(",paste(paste(xx,"\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\right)=",mean(x),"\\]")
+      cat("$$\n",mnam,"=\\left(",paste(paste(xx,"\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\right)=",mean(x),"\n$$")
     }
 }
 #' @rdname calcoli-statistici
@@ -42,15 +42,15 @@ var_ <- function(x,p=NULL,mnam="\\sigma^2",semp=F){
   m <- ifelse(test = is.null(p),mean(x),sum(x*p))
   if (!semp){
     if(is.null(p)){
-      cat("\\[",mnam,"=\\frac 1{",n,"}(",paste(paste(x,2,sep = "^"),collapse = "+"),")-(",m,")^2=",s2c(x),"\\]")
+      cat("$$\n",mnam,"=\\frac 1{",n,"}(",paste(paste(x,2,sep = "^"),collapse = "+"),")-(",m,")^2=",s2c(x),"\n$$")
     }
     if(!is.null(p)){
-      p <- sum(p)
-      cat("\\[",mnam,"=(",paste(paste(paste(x,2,sep = "^"),p,sep = " \\cdot "),collapse = "+"),")-(",m,")^2=",vvv(x = x,p = p),"\\]")
+      p <- p/sum(p)
+      cat("$$\n",mnam,"=(",paste(paste(paste(x,2,sep = "^"),p,sep = " \\cdot "),collapse = "+"),")-(",m,")^2=",vvv(x = x,p = p),"\n$$")
     }} else {
       freq <- table(x)
       xx <- dimnames(freq)$x
-      cat("\\[",mnam,"=\\left(",paste(paste(xx,"^2\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\right)-(",m,")^2=",s2c(x),"\\]")
+      cat("$$\n",mnam,"=\\left(",paste(paste(xx,"^2\\frac {",freq,"}{",n,"}"),collapse = "+"),"\\right)-(",m,")^2=",s2c(x),"\n$$")
     }
 }
 #' @rdname calcoli-statistici

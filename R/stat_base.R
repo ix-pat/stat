@@ -166,18 +166,39 @@ stat_base <- function(samp,brk){
 #' Funzioni per la manipolazione e visualizzazione dei dati
 #'
 #' Queste funzioni sono utilizzate per il calcolo dei percentili, la stampa di distribuzioni cumulative e la visualizzazione di istogrammi con densità percentuale.
+#' Funzionano correttamente solo se l'output di \code{stat_base()} è stato caricato nell'ambiente globale tramite \code{ls2e()}.
+#'
+#' @name grafici_percentili
+#' @param x, x2 Estremi dell'intervallo per il calcolo della probabilità cumulativa o del tratteggio (in \code{F_print}, \code{F_print2}, \code{h.int}).
+#' @param p Percentile da calcolare (valore tra 0 e 1), per la funzione \code{percentile}.
+#' @param verso Direzione del confronto per la cumulata: uno tra \code{"<"} o \code{">"}.
+#' @param dc Numero di decimali da usare nel risultato stampato.
+#' @param perc1, perc2 Indicatori logici: se \code{TRUE}, interpretano \code{x}, \code{x2} come percentili.
+#' @param density Densità del tratteggio per \code{h.int}.
+#' @param axes Se \code{TRUE}, disegna gli assi nel grafico prodotto da \code{histp}.
+#' @param ... Ulteriori parametri grafici passati alle funzioni di disegno.
+#'
 #'
 #' @details
 #' Le seguenti funzioni sono incluse:
 #'
-#' \code{h.int}: Funzione per disegnare un'area sotto la curva interpolata.
-#' 
-#' \code{percentile}: Calcola e stampa l'approssimazione di un percentile dato.
-#' 
-#' \code{F_print}: Stampa la distribuzione cumulativa in LaTeX.
-#' 
-#' \code{histp}: Disegna un istogramma con densità percentuale.
+#' \code{h.int(x1, x2, density = 20, ...)}: disegna l'area sotto la curva interpolata tra \code{x1} e \code{x2}. Il parametro \code{density} controlla il tratteggio.
 #'
+#' \code{percentile(p)}: calcola e stampa il valore approssimato del \emph{p}-esimo percentile della distribuzione.
+#' - \code{p}: valore compreso tra 0 e 1.
+#'
+#' \code{F_print(x, verso = "<", x2 = 0, dc = 4, perc1 = FALSE, perc2 = FALSE)}: stampa il calcolo della probabilità cumulativa \( P(X < x) \), \( P(X > x) \) o \( P(x < X < x_2) \).
+#' - \code{x}, \code{x2}: estremi dell’intervallo (numerici o percentili).
+#' - \code{verso}: uno tra \code{"<"}, \code{">"}, o altro per intervallo.
+#' - \code{dc}: numero di decimali da usare.
+#' - \code{perc1}, \code{perc2}: se TRUE, interpreta gli estremi come percentili.
+#'
+#' \code{histp(axes = FALSE, ...)}: disegna un istogramma in densità percentuale.
+#' - \code{axes}: se TRUE, mostra gli assi con etichette numeriche.
+#' - \code{...}: parametri grafici aggiuntivi (colore, bordo, ecc.).
+#'
+#' Tutte le funzioni si appoggiano a oggetti creati da \code{stat_base()} (come \code{brk}, \code{dat2}, \code{n}, \code{k}, ecc.) e presuppongono che siano già disponibili nell’ambiente globale.
+#' 
 #' @examples
 #' brk <- c(0,1,2,5,10)
 #' hhh <- c(2,5,1,.5)
@@ -200,19 +221,8 @@ stat_base <- function(samp,brk){
 #'
 #' @export
 
-h.int <- function(x1,x2,density=20,...){
-  brtemp <- c(x1,brk[brk>x1 & brk<x2],x2)
-  kk <- length(brtemp)
-  brs <- sort(c(min(brtemp),rep(brtemp,each=2),max(brtemp)))
-  
-  hrs <- c(0,0,rep(H.int(brtemp[-(kk)]),each=2),0,0)
-  
-  kk <- length(brs)
-  polygon(brs,hrs,density=density,...)
-  lines(brs,hrs,...)
-}
-#' @rdname h.int
-#' @export
+#' @rdname grafici_percentili
+
 percentile <- function(p=0.5){
   X<- dat2
   K <- nrow(X)+1
@@ -235,9 +245,17 @@ percentile <- function(p=0.5){
             &=& ",xp_apr,"
 \\end{eqnarray*}
 ")}
-#' @rdname h.int
-#' @export
-F_print <- function(x,verso="<",x2=0,dc=4){
+
+#' @rdname grafici_percentili
+
+F_print <- function(x,verso="<",x2=0,dc=4,perc1 = F, perc2 = F){
+  if (perc1 & x2 == 0 & verso == "<") cat("Per definizione $\\%(X<x_{",x,"})=",x*100,"\\%$ e 
+                                          $\\#(X<x_{",x,"})\\approx",x,"\\times", n, " =",round(x*n,0),"$") else
+    if (perc1 & x2 == 0 & verso == ">") cat("Per definizione $\\%(X>x_{",x,"})=",(1-x)*100,"\\%$ e 
+                                            $\\#(X>x_{",x,"})\\approx",1-x,"\\times", n, " =",round((1-x)*n,0),"$" ) else
+      if (perc1 & perc2) cat("Per definizione $\\%(x_{",x,"}<X<x_{",x2,"})=",(x2-x)*100,"\\%$ e 
+                             $\\#(x_{",x,"}<X<x_{",x2,"})\\approx",x2-x,"\\times", n, " =",round((x2-x)*n,0),"$") else
+        if (!perc1 & !perc2) {  
   x <- round(x,dc)
   x2 <- round(x2,dc)
   br1  <- brk[-(k+1)]
@@ -316,90 +334,52 @@ F_print <- function(x,verso="<",x2=0,dc=4){
      \\#(",x,"< X <",x2,") &\\approx&",round((F_2-F_x)*n,0),"
          \\end{eqnarray*}")
   }
-}
-F_print2 <- function(x,verso="<",x2=0,dc=4){
-  x <- round(x,dc)
-  x2 <- round(x2,dc)
-  br1  <- brk[-(k+1)]
-  br2  <- brk[-1]
-  datp <- round(dat2,4)
-  F_x <- round(F.int(x),dc)
-  F_2 <-  F.int(x2)
-  if (verso == "<"){
-    j <- max(which(brk <= x))
-    if(j==1) {
-      cat("\\begin{eqnarray*}
+        
+    } else
+      if (perc1 & verso != "<" & verso != ">") {
+        ord <- x
+        x <- x2
+        cat("Per definizione $\\%(X<x_{",ord,"})=",ord*100,"\\%$. Inoltre\n\n")
+        F_x <- round(F.int(x),dc)
+        F1 <- min(F_x,ord)
+        F2 <- max(F_x,ord)
+        symb <-c(p0("x_{",ord,"}"),x)[order(c(ord,F_x))]
+        x <- round(x,dc)
+        x2 <- round(x2,dc)
+        br1  <- brk[-(k+1)]
+        br2  <- brk[-1]
+        datp <- round(dat2,4)
+        
+        j <- max(which(brk <= x))
+        if(j==1) {
+          cat("\\begin{eqnarray*}
      \\%(X<",x,") &=&",x,"\\times h_1 \\\\
               &=&",x,"\\times ",datp$hj[1],"\\\\
               &=& ",F_x,"\\times(100) \\\\
-     \\#(X<",x,") &\\approx&",round(F_x*n,0),"
-         \\end{eqnarray*}")
-    } else {
-      cat("\\begin{eqnarray*}
-     \\%(X<",x,") &=& ","F_{",j-1,"}\\times 100 + (",x,"-",brk[j],")\\times h_{",j,"} \\\\
-              &=& ",datp$Fj[(j-1)],")\\times 100 + (",x-brk[j],")\\times ",datp$hj[j]," \\\\
-              &=& ",F_x,"\\times(100) \\\\
-     \\#(X<",x,") &\\approx&",round(F_x*n,0),"
-         \\end{eqnarray*}")
-    }
-  } else if (verso == ">") {
-    j <- min(which(brk >= x))
-    if(j==k+1) {
-      cat("\\begin{eqnarray*}
-     \\%(X>",x,") &=&(",brk[j],"-",x,")\\times h_1 \\\\
-              &=&",brk[j]-x,"\\times ",datp$hj[k],"\\\\
-              &=& ",1-F_x,"\\times(100)\\\\
-     \\#(X>",x,") &\\approx&",round((1-F_x)*n,0),"
-         \\end{eqnarray*}")
-    } else {
-      cat("\\begin{eqnarray*}
-     \\%(X>",x,") &=& (",brk[j],"-",x,")\\times h_{",j-1,"}+",paste("f_{",(j):(k),"}\\times 100",collapse="+"),"\\\\
-              &=& (",brk[j]-x,")\\times",datp$hj[j-1],"+",paste("(",datp$fj[(j):(k)],")\\times 100",collapse="+"), "\\\\
-              &=& ",1-F_x,"\\times(100)\\\\
-     \\#(X>",x,") &\\approx&",round((1-F_x)*n,0),"
-         \\end{eqnarray*}")
-    }
-  } else  {
-    j1 <- max(which(br1 <= x))
-    j2 <- min(which(br2 >= x2))
-    c00 <- ifelse(x == brk[j1],
-                  paste0("\\%(",x,"<X<",x2,") &=&  f_{",j1,"}\\times 100+"),
-                  paste0("\\%(",x,"<X<",x2,") &=& (",min(brk[j1+1],x2),"-",x,")\\times h_{",j1,"}+"))
-    c10 <- ifelse(x == brk[j1],
-                  paste0("&=&",datp$fj[j1],"\\times 100 +"),
-                  paste0("&=& (",min(brk[j1+1],x2)-x,")\\times ",datp$hj[j1],"+"))
-    c02 <- ifelse(x2 == brk[j2+1],
-                  paste0("f_{",j2,"}\\times 100"),
-                  paste0("(",x2,"-",brk[j2],")\\times h_{",j2,"}"))
-    c12 <- ifelse(x2 == brk[j2+1],
-                  paste0(datp$fj[j2],"\\times 100"),
-                  paste0("(",x2-brk[j2],")\\times ",datp$hj[j2])
-    )
-    if (j1==j2) {
-      c00 <- paste0("\\%(",x,"<X<",x2,") &=& (",min(brk[j1+1],x2),"-",x,")\\times h_{",j1,"}")
-      c01  <- ""
-      c02 <- ""
-      c10 <- paste0("&=& (",min(brk[j1+1],x2)-x,")\\times ",datp$hj[j1],"")
-      c11 <- ""
-      c12 <- ""
-    } else if (j1==(j2-1)){
-      c01  <- ""
-      c11 <- ""
-    } else {
-      c01  <- paste(paste("f_{",(j1+1):(j2-1),"}\\times 100",collapse="+"),"+")
-      c11  <- paste(paste("(",datp$fj[(j1+1):(j2-1)],")\\times 100",collapse="+"),"+")
-    }
-    cat("\\begin{eqnarray*}",
-        c00,c01,c02," \\\\ \n",
-        c10,c11,c12," \\\\ \n",
-        "&=& ",F_2-F_x,"\\times(100)\\\\
-     \\#(",x,"< X <",x2,") &\\approx&",round((F_2-F_x)*n,0),"
-         \\end{eqnarray*}")
-  }
+              \\#(X<",x,") &\\approx&",round(F_x*n,0),"     
+\\end{eqnarray*}\n\n")
+        } else {
+          cat(
+"\\begin{eqnarray*}
+   \\%(X<",x,") &=& ",paste("f_{",1:(j-1),"}\\times 100",collapse="+"),"+(",x,"-",brk[j],")\\times h_{",j,"} \\\\
+                &=& ",paste("(",datp$fj[1:(j-1)],")\\times 100",collapse="+"),"+(",x-brk[j],")\\times ",datp$hj[j]," \\\\
+                &=& ",F_x,"\\times(100) \\\\
+\\#(X<",x,")    &\\approx&",round(F_x*n,0),"
+\\end{eqnarray*}\n\n")
+        }
+      cat(
+"E quindi 
+\\begin{eqnarray*}
+   \\%(",symb[1],"< X <",symb[2],") &=& (",F2,"-",F1,")\\%=",(F2-F1)*100,"\\% \\\\
+   \\#(",symb[1],"< X <",symb[2],") &=& (",F2,"-",F1,")\\times ",n,"=",(F2-F1)*n," \\\\
+\\end{eqnarray*}\n\n
+          ")
+      }
+        
 }
 
-#' @rdname h.int
-#' @export
+#' @rdname grafici_percentili
+
 histp <- function(axes=F,...){ 
   br1  <- brk[-(k+1)]
   br2  <- brk[-1]
@@ -413,4 +393,18 @@ histp <- function(axes=F,...){
     axis(2,c(0,dat2$hj),c(0,round(dat2$hj,2)),las=2)
     segments(br1[1]-1,datp$hj,br1,datp$hj,lty=2,col="grey40") 
   }
+}
+
+#' @rdname grafici_percentili
+
+h.int <- function(x1,x2,density=20,...){
+  brtemp <- c(x1,brk[brk>x1 & brk<x2],x2)
+  kk <- length(brtemp)
+  brs <- sort(c(min(brtemp),rep(brtemp,each=2),max(brtemp)))
+  
+  hrs <- c(0,0,rep(H.int(brtemp[-(kk)]),each=2),0,0)
+  
+  kk <- length(brs)
+  polygon(brs,hrs,density=density,...)
+  lines(brs,hrs,...)
 }

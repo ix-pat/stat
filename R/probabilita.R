@@ -59,7 +59,7 @@ p_ab <- function(pa,pb,A="A",B="B",dig = 4){
   pab <- pa*pb
   round_all(4)
   cat("\\begin{eqnarray}
-      P(",A,"\\cap",B,") &=& P(",A,")\\cdot (",B,") \\\\
+      P(",A,"\\cap",B,") &=& P(",A,")\\cdot P(",B,") \\\\
                          &=& ", pa,"\\times",pb," \\\\
                          &=& ", pab,
       "\\end{eqnarray}"

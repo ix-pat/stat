@@ -1,5 +1,10 @@
 # Changelog
 
+## Versione 2.7.1 (2025-06-17)
+
+- Aggiustato R2, restituisce la percentuale di varianza attesa e non solo la bontà di adattamento
+- Nuove opzioni per F_print, perc1 e perc2 consento di l'ordine dei percentili
+- riscrittura dell'help di F_print e funzioni collegate a stat_base
 
 ## Versione 2.7.0 (2025-01-29)
 
