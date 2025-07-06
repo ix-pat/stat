@@ -250,11 +250,11 @@ percentile <- function(p=0.5){
 
 F_print <- function(x,verso="<",x2=0,dc=4,perc1 = F, perc2 = F){
   if (perc1 & x2 == 0 & verso == "<") cat("Per definizione $\\%(X<x_{",x,"})=",x*100,"\\%$ e 
-                                          $\\#(X<x_{",x,"})\\approx",x,"\\times", n, " =",round(x*n,0),"$") else
+                                          $\\#(X<x_{",x,"})\\approx",x,"\\times", n, " =",round(x*n,0),"$",sep="") else
     if (perc1 & x2 == 0 & verso == ">") cat("Per definizione $\\%(X>x_{",x,"})=",(1-x)*100,"\\%$ e 
-                                            $\\#(X>x_{",x,"})\\approx",1-x,"\\times", n, " =",round((1-x)*n,0),"$" ) else
+                                            $\\#(X>x_{",x,"})\\approx",1-x,"\\times", n, " =",round((1-x)*n,0),"$",sep="") else
       if (perc1 & perc2) cat("Per definizione $\\%(x_{",x,"}<X<x_{",x2,"})=",(x2-x)*100,"\\%$ e 
-                             $\\#(x_{",x,"}<X<x_{",x2,"})\\approx",x2-x,"\\times", n, " =",round((x2-x)*n,0),"$") else
+                             $\\#(x_{",x,"}<X<x_{",x2,"})\\approx",x2-x,"\\times", n, " =",round((x2-x)*n,0),"$",sep="") else
         if (!perc1 & !perc2) {  
   x <- round(x,dc)
   x2 <- round(x2,dc)
