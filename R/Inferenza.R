@@ -965,7 +965,7 @@ residuo <- function(x,y){
   cat("\\hat y_i &=&\\hat\\beta_0+\\hat\\beta_1 x_i=\\\\ \n")
   cat(        "&=&",b0,"+",p(b1),"\\times",p(x),"=",b0+b1*x,"\\\\ \n")
   cat("\\hat \\varepsilon_i &=& y_i-\\hat y_i\\\\ \n")
-  cat(                "&=&",y,"-",b0+b1*x,"=",y - (b0+b1*x)," \n")
+  cat(                "&=&",y,"-",p(b0+b1*x),"=",y - (b0+b1*x)," \n")
   cat("\\end{eqnarray*}\n")  
 }
 
