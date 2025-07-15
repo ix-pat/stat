@@ -1,0 +1,512 @@
+col = "lightblue", shade = 0.5,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+# Plot 3D
+persp(x, y, z,
+theta = 30, phi = 40, expand = 0.5,
+col = "lightblue", shade = 0.5,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+# Plot 3D
+persp(x, y, z,
+theta = 70, phi = 20, expand = 0.5,
+col = "lightblue", shade = 0.5,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+# Plot 3D
+persp(x, y, z,
+theta = 10, phi = 20, expand = 0.5,
+col = "lightblue", shade = 0.5,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "lightblue", shade = 0.5,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "white", shade = 0.5,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "white", shade = 0.1,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+library(mvtnorm)
+# Parametri della bivariata
+mu <- c(0, 0)
+rho <- 0.9
+sigma <- matrix(c(1, rho, rho, 1), 2, 2)
+# Griglia di valori
+x <- seq(-4, 4, length = 50)
+y <- seq(-4, 4, length = 50)
+# Griglia per la funzione di ripartizione
+z <- outer(x, y, Vectorize(function(a, b) {
+pmvnorm(upper = c(a, b), mean = mu, sigma = sigma)
+}))
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "white", shade = 0.1,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+library(mvtnorm)
+# Parametri della bivariata
+mu <- c(0, 0)
+rho <- 0.5
+sigma <- matrix(c(1, rho, rho, 1), 2, 2)
+# Griglia di valori
+x <- seq(-4, 4, length = 50)
+y <- seq(-4, 4, length = 50)
+# Griglia per la funzione di ripartizione
+z <- outer(x, y, Vectorize(function(a, b) {
+pmvnorm(upper = c(a, b), mean = mu, sigma = sigma)
+}))
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "white", shade = 0.1,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+library(mvtnorm)
+# Parametri della bivariata
+mu <- c(0, 0)
+rho <- 0.0
+sigma <- matrix(c(1, rho, rho, 1), 2, 2)
+# Griglia di valori
+x <- seq(-4, 4, length = 50)
+y <- seq(-4, 4, length = 50)
+# Griglia per la funzione di ripartizione
+z <- outer(x, y, Vectorize(function(a, b) {
+pmvnorm(upper = c(a, b), mean = mu, sigma = sigma)
+}))
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "white", shade = 0.1,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+library(mvtnorm)
+# Parametri della bivariata
+mu <- c(0, 0)
+rho <- -.9
+sigma <- matrix(c(1, rho, rho, 1), 2, 2)
+# Griglia di valori
+x <- seq(-4, 4, length = 50)
+y <- seq(-4, 4, length = 50)
+# Griglia per la funzione di ripartizione
+z <- outer(x, y, Vectorize(function(a, b) {
+pmvnorm(upper = c(a, b), mean = mu, sigma = sigma)
+}))
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "white", shade = 0.1,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+library(mvtnorm)
+# Parametri della bivariata
+mu <- c(0, 0)
+rho <- +.9
+sigma <- matrix(c(1, rho, rho, 1), 2, 2)
+# Griglia di valori
+x <- seq(-4, 4, length = 50)
+y <- seq(-4, 4, length = 50)
+# Griglia per la funzione di ripartizione
+z <- outer(x, y, Vectorize(function(a, b) {
+pmvnorm(upper = c(a, b), mean = mu, sigma = sigma)
+}))
+# Plot 3D
+persp(x, y, z,
+theta = -10, phi = 20, expand = 0.5,
+col = "white", shade = 0.1,
+xlab = "x", ylab = "y", zlab = "F(x,y)",
+ticktype = "detailed")
+#set.seed(123)
+# Funzione per sd non corretta
+pop_sd <- function(x) {
+sqrt(mean((x - mean(x))^2))
+}
+# Parametri desiderati
+n    <- 1000
+xbar <- 1.5
+ybar <- 3
+sx   <- sqrt(1.25)
+sy   <- sqrt(0.625)
+sxy  <- 0.625  # covarianza desiderata
+# Inizializzazione casuale
+#x <- rnorm(n)
+x <- seq(0,3,length=n)
+y <- rnorm(n)
+max_iter <- 1000000
+tol      <- 1e-7
+for(i in 1:max_iter) {
+# 1) Shift sulle medie
+x <- x - mean(x) + xbar
+y <- y - mean(y) + ybar
+# 2) Aggiustamento sulle deviazioni standard (non corrette)
+x <- x * (sx / pop_sd(x))
+y <- y * (sy / pop_sd(y))
+# 3) Correzione finale sulla covarianza
+covar <- mean((x - mean(x)) * (y - mean(y)))  # anche questa non corretta
+if(abs(covar - sxy) < tol) break
+alfa <- (sxy - covar) / mean((x - mean(x))^2)
+xmed <- mean(x)
+y <- y + alfa * (x - xmed)
+}
+# Verifica finale
+cat("Media x:", mean(x)-xbar, "\n")
+cat("Media y:", mean(y)-ybar, "\n")
+cat("DevSt x non corretta:", pop_sd(x)-sx, "\n")
+cat("DevSt y non corretta:", pop_sd(y)-sy, "\n")
+cat("Cov non corretta:", mean((x - mean(x)) * (y - mean(y)))-sxy, "\n")
+plot(x,y,ylim=c(0.5,5.5),xlim=c(0,3))
+abline(lsfit(x,y))
+#set.seed(123)
+# Funzione per sd non corretta
+pop_sd <- function(x) {
+sqrt(mean((x - mean(x))^2))
+}
+# Parametri desiderati
+n    <- 10
+xbar <- 1.5
+ybar <- 3
+sx   <- sqrt(1.25)
+sy   <- sqrt(0.625)
+sxy  <- 0.625  # covarianza desiderata
+# Inizializzazione casuale
+#x <- rnorm(n)
+x <- seq(0,3,length=n)
+y <- rnorm(n)
+max_iter <- 1000000
+tol      <- 1e-7
+for(i in 1:max_iter) {
+# 1) Shift sulle medie
+x <- x - mean(x) + xbar
+y <- y - mean(y) + ybar
+# 2) Aggiustamento sulle deviazioni standard (non corrette)
+x <- x * (sx / pop_sd(x))
+y <- y * (sy / pop_sd(y))
+# 3) Correzione finale sulla covarianza
+covar <- mean((x - mean(x)) * (y - mean(y)))  # anche questa non corretta
+if(abs(covar - sxy) < tol) break
+alfa <- (sxy - covar) / mean((x - mean(x))^2)
+xmed <- mean(x)
+y <- y + alfa * (x - xmed)
+}
+# Verifica finale
+cat("Media x:", mean(x)-xbar, "\n")
+cat("Media y:", mean(y)-ybar, "\n")
+cat("DevSt x non corretta:", pop_sd(x)-sx, "\n")
+cat("DevSt y non corretta:", pop_sd(y)-sy, "\n")
+cat("Cov non corretta:", mean((x - mean(x)) * (y - mean(y)))-sxy, "\n")
+plot(x,y,ylim=c(0.5,5.5),xlim=c(0,3))
+abline(lsfit(x,y))
+library(shiny); runApp('~/OneDrive/Stat/App/LSS/app1.R')
+runApp('~/OneDrive/Stat/App/LSS')
+# Dati iniziali
+#
+gen_dat <- function(n){
+if (n==4) return(data.frame(
+x = c(0, 1, 2, 3),
+y = c(2.0, 3.5, 2.5, 4.0)
+)
+)
+xbar <- 1.5
+ybar <- 3
+sx   <- sqrt(1.25)
+sy   <- sqrt(0.625)
+sxy  <- 0.625  # covarianza desiderata
+# Inizializzazione casuale
+#x <- rnorm(n)
+x <- seq(0,3,length=n)
+y <- rnorm(n)
+max_iter <- 1000000
+tol      <- 1e-7
+for(i in 1:max_iter) {
+# 1) Shift sulle medie
+x <- x - mean(x) + xbar
+y <- y - mean(y) + ybar
+# 2) Aggiustamento sulle deviazioni standard (non corrette)
+x <- x * (sx / pop_sd(x))
+y <- y * (sy / pop_sd(y))
+# 3) Correzione finale sulla covarianza
+covar <- mean((x - mean(x)) * (y - mean(y)))  # anche questa non corretta
+if(abs(covar - sxy) < tol) break
+alfa <- (sxy - covar) / mean((x - mean(x))^2)
+xmed <- mean(x)
+y <- y + alfa * (x - xmed)
+}
+return(data.frame(x=x,y=y))
+}
+gen_dat(4)
+gen_dat(20)
+runApp('~/OneDrive/Stat/App/LSS/app1.R')
+runApp('~/OneDrive/Stat/App/LSS/app1.R')
+runApp('~/OneDrive/Stat/App/LSS')
+install.packages("plot3D")
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+pmat <- persp(xg, yg, zmat,
+theta = input$theta,
+phi = input$phi,
+expand = input$zoom,
+,shade = .05,
+col="white", border=1,
+xlab = "", ylab = "", zlab = "")
+pmat <- persp(xg, yg, zmat,boxed=F
+theta = input$theta,
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+runApp('~/OneDrive/Stat/App/3d-regr')
+5/15
+(-1):1
+1+2*((-1):1)
+library(pat.book)
+tlc
+tlc(tipo = "pois_media",x1 = 9,verso = ">",mu = 1)
+tlc(tipo = "pois_media",x1 = 9,verso = ">",mu = 1,n = 100)
+tlc(tipo = "pois_media",x1 = 0.9,verso = ">",mu = 1,n = 100)
+s1 <- 1.1
+n1 <- 18
+mu1 <- 1.8
+mu2 <- 0.8
+s2 <- 0.9
+n2 <- 21
+h1 <- "\\neq"
+alpha <- 0.01
+a <- "$N$"
+b<- "$S$"
+test_2c(mu1 = mu1,mu2 = mu,s1h = s1,s2h = s2,n1 = n1,n2 = n2,h1 = h1,et = F)
+test_2c(mu1 = mu1,mu2 = mu2,s1h = s1,s2h = s2,n1 = n1,n2 = n2,h1 = h1,et = F)
+test_2c(mu1 = mu1,mu2 = mu2,s1h = s1,s2h = s2,n1 = n1,n2 = n2,h1 = h1,et = F)
+h1 <- ">"
+test_2c(mu1 = mu1,mu2 = mu2,s1h = s1,s2h = s2,n1 = n1,n2 = n2,h1 = h1,et = F)
+idc(xm = 56, alpha = .05, n = 80, dist_ = "z")
+ztest_pi(sn = 56,n = 80,p0 = 0.8,h1 = "<")
+ztest_pi(sn = 56,n = 80,p0 = 0.8,h1 = "<")
+p
+set.seed(42)
+n <- 52
+x <- sort(rnorm(n, 7.5, 1.2)) # percentuale popolazione sotto la soglia di povertà
+y <- 4.5 - 0.18 * x + rnorm(n, 0, 0.25) # tasso di natalità per 1000 abitanti
+ls2e(regr(x, y, semp = TRUE, ax = 2))
+R2()
+plot(x,y)
+par(mar=c(4,4,0,2),cex=.8)
+plot(x, es, ylab=expression(hat(epsilon)), pch=16, cex=.5, axes=F)
+axis(1, cex=1)
+axis(2, cex=1)
+abline(h=0, lty=2)
+norm_int(x1 =  0,x2 = 2,mm =  1,ss = 1.5,vnam = "X")
+norm_int(x1 =  0,x2 = 2,verso=NULL,mm =  1,ss = 1.5,vnam = "X")
+norm_int(x1 = 1,verso = "<",mm = -1,ss = 1.5,vnam = "Y")
+norm_int(x1 =  0,x2 = 1,verso=NULL,mm =  1,ss = 1.5,vnam = "X")
+norm_int(x1 = 1,verso = "<",mm = -1,ss = 1.5,vnam = "Y")
+norm_int(x1 =  0,x2 = 1,verso=NULL,mm =  1,ss = 1.5,vnam = "X")
+norm_int(x1 = 1,verso = "<",mm = -1,ss = 1.5,vnam = "Y")
+pab <- 0.2939
+pc <- 0.9484
+p_ab(pab,pc)
+p_ab(pab,pc,B = "C")
+p_ab(pab,pc,B = "C",A = "A\cap B")
+p_ab(pab,pc,B = "C",A = "A\\cap B")
+p
+pp
+E
+pp <- dbinom(4,2,.5)
+pp
+dbinom(4,2,.5)
+dbinom(2,4,.5)
+bin_dis(2,4,.5,sing = T)
+tlc(tipo = "somma",x1 = 400,verso = ">",mu = pp)
+tlc(tipo = "somma",x1 = 400,verso = ">",mu = pp,n = 100)
+pp
+pp <- dbinom(2,4,.5)
+tlc(tipo = "somma",x1 = 400,verso = ">",mu = pp,n = 100)
+tlc(tipo = "somma",x1 = 40,verso = ">",mu = pp,n = 100)
+ztest_2c_pi(38,30,50,50,">")
+ztest_2c_pi(39,30,50,50,">")
+ztest_2c_pi(43,30,50,50,">")
+ztest_2c_pi(35,30,50,50,">")
+ztest_2c_pi(37,30,50,50,">")
+ztest_2c_pi(35,30,50,50,">")
+ttest_beta(0,0,h1 = "\neq",SE = T)
+4*.5*.5/100
+4*.5*.5*100
+4*.5*.5
+# Creazione della tabella con i dati
+tabella_aziendale <- matrix(c(30, 15, 20, 20, 25, 40, 45, 30, 35), nrow = 3, ncol = 3, byrow = TRUE)
+tabella_aziendale
+chi_test(tabella_aziendale)
+dat <- chi_print(tabella_aziendale,rownames(tabella_aziendale),colnames(tabella_aziendale))
+dat
+rownames(tabella_aziendale)
+# Assegnazione dei nomi alle righe e alle colonne
+colnames(tabella_aziendale) <-  c("Alta", "Media", "Bassa")
+rownames(tabella_aziendale) <- c("Tecnica", "Manageriale", "Soft Skills")
+tabl(tabella_aziendale) %>%
+kable_styling(full_width = F) %>%
+kable_paper(full_width = F) %>%
+pack_rows("Tipo di Formazione", 1, 3) %>%
+add_header_above(c(" " = 1, "Performance Lavorativa" = 3))
+dat <- chi_print(tabella_aziendale,rownames(tabella_aziendale),colnames(tabella_aziendale))
+dat
+chi_test(dat)
+calss(dat)
+class(dat)
+dat <- chi_print(tabella_aziendale,rownames(tabella_aziendale),colnames(tabella_aziendale))[[1]]
+chi_test(dat)
+93/3
+42/3
+reticulate::source_python('~/OneDrive/Stat/book/unione.py')
+use_python("/usr/bin/python3", required = TRUE)
+library(reticulate)
+use_python("/usr/bin/python3", required = TRUE)
+reticulate::source_python('~/OneDrive/Stat/book/unione.py')
+ref <- read.csv("./referendum.csv")
+getwd()
+dir("./")
+dir("../")
+dir(".../")
+ref <- read.csv("../referendum.csv")
+ref
+plot(ref$Data,ref$Perc,type=h,lwd=2,col=2)
+plot(ref$Data,ref$Perc,lwd=2,col=2)
+plot(ref$Data,ref$Perc,lwd=2,col=2,type="h")
+abline(h=50,lty=2,col=4)
+plot(ref$Data,ref$Perc,lwd=2,col=2,type="h",axes=F,xlab=" ",ylab="Percentuale")
+abline(h=50,lty=2,col=4)
+axis(1)
+plot(ref$Data,ref$Perc,lwd=2,col=2,type="h",axes=F,xlab=" ",ylab="Percentuale")
+abline(h=50,lty=2,col=4)
+axis(1,ref$Data,las=2)
+axis(2)
+abline(h=c(10,20),lty=2,col=4)
+plot(ref$Data,ref$Perc,lwd=2,col=2,type="h",axes=F,xlab=" ",ylab="Percentuale")
+abline(h=50,lty=2,col=4)
+abline(h=c(10,20,30,40,60,70,80,90),lty=3,col="lightgrey")
+axis(1,ref$Data,las=2)
+abline(h=c(10,20,30,40,60,70,80,90),lty=1,col="lightgrey")
+plot(ref$Data,ref$Perc,lwd=2,col=2,type="h",axes=F,xlab=" ",ylab="Percentuale")
+abline(h=50,lty=2,col=4)
+abline(h=c(10,20,30,40,60,70,80,90),lty=1,col="lightgrey")
+points(ref$Data,ref$Perc,lwd=2,col=2,type="h")
+axis(1,ref$Data,las=2)
+plot(ref$Data,ref$Perc,lwd=2,col=2,type="h",axes=F,xlab=" ",ylab="Percentuale")
+abline(h=50,lty=2,col=4)
+abline(h=c(10,20,30,40,60,70,80,90),lty=4,col="lightgrey")
+plot(ref$Data,ref$Perc,lwd=2,col=2,type="h",axes=F,xlab=" ",ylab="Percentuale")
+abline(h=50,lty=2,col=4)
+abline(h=c(10,20,30,40,60,70,80,90),lty=5,col="lightgrey")
+points(ref$Data,ref$Perc,lwd=2,col=2,type="h")
+axis(1,ref$Data,las=2)
+axis(2)
+20/27
+34/56
+34/56 *31
+4*60/15
+# we recommend running this in a fresh R session or restarting your current session
+install.packages("cmdstanr", repos = c('https://stan-dev.r-universe.dev', getOption("repos")))
+library(cmdstanr)
+install_cmdstan()
+questa_e_una_prova()
+x <- rnorm(100)
+y <- x + rnorm(100,0,.1)
+ls2e(regr(x,y))
+R2()
+R2()
+R2
+R2()
+R2()
+R2(adatto = F)
+symb <-c(p0)
+p0
+p0("a,"b)
+p0("a,"b
+p0("a,"b"")
+p0("a,"b")
+p0
+p0("a)
+p0("a")
+p0("a","b")
+brk <- c(0,1,2,5,10)
+hhh <- c(2,5,1,.5)
+samp <- genera_dati(brk = brk, hhh = hhh, n = 150)
+ls2e(stat_base(samp = samp, brk = brk))
+F_print(30,perc1 = T)
+F_print(.3,perc1 = T)
+F_print(.25,x2=2,perc1 = T)
+F_print(.25,x2=2,perc1 = T,verso = NULL)
+F_print(.25,x2=2,perc1 = T,verso = "NULL")
+F_print(.25,x2=2,perc1 = T,verso = "NULL")
+F_print(.25,x2=2,perc1 = T,verso = "NULL")
+F_print(.25,x2=2,perc1 = T,verso = "NULL")
+F_print(.25,x2=2,perc1 = T,verso = "NULL")
+F_print(.65,x2=2,perc1 = T,verso = "NULL")
+F_print(.65,x2=95,perc2 = T,perc1 = T,verso = "NULL")
+n
+F_print(.65,x2=.95,perc2 = T,perc1 = T,verso = "NULL")
+F_print(.65,x2=.95,perc2 = T,perc1 = T,verso = "NULL")
+F_print(.65,x2=.95,perc2 = T,perc1 = T,verso = "NULL")
+var_(1:4)
+var_(1:4,p=(1:4)/4)
+debug(var_)
+var_(1:4,p=(1:4)/4)
+vvv(x,p)
+vvv
+debug(vvv)
+p
+v
+p
+var_(1:4,p=(1:4)/4)
+p
+exit()
+q()
+undebug(var_)
+undebug(vvv)
+var_(1:4,p=(1:4)/4)
+var_(1:4,p=(1:4)/sum(1:4))
+var_(1:4,p=1:4)
+var_(1:4,p=1:4)
+install.packages("chromote")
+b <- ChromoteSession$new()
+install.packages("chromote")
+curl::curl_version()
+Rcpp::evalCpp("2 + 2")
+install.packages("chromote")
+install.packages("Rcpp", type = "source")
+install.packages("chromote")
+install.packages("Rcpp", type = "source", lib = "~/R/x86_64-pc-linux-gnu-library/4.4")
+install.packages("Rcpp", type = "source", lib = "~/R/x86_64-pc-linux-gnu-library/4.4")
+install.packages("chromote")
+Sys.setenv("PKG_CPPFLAGS" = "-I$HOME/R/x86_64-pc-linux-gnu-library/4.4/Rcpp/include")
+install.packages("websocket", type = "source")
+install.packages(
+"websocket",
+type = "source",
+configure.args = "--with-pkg-config",
+INSTALL_opts = "--no-multiarch"
+)
+reticulate::repl_python()
+library(reticulate)
+use_python("/usr/bin/python3", required = TRUE)
+reticulate::repl_python()
+ls()
+getwd()
