@@ -175,7 +175,8 @@ C_ <- function(lst,pv_only=FALSE,pvalue=TRUE,rbow=FALSE){
   H1 <- ifelse(h1 == "\\neq",">",H1)
   if (length(alpha)!=1){
     if(h1 == "<") {
-      tcrit <- rev(tcrit)
+      #tcrit <- rev(tcrit)
+      tc <- rev(tc)
       livello <- 5-livello
       livello <- ifelse(livello==5,0,livello)
     }
