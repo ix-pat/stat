@@ -472,8 +472,13 @@ ttest_mu <-  function(muh,sh,n,mu0,h1 = "\\neq",um="",alpha = c(1/10,5/100,1/100
   A_(lst,tipo = "mu 1",um = um)
 
   cat("\n\n \\(\\fbox{B}\\) SCELTA E CALCOLO STATISTICA-TEST, \\(T\\)\n\n",
+<<<<<<< HEAD
      "\\(\\sigma^{2}\\) di \\(\\cal{P}\\) incognita: \\(\\Rightarrow\\) t-Test.\n\n",
      "\\begin{eqnarray*}
+=======
+     "\\(\\sigma^{2}\\) di \\(\\cal{P}\\) incognita: \\(\\Rightarrow\\) t-Test.\n\n
+     \\begin{eqnarray*}
+>>>>>>> e2d775d3226c8ecc602ab780f0e45be621c2a838
    S    &=& \\sqrt{\\frac{n} {n-1}}\\ \\widehat{\\sigma} 
    =  \\sqrt{\\frac{", n,"} {", n,"-1}} \\times ", sh," = ", s,"
    \\end{eqnarray*}
